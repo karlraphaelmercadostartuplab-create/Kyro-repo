@@ -1,0 +1,5 @@
+[26-Feb-2026 15:51:04 UTC] PHP Fatal error:  Uncaught Error: Class "App\Http\Controllers\Controller" not found in /home/kyro/public_html/lint.php(24) : eval()'d code:10
+Stack trace:
+#0 /home/kyro/public_html/lint.php(24): eval()
+#1 {main}
+  thrown in /home/kyro/public_html/lint.php(24) : eval()'d code on line 10

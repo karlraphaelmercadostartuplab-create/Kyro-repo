@@ -1,0 +1,28 @@
+/vendor
+/node_modules
+/.env
+/public/storage
+/storage/*.key
+
+# Ignore all storage runtime files
+/storage/debugbar
+/storage/framework/cache
+/storage/framework/sessions
+/storage/framework/views
+/storage/logs/*.log
+
+# Keep directory structure
+!/storage/framework/
+!/storage/framework/.gitignore
+!/storage/logs/
+!/storage/logs/.gitignore
+!/storage/app/
+!/storage/app/.gitignore
+
+/bootstrap/cache/*.php/vendor
+/node_modules
+/.env
+/public/storage
+/storage/*.key
+/storage/app/*
+/bootstrap/cache/*.php

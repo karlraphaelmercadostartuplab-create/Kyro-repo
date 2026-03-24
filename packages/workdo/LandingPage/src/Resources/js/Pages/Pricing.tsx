@@ -153,7 +153,7 @@ export default function Pricing(props: PricingProps) {
 
                     {pricingSettings.show_pre_package === true && plans.length > 0 ? (
                         <div className="space-y-6 overflow-x-hidden pt-10">
-                            <div className="space-y-6 xl:hidden">
+                            <div className="space-y-6 lg:hidden">
                                 {plans.map((plan) => {
                                     const enabledAddOns = activeModules.filter((module) => plan.modules?.includes(module.module));
                                     const totalAddOns = activeModules.length;
@@ -276,7 +276,7 @@ export default function Pricing(props: PricingProps) {
                                 })}
                             </div>
 
-                            <div className="hidden overflow-x-auto overflow-y-visible pb-2 pt-4 xl:block">
+                             <div className="hidden overflow-x-auto overflow-y-visible pb-2 pt-4 lg:block">
                                 <div
                                     className="grid gap-6"
                                     style={{

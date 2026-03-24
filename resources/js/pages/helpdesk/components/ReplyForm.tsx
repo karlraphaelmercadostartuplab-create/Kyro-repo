@@ -60,7 +60,7 @@ export default function ReplyForm({ ticketId, onReplyAdded, disabled }: ReplyFor
 
 
     return (
-        <div className="border-t bg-gray-50/50 p-3">
+        <div className="overflow-hidden border-t bg-gray-50/50 p-3">
             <div className="space-y-2">
                 <div className="relative">
                     <RichTextEditor
@@ -76,9 +76,9 @@ export default function ReplyForm({ ticketId, onReplyAdded, disabled }: ReplyFor
                     />
                 </div>
                 
-                <div className="flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-3 flex-1">
-                        <div className="flex items-center gap-1">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex min-w-0 flex-col gap-3 sm:flex-1 sm:flex-row sm:items-center">
+                        <div className="flex min-w-0 items-center gap-1">
                             <MediaPicker
                                 label=""
                                 value={attachments}
@@ -111,7 +111,7 @@ export default function ReplyForm({ ticketId, onReplyAdded, disabled }: ReplyFor
                         onClick={handleSubmit}
                         disabled={!message.trim() || disabled || isSubmitting}
                         size="sm"
-                        className="flex items-center gap-1.5 px-4 py-2 h-8"
+                        className="flex h-9 w-full items-center justify-center gap-1.5 px-4 py-2 sm:w-auto"
                     >
                         <Send className="h-3.5 w-3.5" />
                         <span className="text-xs font-medium">

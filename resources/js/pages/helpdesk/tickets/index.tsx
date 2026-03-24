@@ -209,13 +209,14 @@ export default function Index() {
             breadcrumbs={[{label: t('Support Tickets')}]}
             pageTitle={t('Manage Support Tickets')}
             pageActions={
-                <div className="flex gap-2">
+                <div className="flex w-full flex-wrap gap-2 sm:w-auto sm:justify-end">
                     <TooltipProvider>
                         {auth.user?.permissions?.includes('create-helpdesk-tickets') && (
                             <Tooltip delayDuration={0}>
                                 <TooltipTrigger asChild>
-                                    <Button size="sm" onClick={() => openModal('add')}>
+                                    <Button size="sm" onClick={() => openModal('add')} className="w-full sm:w-auto">
                                         <Plus className="h-4 w-4" />
+                                        <span className="ml-2 sm:hidden">{t('Create Ticket')}</span>
                                     </Button>
                                 </TooltipTrigger>
                                 <TooltipContent>
@@ -232,9 +233,9 @@ export default function Index() {
             {/* Main Content Card */}
             <Card className="shadow-sm">
                 {/* Search & Controls Header */}
-                <CardContent className="p-6 border-b bg-gray-50/50">
-                    <div className="flex items-center justify-between gap-4">
-                        <div className="flex-1 max-w-md">
+                <CardContent className="border-b bg-gray-50/50 p-4 sm:p-6">
+                    <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                        <div className="w-full lg:max-w-md">
                             <SearchInput
                                 value={filters.title}
                                 onChange={(value) => setFilters({...filters, title: value})}
@@ -242,7 +243,7 @@ export default function Index() {
                                 placeholder={t('Search tickets...')}
                             />
                         </div>
-                        <div className="flex items-center gap-3">
+                        <div className="flex w-full flex-wrap items-center gap-3 lg:w-auto lg:justify-end">
                             <ListGridToggle
                                 currentView={viewMode}
                                 routeName="helpdesk-tickets.index"
@@ -272,7 +273,7 @@ export default function Index() {
 
                 {/* Advanced Filters */}
                 {showFilters && (
-                    <CardContent className="p-6 bg-blue-50/30 border-b">
+                    <CardContent className="border-b bg-blue-50/30 p-4 sm:p-6">
                         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">{t('Status')}</label>
@@ -334,9 +335,9 @@ export default function Index() {
                                     </Select>
                                 </div>
                             )}
-                            <div className="flex items-end gap-2">
-                                <Button onClick={handleFilter} size="sm">{t('Apply')}</Button>
-                                <Button variant="outline" onClick={clearFilters} size="sm">{t('Clear')}</Button>
+                            <div className="flex flex-col items-stretch gap-2 sm:flex-row sm:items-end">
+                                <Button onClick={handleFilter} size="sm" className="w-full sm:w-auto">{t('Apply')}</Button>
+                                <Button variant="outline" onClick={clearFilters} size="sm" className="w-full sm:w-auto">{t('Clear')}</Button>
                             </div>
                         </div>
                     </CardContent>
@@ -345,8 +346,9 @@ export default function Index() {
                 {/* Table Content */}
                 <CardContent className="p-0">
                     {viewMode === 'list' ? (
-                        <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 max-h-[70vh] rounded-none w-full">
-                            <div className="min-w-[800px]">
+                        <>
+                            <div className="overflow-x-auto overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 max-h-[70vh] rounded-none w-full hidden md:block">
+                                <div className="min-w-[720px] lg:min-w-0">
                             <DataTable
                                 data={tickets.data}
                                 columns={tableColumns}
@@ -369,23 +371,124 @@ export default function Index() {
                                 }
                             />
                             </div>
-                        </div>
+                            </div>
+                            <div className="block max-h-[70vh] overflow-y-auto p-4 md:hidden">
+                                {tickets.data.length > 0 ? (
+                                    <div className="grid grid-cols-1 gap-4">
+                                        {tickets.data.map((ticket) => (
+                                            <Card key={ticket.id} className="overflow-hidden border border-gray-200">
+                                                <div className="space-y-4 p-4">
+                                                    <div className="flex items-start gap-3">
+                                                        <div className="rounded-lg bg-primary/10 p-2">
+                                                            <Ticket className="h-5 w-5 text-primary" />
+                                                        </div>
+                                                        <div className="min-w-0 flex-1">
+                                                            {auth.user?.permissions?.includes('view-helpdesk-tickets') ? (
+                                                                <h3 className="cursor-pointer break-words text-base font-medium text-blue-600 hover:text-blue-700" onClick={() => router.get(route('helpdesk-tickets.show', ticket.id))}>
+                                                                    #{ticket.ticket_id}
+                                                                </h3>
+                                                            ) : (
+                                                                <h3 className="break-words text-base font-medium text-gray-900">#{ticket.ticket_id}</h3>
+                                                            )}
+                                                            <p className="mt-1 break-words text-sm text-gray-900">{ticket.title}</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="flex flex-wrap gap-2">
+                                                        <div className="text-xs">{getStatusBadge(ticket.status)}</div>
+                                                        <div className="text-xs">{getPriorityBadge(ticket.priority)}</div>
+                                                    </div>
+
+                                                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                                                        <div className="min-w-0">
+                                                            <p className="mb-1 text-xs font-medium text-gray-600">{t('Category')}</p>
+                                                            <p className="break-words text-sm text-gray-900">{ticket.category?.name || '-'}</p>
+                                                        </div>
+                                                        <div className="min-w-0">
+                                                            <p className="mb-1 text-xs font-medium text-gray-600">{t('Created By')}</p>
+                                                            <p className="break-words text-sm text-gray-900">{ticket.creator?.name || '-'}</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="flex flex-wrap justify-end gap-1 border-t pt-3">
+                                                        <TooltipProvider>
+                                                            {auth.user?.permissions?.includes('view-helpdesk-tickets') && (
+                                                                <Tooltip delayDuration={300}>
+                                                                    <TooltipTrigger asChild>
+                                                                        <Button variant="ghost" size="sm" onClick={() => router.get(route('helpdesk-tickets.show', ticket.id))} className="h-8 w-8 p-0 text-green-600">
+                                                                            <Eye className="h-4 w-4" />
+                                                                        </Button>
+                                                                    </TooltipTrigger>
+                                                                    <TooltipContent>
+                                                                        <p>{t('View')}</p>
+                                                                    </TooltipContent>
+                                                                </Tooltip>
+                                                            )}
+                                                            {auth.user?.permissions?.includes('edit-helpdesk-tickets') && (
+                                                                <Tooltip delayDuration={300}>
+                                                                    <TooltipTrigger asChild>
+                                                                        <Button variant="ghost" size="sm" onClick={() => openModal('edit', ticket)} className="h-8 w-8 p-0 text-blue-600">
+                                                                            <EditIcon className="h-4 w-4" />
+                                                                        </Button>
+                                                                    </TooltipTrigger>
+                                                                    <TooltipContent>
+                                                                        <p>{t('Edit')}</p>
+                                                                    </TooltipContent>
+                                                                </Tooltip>
+                                                            )}
+                                                            {auth.user?.permissions?.includes('delete-helpdesk-tickets') && (
+                                                                <Tooltip delayDuration={300}>
+                                                                    <TooltipTrigger asChild>
+                                                                        <Button
+                                                                            variant="ghost"
+                                                                            size="sm"
+                                                                            onClick={() => openDeleteDialog(ticket.id)}
+                                                                            className="h-8 w-8 p-0 text-red-600"
+                                                                        >
+                                                                            <Trash2 className="h-4 w-4" />
+                                                                        </Button>
+                                                                    </TooltipTrigger>
+                                                                    <TooltipContent>
+                                                                        <p>{t('Delete')}</p>
+                                                                    </TooltipContent>
+                                                                </Tooltip>
+                                                            )}
+                                                        </TooltipProvider>
+                                                    </div>
+                                                </div>
+                                            </Card>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <NoRecordsFound
+                                        icon={Ticket}
+                                        title={t('No tickets found')}
+                                        description={t('Get started by creating your first support ticket.')}
+                                        hasFilters={!!(filters.title || filters.status || filters.priority || filters.category_id || filters.company_id)}
+                                        onClearFilters={clearFilters}
+                                        createPermission="create-helpdesk-tickets"
+                                        onCreateClick={() => openModal('add')}
+                                        createButtonText={t('Create Ticket')}
+                                    />
+                                )}
+                            </div>
+                        </>
                     ) : (
-                        <div className="overflow-auto max-h-[70vh] p-4">
+                        <div className="max-h-[70vh] overflow-auto p-4">
                             {tickets.data.length > 0 ? (
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+                                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
                                     {tickets.data.map((ticket) => (
-                                        <Card key={ticket.id} className="border border-gray-200">
+                                        <Card key={ticket.id} className="overflow-hidden border border-gray-200">
                                             <div className="p-4">
                                                 <div className="flex items-center gap-3 mb-3">
                                                     <div className="p-2 bg-primary/10 rounded-lg">
                                                         <Ticket className="h-5 w-5 text-primary" />
                                                     </div>
-                                                    <div className="flex-1">
+                                                    <div className="min-w-0 flex-1">
                                                         {auth.user?.permissions?.includes('view-helpdesk-tickets') ? (
-                                                            <h3 className="text-base text-blue-600 hover:text-blue-700 cursor-pointer" onClick={() => router.get(route('helpdesk-tickets.show', ticket.id))}>#{ticket.ticket_id}</h3>
+                                                            <h3 className="cursor-pointer break-words text-base text-blue-600 hover:text-blue-700" onClick={() => router.get(route('helpdesk-tickets.show', ticket.id))}>#{ticket.ticket_id}</h3>
                                                         ) : (
-                                                            <h3 className="text-base text-gray-900">#{ticket.ticket_id}</h3>
+                                                            <h3 className="break-words text-base text-gray-900">#{ticket.ticket_id}</h3>
                                                         )}
                                                     </div>
                                                 </div>
@@ -393,7 +496,7 @@ export default function Index() {
                                                 <div className="space-y-3 mb-3">
                                                     <div>
                                                         <p className="text-xs font-medium text-gray-600 mb-2">{t('Title')}</p>
-                                                        <p className="text-xs text-gray-900 truncate" title={ticket.title}>{ticket.title}</p>
+                                                        <p className="break-words text-xs text-gray-900" title={ticket.title}>{ticket.title}</p>
                                                     </div>
 
                                                     <div className="grid grid-cols-2 gap-2">
@@ -410,11 +513,11 @@ export default function Index() {
                                                     <div className="grid grid-cols-2 gap-2">
                                                         <div>
                                                             <p className="text-xs font-medium text-gray-600 mb-1">{t('Category')}</p>
-                                                            <p className="text-xs text-gray-900 truncate">{ticket.category?.name || '-'}</p>
+                                                            <p className="break-words text-xs text-gray-900">{ticket.category?.name || '-'}</p>
                                                         </div>
                                                         <div>
                                                             <p className="text-xs font-medium text-gray-600 mb-1">{t('Created By')}</p>
-                                                            <p className="text-xs text-gray-900 truncate">{ticket.creator?.name || '-'}</p>
+                                                            <p className="break-words text-xs text-gray-900">{ticket.creator?.name || '-'}</p>
                                                         </div>
                                                     </div>
                                                 </div>

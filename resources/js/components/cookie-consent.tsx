@@ -90,7 +90,7 @@ export default function CookieConsent({ settings }: CookieConsentProps) {
   }
 
   return (
-    <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 w-[900px] max-w-[95vw]">
+    <div className="fixed inset-x-2 bottom-4 z-50 sm:left-1/2 sm:right-auto sm:w-[min(900px,95vw)] sm:-translate-x-1/2">
       <div className="bg-background border border-border rounded-xl shadow-2xl backdrop-blur-sm">
         <div className="flex items-start justify-between p-3">
           <div className="flex items-center gap-3">
@@ -112,7 +112,7 @@ export default function CookieConsent({ settings }: CookieConsentProps) {
         </div>
 
         <div className="px-3 pb-3">
-          <div className="flex items-start gap-4">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
             <div className="flex-1">
               <p className="text-sm text-muted-foreground mb-2 leading-relaxed">
                 {settings.cookieDescription}
@@ -142,7 +142,7 @@ export default function CookieConsent({ settings }: CookieConsentProps) {
               )}
             </div>
 
-            <div className="flex flex-col gap-2 min-w-[140px]">
+            <div className="flex flex-col gap-2 sm:min-w-[140px]">
               <Button size="sm" onClick={handleAcceptAll} className="w-full bg-green-600 hover:bg-green-700">
                 {t('Accept All')}
               </Button>

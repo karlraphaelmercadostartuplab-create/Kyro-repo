@@ -99,39 +99,39 @@ export default function Show() {
             <Head title={`Ticket #${ticket.ticket_id} - ${ticket.title}`} />
 
             {/* Ticket Header */}
-            <Card className="mb-6">
+            <Card className="mb-6 overflow-hidden">
                 <CardContent className="p-6">
                     <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
-                        <div className="flex-1">
-                            <div className="flex items-center gap-3 mb-4">
-                                <h1 className="text-2xl font-bold text-gray-900">#{ticket.ticket_id} - {ticket.title}</h1>
-                                <div className="flex gap-2">
+                        <div className="min-w-0 flex-1">
+                            <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                <h1 className="break-words text-xl font-bold text-gray-900 sm:text-2xl">#{ticket.ticket_id} - {ticket.title}</h1>
+                                <div className="flex flex-wrap gap-2">
                                     {getStatusBadge(ticket.status)}
                                     {getPriorityBadge(ticket.priority)}
                                 </div>
                             </div>
-                            <div className="prose prose-sm max-w-none text-gray-700" dangerouslySetInnerHTML={{ __html: ticket.description }} />
+                            <div className="prose prose-sm max-w-none break-words text-gray-700 overflow-hidden [&_*]:max-w-full [&_img]:h-auto [&_img]:max-w-full [&_pre]:whitespace-pre-wrap [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto" dangerouslySetInnerHTML={{ __html: ticket.description }} />
                         </div>
 
-                        <div className="lg:w-80 space-y-4">
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
+                        <div className="w-full space-y-4 lg:w-80">
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                <div className="min-w-0">
                                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">{t('Category')}</label>
-                                    <p className="text-sm font-medium text-gray-900 mt-1">{ticket.category?.name || '-'}</p>
+                                    <p className="mt-1 break-words text-sm font-medium text-gray-900">{ticket.category?.name || '-'}</p>
                                 </div>
-                                <div>
+                                <div className="min-w-0">
                                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">{t('Created By')}</label>
-                                    <p className="text-sm font-medium text-gray-900 mt-1">{ticket.creator?.name}</p>
+                                    <p className="mt-1 break-words text-sm font-medium text-gray-900">{ticket.creator?.name}</p>
                                 </div>
                             </div>
-                            <div>
+                            <div className="min-w-0">
                                 <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">{t('Created At')}</label>
-                                <p className="text-sm font-medium text-gray-900 mt-1">{formatDate(ticket.created_at)}</p>
+                                <p className="mt-1 break-words text-sm font-medium text-gray-900">{formatDate(ticket.created_at)}</p>
                             </div>
                             {ticket.assignedTo && (
-                                <div>
+                                <div className="min-w-0">
                                     <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">{t('Assigned To')}</label>
-                                    <p className="text-sm font-medium text-gray-900 mt-1">{ticket.assignedTo.name}</p>
+                                    <p className="mt-1 break-words text-sm font-medium text-gray-900">{ticket.assignedTo.name}</p>
                                 </div>
                             )}
                         </div>
@@ -140,9 +140,9 @@ export default function Show() {
             </Card>
 
             {/* Full Page Conversation */}
-            <Card className="flex flex-col" style={{ height: 'calc(100vh - 50px)' }}>
+            <Card className="flex min-h-[60vh] flex-col overflow-hidden lg:h-[calc(100vh-50px)]">
                 <CardHeader className="border-b bg-gray-50/50 py-4">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                         <CardTitle className="text-lg font-semibold">{t('Conversation')}</CardTitle>
                         <div className="text-sm text-gray-500">
                             {replies.length} {replies.length === 1 ? t('message') : t('messages')}
@@ -153,7 +153,7 @@ export default function Show() {
                 {/* Messages Area - Full Height */}
                 <CardContent className="flex-1 overflow-y-auto p-0">
                     <div className="h-full flex flex-col">
-                        <div className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                             {replies.length === 0 ? (
                                 <div className="flex items-center justify-center h-full">
                                     <div className="text-center">

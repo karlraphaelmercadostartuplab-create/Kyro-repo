@@ -73,11 +73,16 @@ export function NavUser({
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56">
+        <DropdownMenuContent
+          align="end"
+          sideOffset={8}
+          collisionPadding={12}
+          className="w-56 max-w-[calc(100vw-1.5rem)]"
+        >
           <DropdownMenuLabel>
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium">{user.name}</p>
-              <p className="text-xs text-muted-foreground">{user.email}</p>
+              <p className="break-words text-sm font-medium">{user.name}</p>
+              <p className="break-all text-xs text-muted-foreground">{user.email}</p>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />

@@ -32,6 +32,34 @@
         @viteReactRefresh
         @vite(['resources/css/app.css', 'resources/js/app.tsx'])
         @inertiaHead
+        <style>
+            html,
+            body {
+                max-width: 100%;
+                overflow-x: hidden;
+            }
+
+            .kyro-chat-reveal-tab {
+                position: fixed;
+                right: 0.75rem;
+                bottom: 0.75rem;
+                max-width: calc(100vw - 1.5rem);
+            }
+
+            .kyro-chat-launcher,
+            iframe[src*="helpdesk.startuplab.cc"] {
+                max-width: calc(100vw - 1rem) !important;
+            }
+
+            @media (max-width: 640px) {
+                .kyro-chat-launcher,
+                iframe[src*="helpdesk.startuplab.cc"] {
+                    right: 0.75rem !important;
+                    left: auto !important;
+                    transform: none !important;
+                }
+            }
+        </style>
     </head>
     <body class="font-sans antialiased {{ ($page['props']['adminAllSetting']['themeMode'] ?? $page['props']['companyAllSetting']['themeMode'] ?? 'light') === 'dark' ? 'dark' : 'light' }}">
         @inertia

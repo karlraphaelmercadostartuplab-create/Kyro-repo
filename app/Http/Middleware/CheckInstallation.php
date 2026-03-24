@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
 
 class CheckInstallation
 {
@@ -23,6 +24,14 @@ class CheckInstallation
 
     private function isInstalled(): bool
     {
-        return File::exists(storage_path('installed'));
+        if (!File::exists(storage_path('installed'))) {
+            return false;
+        }
+
+        try {
+            return Schema::hasTable('users') && Schema::hasTable('settings');
+        } catch (\Throwable $e) {
+            return false;
+        }
     }
 }

@@ -60,17 +60,21 @@ if (!function_exists('getAdminAllSetting')) {
     function getAdminAllSetting($publicOnly = false)
     {
         $cacheKey = $publicOnly ? 'admin_settings_public' : 'admin_settings';
-        $settings = Cache::rememberForever($cacheKey, function () use ($publicOnly) {
-            $super_admin = User::where('type', 'superadmin')->first();
-            if ($super_admin) {
-                $query = Setting::where('created_by', $super_admin->id);
-                if ($publicOnly) {
-                    $query->where('is_public', 1);
+        try {
+            $settings = Cache::rememberForever($cacheKey, function () use ($publicOnly) {
+                $super_admin = User::where('type', 'superadmin')->first();
+                if ($super_admin) {
+                    $query = Setting::where('created_by', $super_admin->id);
+                    if ($publicOnly) {
+                        $query->where('is_public', 1);
+                    }
+                    return $query->pluck('value', 'key')->toArray();
                 }
-                return $query->pluck('value', 'key')->toArray();
-            }
-            return [];
-        });
+                return [];
+            });
+        } catch (\Throwable $e) {
+            $settings = [];
+        }
 
         if (config('app.is_demo')) {
             $themeKeys = [

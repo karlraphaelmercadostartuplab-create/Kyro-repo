@@ -17,10 +17,10 @@ export default function ChatMessage({ reply, isOwnMessage, onDelete, canDelete }
 
 
     return (
-        <div className={`flex mb-4 ${isOwnMessage ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[70%] ${isOwnMessage ? 'order-2' : 'order-1'}`}>
+        <div className={`mb-4 flex ${isOwnMessage ? 'justify-end' : 'justify-start'}`}>
+            <div className={`max-w-[92%] sm:max-w-[80%] lg:max-w-[70%] ${isOwnMessage ? 'order-2' : 'order-1'}`}>
                 <div
-                    className={`rounded-lg p-3 ${
+                    className={`overflow-hidden rounded-lg p-3 ${
                         reply.is_internal
                             ? 'bg-orange-100 border-l-4 border-orange-500 text-orange-900'
                             : isOwnMessage
@@ -30,8 +30,8 @@ export default function ChatMessage({ reply, isOwnMessage, onDelete, canDelete }
                     onMouseEnter={() => setShowActions(true)}
                     onMouseLeave={() => setShowActions(false)}
                 >
-                    <div className="flex items-center justify-between mb-1">
-                        <div className="flex items-center gap-2">
+                    <div className="mb-1 flex items-start justify-between gap-2">
+                        <div className="min-w-0 flex flex-wrap items-center gap-2">
                             <span className={`text-sm font-medium ${
                                 reply.is_internal
                                     ? 'text-orange-700'
@@ -73,7 +73,7 @@ export default function ChatMessage({ reply, isOwnMessage, onDelete, canDelete }
                     </div>
 
                     <div
-                        className="text-sm whitespace-pre-wrap"
+                        className="overflow-hidden break-words text-sm whitespace-pre-wrap [&_*]:max-w-full [&_img]:h-auto [&_img]:max-w-full [&_pre]:whitespace-pre-wrap [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto"
                         dangerouslySetInnerHTML={{ __html: reply.message }}
                     />
 
@@ -93,20 +93,20 @@ export default function ChatMessage({ reply, isOwnMessage, onDelete, canDelete }
                                 {attachments.map((attachment: string, index: number) => {
                                     const isImage = isImageFile(attachment);
                                     return (
-                                        <div key={index} className={`flex items-center gap-2 p-2 rounded ${
+                                        <div key={index} className={`flex min-w-0 items-center gap-2 rounded p-2 ${
                                             isOwnMessage ? 'bg-blue-600/20' : 'bg-gray-200'
                                         }`}>
                                             {isImage ? (
                                                 <img
                                                     src={getImagePath(attachment)}
                                                     alt="Preview"
-                                                    className="w-16 h-16 object-cover rounded"
+                                                    className="h-16 w-16 flex-shrink-0 rounded object-cover"
 
                                                 />
                                             ) : (
-                                                <div className="flex items-center gap-2 flex-1">
-                                                    <Paperclip className="h-4 w-4" />
-                                                    <span className="text-sm">{attachment}</span>
+                                                <div className="flex min-w-0 flex-1 items-center gap-2">
+                                                    <Paperclip className="h-4 w-4 flex-shrink-0" />
+                                                    <span className="break-all text-sm">{attachment}</span>
                                                 </div>
                                             )}
                                             <Button

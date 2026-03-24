@@ -116,13 +116,7 @@ export default function Pricing({ data, getSectionData, updateSectionData, updat
                             rows={3}
                         />
                     </div>
-                    <div className="grid gap-6" style={{ gridTemplateColumns: `300px repeat(${plans.length}, 280px)`, minWidth: `${300 + (plans.length * 280) + ((plans.length - 1) * 24)}px` }}>
-                                {/* Features Header */}
-                                <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl p-6 border border-slate-200 sticky left-0 z-20">
-                                    <div className="flex items-center justify-center space-x-3">
-                                        <h3 className="text-xl font-bold text-gray-900">{t("Features")}</h3>
-                                    </div>
-                                </div>
+                    
                     {/* Display Options */}
                     <div className="space-y-4">
                         <Label>{t('Display Options')}</Label>

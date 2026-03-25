@@ -92,7 +92,7 @@ export default function JournalEntry({ financialYear }: JournalEntryProps) {
     return (
         <Card className="shadow-sm">
             <CardContent className="p-6 border-b bg-gray-50/50">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                 <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">{t('From Date')}</label>
                         <DatePicker
@@ -123,18 +123,18 @@ export default function JournalEntry({ financialYear }: JournalEntryProps) {
                         </Select>
                     </div>
 
-                    <div className="flex items-end gap-2">
-                        <Button onClick={fetchData} disabled={loading} size="sm">
-                            {loading ? t('Loading...') : t('Generate')}
-                        </Button>
-                        <Button variant="outline" onClick={clearFilters} size="sm">{t('Clear')}</Button>
-                        {data.length > 0 && auth.user?.permissions?.includes('print-journal-entry') && (
-                            <Button variant="outline" size="sm" onClick={handleDownloadPDF} className="gap-2">
-                                <Printer className="h-4 w-4" />
-                                {t('Download PDF')}
-                            </Button>
-                        )}
                     </div>
+                <div className="mt-4 flex flex-wrap items-end justify-start gap-2 md:justify-end">
+                    <Button onClick={fetchData} disabled={loading} size="sm">
+                        {loading ? t('Loading...') : t('Generate')}
+                    </Button>
+                    <Button variant="outline" onClick={clearFilters} size="sm">{t('Clear')}</Button>
+                    {data.length > 0 && auth.user?.permissions?.includes('print-journal-entry') && (
+                        <Button variant="outline" size="sm" onClick={handleDownloadPDF} className="gap-2">
+                            <Printer className="h-4 w-4" />
+                            {t('Download PDF')}
+                        </Button>
+                        )}
                 </div>
             </CardContent>
 

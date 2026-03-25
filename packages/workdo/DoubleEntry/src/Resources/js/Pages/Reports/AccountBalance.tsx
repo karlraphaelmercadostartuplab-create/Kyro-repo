@@ -94,8 +94,8 @@ export default function AccountBalance({ financialYear }: AccountBalanceProps) {
 
     return (
         <Card className="shadow-sm">
-            <CardContent className="p-6 border-b bg-gray-50/50">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <CardContent className="p-6 border-b bg-gray-50/50 overflow-x-hidden">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">{t('As of Date')}</label>
                         <DatePicker
@@ -130,18 +130,18 @@ export default function AccountBalance({ financialYear }: AccountBalanceProps) {
                             <Label htmlFor="show-zero" className="text-sm">{t('Show Zero Balances')}</Label>
                         </div>
                     </div>
-                    <div className="flex items-end gap-2">
-                        <Button onClick={fetchData} disabled={loading} size="sm">
-                            {loading ? t('Loading...') : t('Generate')}
+                     </div>
+                <div className="mt-4 flex w-full flex-wrap items-end gap-2 md:justify-end">
+                    <Button onClick={fetchData} disabled={loading} size="sm" className="whitespace-nowrap">
+                        {loading ? t('Loading...') : t('Generate')}
+                    </Button>
+                    <Button variant="outline" onClick={clearFilters} size="sm" className="whitespace-nowrap">{t('Clear')}</Button>
+                    {data && auth.user?.permissions?.includes('print-account-balance') && (
+                        <Button variant="outline" size="sm" onClick={handleDownloadPDF} className="max-w-full gap-2 whitespace-nowrap">
+                            <Printer className="h-4 w-4" />
+                            {t('Download PDF')}
                         </Button>
-                        <Button variant="outline" onClick={clearFilters} size="sm">{t('Clear')}</Button>
-                        {data && auth.user?.permissions?.includes('print-account-balance') && (
-                            <Button variant="outline" size="sm" onClick={handleDownloadPDF} className="gap-2">
-                                <Printer className="h-4 w-4" />
-                                {t('Download PDF')}
-                            </Button>
-                        )}
-                    </div>
+                       )}
                 </div>
             </CardContent>
 

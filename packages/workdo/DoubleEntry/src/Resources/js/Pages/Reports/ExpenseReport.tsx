@@ -73,7 +73,7 @@ export default function ExpenseReport({ financialYear }: ExpenseReportProps) {
 
     return (
         <Card className="shadow-sm">
-            <CardContent className="p-6 border-b bg-gray-50/50">
+            <CardContent className="p-6 border-b bg-gray-50/50 overflow-x-hidden">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">{t('From Date')}</label>
@@ -91,21 +91,18 @@ export default function ExpenseReport({ financialYear }: ExpenseReportProps) {
                             placeholder={t('Select to date')}
                         />
                     </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">&nbsp;</label>
-                        <div className="flex items-end gap-2">
-                            <Button onClick={fetchData} disabled={loading} size="sm">
-                                {loading ? t('Loading...') : t('Generate')}
-                            </Button>
-                            <Button variant="outline" onClick={clearFilters} size="sm">{t('Clear')}</Button>
-                            {data && auth.user?.permissions?.includes('print-expense-report') && (
-                                <Button variant="outline" size="sm" onClick={handleDownloadPDF} className="gap-2">
-                                    <Printer className="h-4 w-4" />
-                                    {t('Download PDF')}
-                                </Button>
-                            )}
-                        </div>
                     </div>
+                <div className="mt-4 flex w-full flex-wrap items-end gap-2 md:justify-end">
+                    <Button onClick={fetchData} disabled={loading} size="sm" className="whitespace-nowrap">
+                        {loading ? t('Loading...') : t('Generate')}
+                    </Button>
+                    <Button variant="outline" onClick={clearFilters} size="sm" className="whitespace-nowrap">{t('Clear')}</Button>
+                    {data && auth.user?.permissions?.includes('print-expense-report') && (
+                        <Button variant="outline" size="sm" onClick={handleDownloadPDF} className="max-w-full gap-2 whitespace-nowrap">
+                            <Printer className="h-4 w-4" />
+                            {t('Download PDF')}
+                        </Button>
+                    )}
                 </div>
             </CardContent>
 

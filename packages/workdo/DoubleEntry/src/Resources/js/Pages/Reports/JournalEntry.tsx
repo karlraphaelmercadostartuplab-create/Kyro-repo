@@ -124,17 +124,18 @@ export default function JournalEntry({ financialYear }: JournalEntryProps) {
                     </div>
 
                     </div>
-                <div className="mt-4 flex w-full flex-wrap items-end justify-start gap-2 md:justify-end">
-                    <Button onClick={fetchData} disabled={loading} size="sm" className="whitespace-nowrap">
+                <div className="mt-4 flex w-full flex-wrap items-end justify-start gap-2 xl:justify-end">
+                    <Button onClick={fetchData} disabled={loading} size="sm" className="w-full sm:w-auto whitespace-nowrap">
                         {loading ? t('Loading...') : t('Generate')}
                     </Button>
-                    <Button variant="outline" onClick={clearFilters} size="sm" className="whitespace-nowrap">{t('Clear')}</Button>
+                    <Button variant="outline" onClick={clearFilters} size="sm" className="w-full sm:w-auto whitespace-nowrap">{t('Clear')}</Button>
                     {data && auth.user?.permissions?.includes('print-account-balance') && (
-                        <Button variant="outline" size="sm" onClick={handleDownloadPDF} className="max-w-full gap-2 whitespace-nowrap">
+                        <Button variant="outline" size="sm" onClick={handleDownloadPDF} className="w-full sm:w-auto max-w-full gap-2 whitespace-nowrap">
                             <Printer className="h-4 w-4" />
                             {t('Download PDF')}
                         </Button>
-                )}
+               )}
+                </div>
             </CardContent>
 
             <CardContent className="p-0">

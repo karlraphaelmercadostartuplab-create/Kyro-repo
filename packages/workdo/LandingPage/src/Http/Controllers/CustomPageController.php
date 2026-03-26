@@ -9,6 +9,7 @@ use Workdo\LandingPage\Models\CustomPage;
 use Workdo\LandingPage\Models\LandingPageSetting;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class CustomPageController extends Controller
 {
@@ -61,6 +62,18 @@ class CustomPageController extends Controller
                 'is_active' => 'boolean'
             ]);
 
+            $normalizedTitle = $this->normalizeTitleForComparison($validated['title']);
+            $titleExists = CustomPage::query()
+                ->whereRaw('LOWER(TRIM(title)) = ?', [$normalizedTitle])
+                ->exists();
+
+            if ($titleExists) {
+                throw ValidationException::withMessages([
+                    'title' => __('This page title is already taken.')
+                ]);
+            }
+
+
             if (!$validated['slug']) {
                 $validated['slug'] = Str::slug($validated['title']);
             }
@@ -102,6 +115,18 @@ class CustomPageController extends Controller
                 'is_active' => 'boolean'
             ]);
 
+            $normalizedTitle = $this->normalizeTitleForComparison($validated['title']);
+            $titleExists = CustomPage::query()
+                ->where('id', '!=', $customPage->id)
+                ->whereRaw('LOWER(TRIM(title)) = ?', [$normalizedTitle])
+                ->exists();
+
+            if ($titleExists) {
+                throw ValidationException::withMessages([
+                    'title' => __('This page title is already taken.')
+                ]);
+            }
+
             $customPage->update($validated);
 
             return redirect()->route('custom-pages.index')->with('success', 'Custom page updated successfully');
@@ -141,5 +166,12 @@ class CustomPageController extends Controller
             'page' => $page,
             'landingPageSettings' => $settingsData
         ]);
+    }
+    private function normalizeTitleForComparison(string $title): string
+    {
+        return Str::of($title)
+            ->trim()
+            ->lower()
+            ->value();
     }
 }

@@ -4,6 +4,7 @@ import AuthenticatedLayout from "@/layouts/authenticated-layout";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import InputError from '@/components/ui/input-error';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Save } from 'lucide-react';
@@ -102,6 +103,7 @@ export default function Edit({ page }: EditProps) {
                                     maxLength={TITLE_MAX_LENGTH}
                                     required
                                 />
+                                <InputError message={errors.title} />
                                 <p className="text-xs text-gray-500">{data.title.length}/{TITLE_MAX_LENGTH} {t('characters')}</p>
                             </div>
                             <div className="space-y-2">
@@ -113,6 +115,7 @@ export default function Edit({ page }: EditProps) {
                                     placeholder={t('URL-friendly name (e.g., about-us, privacy-policy)')}
                                     error={errors.slug}
                                 />
+                                <InputError message={errors.slug} />
                                 <p className="text-xs text-gray-500">{t('This will be the URL path for your page')}</p>
                             </div>
                         </div>

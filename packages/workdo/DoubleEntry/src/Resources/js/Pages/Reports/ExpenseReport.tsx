@@ -91,21 +91,18 @@ export default function ExpenseReport({ financialYear }: ExpenseReportProps) {
                             placeholder={t('Select to date')}
                         />
                     </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">&nbsp;</label>
-                        <div className="flex items-end gap-2">
-                            <Button onClick={fetchData} disabled={loading} size="sm">
-                                {loading ? t('Loading...') : t('Generate')}
-                            </Button>
-                            <Button variant="outline" onClick={clearFilters} size="sm">{t('Clear')}</Button>
-                            {data && auth.user?.permissions?.includes('print-expense-report') && (
-                                <Button variant="outline" size="sm" onClick={handleDownloadPDF} className="gap-2">
-                                    <Printer className="h-4 w-4" />
-                                    {t('Download PDF')}
-                                </Button>
-                            )}
-                        </div>
                     </div>
+                <div className="mt-4 flex w-full min-w-0 flex-wrap items-end justify-start gap-2 lg:justify-end">
+                    <Button onClick={fetchData} disabled={loading} size="sm" className="w-full sm:w-auto">
+                        {loading ? t('Loading...') : t('Generate')}
+                    </Button>
+                    <Button variant="outline" onClick={clearFilters} size="sm" className="w-full sm:w-auto">{t('Clear')}</Button>
+                    {data && auth.user?.permissions?.includes('print-expense-report') && (
+                        <Button variant="outline" size="sm" onClick={handleDownloadPDF} className="w-full sm:w-auto max-w-full gap-2 text-left sm:text-center">
+                            <Printer className="h-4 w-4" />
+                            {t('Download PDF')}
+                        </Button>
+                    )}
                 </div>
             </CardContent>
 

@@ -4,6 +4,7 @@ import AuthenticatedLayout from "@/layouts/authenticated-layout";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import InputError from '@/components/ui/input-error';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Save } from 'lucide-react';
@@ -27,7 +28,8 @@ interface EditProps {
 export default function Edit({ page }: EditProps) {
     const { t } = useTranslation();
     const formId = `edit-custom-page-form-${page.id}`;
-    const sanitizeTitle = (value: string) => value.replace(/[^A-Za-z0-9\s-]/g, '');
+    const TITLE_MAX_LENGTH = 50;
+    const sanitizeTitle = (value: string) => value.replace(/[^A-Za-z0-9\s-]/g, '').slice(0, TITLE_MAX_LENGTH);
     const sanitizeSlug = (value: string) =>
         value
             .toLowerCase()
@@ -98,8 +100,11 @@ export default function Edit({ page }: EditProps) {
                                     onChange={(e) => setData('title', sanitizeTitle(e.target.value))}
                                     placeholder={t('Enter page title (e.g., About Us, Privacy Policy)')}
                                     error={errors.title}
+                                    maxLength={TITLE_MAX_LENGTH}
                                     required
                                 />
+                                <InputError message={errors.title} />
+                                <p className="text-xs text-gray-500">{data.title.length}/{TITLE_MAX_LENGTH} {t('characters')}</p>
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="slug">{t('URL Slug')}</Label>
@@ -110,6 +115,7 @@ export default function Edit({ page }: EditProps) {
                                     placeholder={t('URL-friendly name (e.g., about-us, privacy-policy)')}
                                     error={errors.slug}
                                 />
+                                <InputError message={errors.slug} />
                                 <p className="text-xs text-gray-500">{t('This will be the URL path for your page')}</p>
                             </div>
                         </div>

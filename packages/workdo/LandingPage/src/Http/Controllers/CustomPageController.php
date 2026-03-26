@@ -53,8 +53,12 @@ class CustomPageController extends Controller
     public function store(Request $request)
     {
         if(Auth::user()->can('create-custom-pages')){
+            $request->merge([
+                'title' => $this->sanitizeTitle($request->input('title')),
+            ]);
+
             $validated = $request->validate([
-                'title' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z0-9\\s-]+$/'],
+                'title' => ['required', 'string', 'max:50', 'regex:/^[A-Za-z0-9\\s-]+$/'],
                 'slug' => ['nullable', 'string', 'max:255', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/'],
                 'content' => 'required|string',
                 'meta_title' => 'nullable|string|max:255',
@@ -104,10 +108,13 @@ class CustomPageController extends Controller
     public function update(Request $request, CustomPage $customPage)
     {
         if(Auth::user()->can('edit-custom-pages')){
+            $request->merge([
+                'title' => $this->sanitizeTitle($request->input('title')),
+            ]);
             
             
             $validated = $request->validate([
-                'title' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z0-9\\s-]+$/'],
+                'title' => ['required', 'string', 'max:50', 'regex:/^[A-Za-z0-9\\s-]+$/'],
                 'slug' => ['nullable', 'string', 'max:255', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/'],
                 'content' => 'required|string',
                 'meta_title' => 'nullable|string|max:255',
@@ -178,6 +185,16 @@ class CustomPageController extends Controller
             ->lower()
             ->value();
     }
+
+    private function sanitizeTitle(?string $title): string
+    {
+        return Str::of($title ?? '')
+            ->replaceMatches('/[^A-Za-z0-9\\s-]+/', '')
+            ->squish()
+            ->limit(50, '')
+            ->value();
+    }
+
     private function resolveSlug(string $title, ?string $slug): string
     {
         $resolvedSlug = trim($slug ?? '');

@@ -15,6 +15,7 @@ export default function Create() {
     const { t } = useTranslation();
     const lastAutoSlugRef = useRef('');
     const formId = 'create-custom-page-form';
+    const TITLE_MAX_LENGTH = 50;
     
     const { data, setData, post, processing, errors } = useForm({
         title: '',
@@ -33,7 +34,7 @@ export default function Create() {
             .replace(/-+/g, '-')
             .replace(/^-+|-+$/g, '');
 
-    const sanitizeTitle = (value: string) => value.replace(/[^A-Za-z0-9\s-]/g, '');
+    const sanitizeTitle = (value: string) => value.replace(/[^A-Za-z0-9\s-]/g, '').slice(0, TITLE_MAX_LENGTH);
 
     // Auto-generate slug from title unless slug was manually customized
     useEffect(() => {
@@ -101,8 +102,10 @@ export default function Create() {
                                     onChange={(e) => setData('title', sanitizeTitle(e.target.value))}
                                     placeholder={t('Enter page title (e.g., About Us, Privacy Policy)')}
                                     error={errors.title}
+                                    maxLength={TITLE_MAX_LENGTH}
                                     required
                                 />
+                                <p className="text-xs text-gray-500">{data.title.length}/{TITLE_MAX_LENGTH} {t('characters')}</p>
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="slug">{t('URL Slug')}</Label>

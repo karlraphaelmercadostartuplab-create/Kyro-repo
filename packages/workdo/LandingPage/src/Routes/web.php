@@ -25,6 +25,7 @@ Route::middleware(['web', 'auth'])->prefix('custom-pages')->name('custom-pages.'
     Route::get('/', [CustomPageController::class, 'index'])->name('index');
     Route::get('/create', [CustomPageController::class, 'create'])->name('create');
     Route::post('/', [CustomPageController::class, 'store'])->name('store');
+    Route::get('/{customPage}/preview', [CustomPageController::class, 'preview'])->name('preview');
     Route::get('/{customPage}/edit', [CustomPageController::class, 'edit'])->name('edit');
     Route::put('/{customPage}', [CustomPageController::class, 'update'])->name('update');
     Route::delete('/{customPage}', [CustomPageController::class, 'destroy'])->name('destroy');

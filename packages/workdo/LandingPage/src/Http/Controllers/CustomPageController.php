@@ -53,8 +53,12 @@ class CustomPageController extends Controller
     public function store(Request $request)
     {
         if(Auth::user()->can('create-custom-pages')){
+            $request->merge([
+                'title' => $this->sanitizeTitle($request->input('title')),
+            ]);
+
             $validated = $request->validate([
-                'title' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z0-9\\s-]+$/'],
+                'title' => ['required', 'string', 'max:50', 'regex:/^[A-Za-z0-9\\s-]+$/'],
                 'slug' => ['nullable', 'string', 'max:255', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/'],
                 'content' => 'required|string',
                 'meta_title' => 'nullable|string|max:255',
@@ -104,10 +108,13 @@ class CustomPageController extends Controller
     public function update(Request $request, CustomPage $customPage)
     {
         if(Auth::user()->can('edit-custom-pages')){
+            $request->merge([
+                'title' => $this->sanitizeTitle($request->input('title')),
+            ]);
             
             
             $validated = $request->validate([
-                'title' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z0-9\\s-]+$/'],
+                'title' => ['required', 'string', 'max:50', 'regex:/^[A-Za-z0-9\\s-]+$/'],
                 'slug' => ['nullable', 'string', 'max:255', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/'],
                 'content' => 'required|string',
                 'meta_title' => 'nullable|string|max:255',
@@ -154,9 +161,24 @@ class CustomPageController extends Controller
         }
     }
 
+    public function preview(CustomPage $customPage, Request $request)
+    {
+        if (!Auth::user()->can('view-custom-pages')) {
+            return redirect()->route('custom-pages.index')->with('error', __('Permission denied'));
+        }
+
+        return $this->renderPage($customPage, $request);
+    }
+
     public function show($slug, Request $request)
     {
         $page = CustomPage::where('slug', $slug)->where('is_active', true)->firstOrFail();
+        
+        return $this->renderPage($page, $request);
+    }
+
+    private function renderPage(CustomPage $page, Request $request)
+    {
         $landingPageSettings = LandingPageSetting::first();
         $customPages = CustomPage::where('is_active', true)->select('id', 'title', 'slug')->get();
         $enableRegistration = admin_setting('enableRegistration');
@@ -171,6 +193,7 @@ class CustomPageController extends Controller
             'landingPageSettings' => $settingsData
         ]);
     }
+
     private function normalizeTitleForComparison(string $title): string
     {
         return Str::of($title)
@@ -178,6 +201,16 @@ class CustomPageController extends Controller
             ->lower()
             ->value();
     }
+
+    private function sanitizeTitle(?string $title): string
+    {
+        return Str::of($title ?? '')
+            ->replaceMatches('/[^A-Za-z0-9\\s-]+/', '')
+            ->squish()
+            ->limit(50, '')
+            ->value();
+    }
+
     private function resolveSlug(string $title, ?string $slug): string
     {
         $resolvedSlug = trim($slug ?? '');

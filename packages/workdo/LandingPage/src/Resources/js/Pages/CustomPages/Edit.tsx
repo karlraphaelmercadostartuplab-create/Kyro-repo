@@ -26,6 +26,14 @@ interface EditProps {
 
 export default function Edit({ page }: EditProps) {
     const { t } = useTranslation();
+    const sanitizeTitle = (value: string) => value.replace(/[^A-Za-z0-9\s-]/g, '');
+    const sanitizeSlug = (value: string) =>
+        value
+            .toLowerCase()
+            .replace(/[^a-z0-9\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-')
+            .replace(/^-+|-+$/g, '');
     
     const { data, setData, put, processing, errors } = useForm({
         title: page.title,
@@ -85,7 +93,7 @@ export default function Edit({ page }: EditProps) {
                                 <Input
                                     id="title"
                                     value={data.title}
-                                    onChange={(e) => setData('title', e.target.value)}
+                                    onChange={(e) => setData('title', sanitizeTitle(e.target.value))}
                                     placeholder={t('Enter page title (e.g., About Us, Privacy Policy)')}
                                     error={errors.title}
                                     required
@@ -96,7 +104,7 @@ export default function Edit({ page }: EditProps) {
                                 <Input
                                     id="slug"
                                     value={data.slug}
-                                    onChange={(e) => setData('slug', e.target.value)}
+                                    onChange={(e) => setData('slug', sanitizeSlug(e.target.value))}
                                     placeholder={t('URL-friendly name (e.g., about-us, privacy-policy)')}
                                     error={errors.slug}
                                 />

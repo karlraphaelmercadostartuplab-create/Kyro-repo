@@ -54,8 +54,8 @@ class CustomPageController extends Controller
     {
         if(Auth::user()->can('create-custom-pages')){
             $validated = $request->validate([
-                'title' => 'required|string|max:255',
-                'slug' => 'nullable|string|unique:custom_pages,slug',
+                'title' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z0-9\\s-]+$/'],
+                'slug' => ['nullable', 'string', 'max:255', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/'],
                 'content' => 'required|string',
                 'meta_title' => 'nullable|string|max:255',
                 'meta_description' => 'nullable|string',
@@ -74,14 +74,14 @@ class CustomPageController extends Controller
             }
 
 
-            if (!$validated['slug']) {
-                $validated['slug'] = Str::slug($validated['title']);
-            }
+             $validated['slug'] = $this->resolveSlug($validated['title'], $validated['slug'] ?? null);
+
+                $this->validateUniqueSlug($validated['slug']);
 
                 CustomPage::create($validated);
 
-                return redirect()->route('custom-pages.index')->with('success', 'Custom page created successfully');
-            }
+            return redirect()->route('custom-pages.index')->with('success', 'Custom page created successfully');
+        }
         else{
             return redirect()->route('custom-pages.index')->with('error', __('Permission denied'));
         }
@@ -107,8 +107,8 @@ class CustomPageController extends Controller
             
             
             $validated = $request->validate([
-                'title' => 'required|string|max:255',
-                'slug' => 'required|string|unique:custom_pages,slug,' . $customPage->id,
+                'title' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z0-9\\s-]+$/'],
+                'slug' => ['nullable', 'string', 'max:255', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/'],
                 'content' => 'required|string',
                 'meta_title' => 'nullable|string|max:255',
                 'meta_description' => 'nullable|string',
@@ -126,6 +126,10 @@ class CustomPageController extends Controller
                     'title' => __('This page title is already taken.')
                 ]);
             }
+
+            $validated['slug'] = $this->resolveSlug($validated['title'], $validated['slug'] ?? null);
+
+            $this->validateUniqueSlug($validated['slug'], $customPage->id);
 
             $customPage->update($validated);
 
@@ -173,5 +177,36 @@ class CustomPageController extends Controller
             ->trim()
             ->lower()
             ->value();
+    }
+    private function resolveSlug(string $title, ?string $slug): string
+    {
+        $resolvedSlug = trim($slug ?? '');
+
+        if ($resolvedSlug === '') {
+            $resolvedSlug = Str::slug($title);
+        }
+
+        if ($resolvedSlug === '') {
+            throw ValidationException::withMessages([
+                'slug' => __('Please provide a valid URL slug using letters, numbers, and hyphens only.')
+            ]);
+        }
+
+        return $resolvedSlug;
+    }
+
+    private function validateUniqueSlug(string $slug, ?int $ignoreId = null): void
+    {
+        $query = CustomPage::query()->where('slug', $slug);
+
+        if ($ignoreId !== null) {
+            $query->where('id', '!=', $ignoreId);
+        }
+
+        if ($query->exists()) {
+            throw ValidationException::withMessages([
+                'slug' => __('This URL slug is already in use.')
+            ]);
+        }
     }
 }

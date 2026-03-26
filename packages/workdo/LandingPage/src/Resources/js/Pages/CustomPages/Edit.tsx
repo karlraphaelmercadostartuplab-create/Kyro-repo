@@ -26,6 +26,7 @@ interface EditProps {
 
 export default function Edit({ page }: EditProps) {
     const { t } = useTranslation();
+    const formId = `edit-custom-page-form-${page.id}`;
     const sanitizeTitle = (value: string) => value.replace(/[^A-Za-z0-9\s-]/g, '');
     const sanitizeSlug = (value: string) =>
         value
@@ -44,8 +45,8 @@ export default function Edit({ page }: EditProps) {
         is_active: page.is_active
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = (e?: React.FormEvent) => {
+        e?.preventDefault();
         put(route('custom-pages.update', page.id), {
             onSuccess: () => {
                 // Success handled by redirect
@@ -69,7 +70,8 @@ export default function Edit({ page }: EditProps) {
             pageTitle={t('Edit Custom Page')}
             pageActions={
                 <Button 
-                    onClick={handleSubmit}
+                    type="submit"
+                    form={formId}
                     disabled={processing}
                     className="text-white"
                     style={{ backgroundColor: 'hsl(var(--primary))' }}
@@ -81,7 +83,7 @@ export default function Edit({ page }: EditProps) {
         >
             <Head title={t('Edit Custom Page')} />
             
-            <form onSubmit={handleSubmit} className="space-y-6">
+           <form id={formId} onSubmit={handleSubmit} className="space-y-6">
                 <Card>
                     <CardHeader>
                         <CardTitle>{t('Page Details')}</CardTitle>

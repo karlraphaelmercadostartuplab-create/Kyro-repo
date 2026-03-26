@@ -14,6 +14,7 @@ import { RichTextEditor } from '@/components/ui/rich-text-editor';
 export default function Create() {
     const { t } = useTranslation();
     const lastAutoSlugRef = useRef('');
+    const formId = 'create-custom-page-form';
     
     const { data, setData, post, processing, errors } = useForm({
         title: '',
@@ -47,8 +48,8 @@ export default function Create() {
         }
     }, [data.title, data.slug, setData]);
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = (e?: React.FormEvent) => {
+        e?.preventDefault();
         post(route('custom-pages.store'), {
             onSuccess: () => {
                 // Success handled by redirect
@@ -72,7 +73,8 @@ export default function Create() {
             pageTitle={t('Create Custom Page')}
             pageActions={
                 <Button 
-                    onClick={handleSubmit}
+                    type="submit"
+                    form={formId}
                     disabled={processing}
                     className="text-white"
                     style={{ backgroundColor: 'hsl(var(--primary))' }}
@@ -84,7 +86,7 @@ export default function Create() {
         >
             <Head title={t('Create Custom Page')} />
             
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form id={formId} onSubmit={handleSubmit} className="space-y-6">
                 <Card>
                     <CardHeader>
                         <CardTitle>{t('Page Details')}</CardTitle>

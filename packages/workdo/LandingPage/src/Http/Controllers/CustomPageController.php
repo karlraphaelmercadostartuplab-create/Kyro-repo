@@ -161,9 +161,24 @@ class CustomPageController extends Controller
         }
     }
 
+    public function preview(CustomPage $customPage, Request $request)
+    {
+        if (!Auth::user()->can('view-custom-pages')) {
+            return redirect()->route('custom-pages.index')->with('error', __('Permission denied'));
+        }
+
+        return $this->renderPage($customPage, $request);
+    }
+
     public function show($slug, Request $request)
     {
         $page = CustomPage::where('slug', $slug)->where('is_active', true)->firstOrFail();
+        
+        return $this->renderPage($page, $request);
+    }
+
+    private function renderPage(CustomPage $page, Request $request)
+    {
         $landingPageSettings = LandingPageSetting::first();
         $customPages = CustomPage::where('is_active', true)->select('id', 'title', 'slug')->get();
         $enableRegistration = admin_setting('enableRegistration');
@@ -178,6 +193,7 @@ class CustomPageController extends Controller
             'landingPageSettings' => $settingsData
         ]);
     }
+
     private function normalizeTitleForComparison(string $title): string
     {
         return Str::of($title)

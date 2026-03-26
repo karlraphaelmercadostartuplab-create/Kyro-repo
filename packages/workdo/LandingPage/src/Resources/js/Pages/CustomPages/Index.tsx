@@ -124,7 +124,7 @@ export default function Index({ pages }: IndexProps) {
                                     <Button
                                         variant="ghost"
                                         size="sm"
-                                        onClick={() => window.open(route('custom-page.show', page.slug), '_blank')}
+                                        onClick={() => window.open(route('custom-pages.preview', page.id), '_blank')}
                                         className="h-8 w-8 p-0 text-green-600 hover:text-green-700"
                                     >
                                         <Eye className="h-4 w-4" />

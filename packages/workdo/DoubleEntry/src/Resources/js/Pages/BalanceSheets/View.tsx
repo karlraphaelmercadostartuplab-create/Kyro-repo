@@ -254,27 +254,27 @@ export default function View() {
                 {/* Header Card */}
                 <Card className="shadow-lg border-0 bg-gradient-to-r from-white to-gray-50">
                     <CardHeader className="pb-4">
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
+                        <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+                            <div className="flex min-w-0 items-center gap-3">
                                 <div className="w-10 h-10 bg-blue-50 rounded-lg border flex items-center justify-center">
                                     <FileText className="w-5 h-5 text-blue-600" />
                                 </div>
-                                <div>
-                                    <CardTitle className="text-xl">
+                                <div className="min-w-0">
+                                    <CardTitle className="text-xl break-words">
                                         {t('Balance Sheet')}
                                     </CardTitle>
-                                    <p className="text-sm text-gray-600">
+                                   <p className="text-sm text-gray-600 break-words">
                                         {t('As of')} {formatDate(balanceSheet.balance_sheet_date)} | {t('Financial Year')}: {balanceSheet.financial_year}
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-2">
+                           <div className="flex w-full flex-wrap items-center gap-2 xl:w-auto xl:justify-end">
                                 {allBalanceSheets && allBalanceSheets.length > 0 && (
                                     <Select
                                         value={balanceSheet.id.toString()}
                                         onValueChange={(value) => router.visit(route('double-entry.balance-sheets.show', value))}
                                     >
-                                        <SelectTrigger className="w-[200px]">
+                                        <SelectTrigger className="w-full min-w-[170px] sm:w-[220px]">
                                             <SelectValue />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -288,13 +288,13 @@ export default function View() {
                                 )}
                                 {auth.user?.permissions?.includes('create-balance-sheet-notes') && (
                                     <Button variant="outline" size="sm" onClick={() => setShowNoteModal(true)}>
-                                        <Plus className="h-4 w-4 mr-2" />
+                                         <Plus className="h-4 w-4 mr-2 shrink-0" />
                                         {t('Add Note')}
                                     </Button>
                                 )}
                                 {auth.user?.permissions?.includes('create-balance-sheet-comparisons') && (
                                     <Button variant="outline" size="sm" onClick={() => setShowCompareModal(true)}>
-                                        <GitCompare className="h-4 w-4 mr-2" />
+                                         <GitCompare className="h-4 w-4 mr-2 shrink-0" />
                                         {t('Compare')}
                                     </Button>
                                 )}
@@ -303,7 +303,7 @@ export default function View() {
                                         const printUrl = route('double-entry.balance-sheets.print', balanceSheet.id) + '?download=pdf';
                                         window.open(printUrl, '_blank');
                                     }}>
-                                        <Printer className="h-4 w-4 mr-2" />
+                                        <Printer className="h-4 w-4 mr-2 shrink-0" />
                                         {t('Download PDF')}
                                     </Button>
                                 )}
@@ -311,11 +311,11 @@ export default function View() {
                                  balanceSheet.status === 'draft' &&
                                  balanceSheet.is_balanced && (
                                     <Button size="sm" onClick={handleFinalize}>
-                                        <CheckCircle className="h-4 w-4 mr-2" />
+                                        <CheckCircle className="h-4 w-4 mr-2 shrink-0" />
                                         {t('Finalize')}
                                     </Button>
                                 )}
-                                <div className="flex items-center gap-2 ml-2">
+                                <div className="ml-0 flex flex-wrap items-center gap-2 sm:ml-2">
                                     <span className={`px-2 py-1 rounded-full text-sm ${
                                         balanceSheet.is_balanced ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                                     }`}>
@@ -335,19 +335,19 @@ export default function View() {
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div className="text-center p-6 bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl border border-emerald-200 shadow-sm hover:shadow-md transition-shadow">
                                 <h4 className="font-semibold text-emerald-700 mb-2">{t('Total Assets')}</h4>
-                                <p className="text-3xl font-bold text-emerald-900 tabular-nums">
+                                <p className="break-all text-2xl font-bold text-emerald-900 tabular-nums lg:text-3xl">
                                     {formatCurrency(balanceSheet.total_assets)}
                                 </p>
                             </div>
                             <div className="text-center p-6 bg-gradient-to-br from-rose-50 to-rose-100 rounded-xl border border-rose-200 shadow-sm hover:shadow-md transition-shadow">
                                 <h4 className="font-semibold text-rose-700 mb-2">{t('Total Liabilities')}</h4>
-                                <p className="text-3xl font-bold text-rose-900 tabular-nums">
+                                <p className="break-all text-2xl font-bold text-rose-900 tabular-nums lg:text-3xl">
                                     {formatCurrency(balanceSheet.total_liabilities)}
                                 </p>
                             </div>
                             <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl border border-blue-200 shadow-sm hover:shadow-md transition-shadow">
                                 <h4 className="font-semibold text-blue-700 mb-2">{t('Total Equity')}</h4>
-                                <p className="text-3xl font-bold text-blue-900 tabular-nums">
+                                <p className="break-all text-2xl font-bold text-blue-900 tabular-nums lg:text-3xl">
                                     {formatCurrency(balanceSheet.total_equity)}
                                 </p>
                             </div>

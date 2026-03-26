@@ -26,6 +26,15 @@ interface EditProps {
 
 export default function Edit({ page }: EditProps) {
     const { t } = useTranslation();
+    const formId = `edit-custom-page-form-${page.id}`;
+    const sanitizeTitle = (value: string) => value.replace(/[^A-Za-z0-9\s-]/g, '');
+    const sanitizeSlug = (value: string) =>
+        value
+            .toLowerCase()
+            .replace(/[^a-z0-9\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-')
+            .replace(/^-+|-+$/g, '');
     
     const { data, setData, put, processing, errors } = useForm({
         title: page.title,
@@ -36,8 +45,8 @@ export default function Edit({ page }: EditProps) {
         is_active: page.is_active
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = (e?: React.FormEvent) => {
+        e?.preventDefault();
         put(route('custom-pages.update', page.id), {
             onSuccess: () => {
                 // Success handled by redirect
@@ -61,7 +70,8 @@ export default function Edit({ page }: EditProps) {
             pageTitle={t('Edit Custom Page')}
             pageActions={
                 <Button 
-                    onClick={handleSubmit}
+                    type="submit"
+                    form={formId}
                     disabled={processing}
                     className="text-white"
                     style={{ backgroundColor: 'hsl(var(--primary))' }}
@@ -73,7 +83,7 @@ export default function Edit({ page }: EditProps) {
         >
             <Head title={t('Edit Custom Page')} />
             
-            <form onSubmit={handleSubmit} className="space-y-6">
+           <form id={formId} onSubmit={handleSubmit} className="space-y-6">
                 <Card>
                     <CardHeader>
                         <CardTitle>{t('Page Details')}</CardTitle>
@@ -85,7 +95,7 @@ export default function Edit({ page }: EditProps) {
                                 <Input
                                     id="title"
                                     value={data.title}
-                                    onChange={(e) => setData('title', e.target.value)}
+                                    onChange={(e) => setData('title', sanitizeTitle(e.target.value))}
                                     placeholder={t('Enter page title (e.g., About Us, Privacy Policy)')}
                                     error={errors.title}
                                     required
@@ -96,7 +106,7 @@ export default function Edit({ page }: EditProps) {
                                 <Input
                                     id="slug"
                                     value={data.slug}
-                                    onChange={(e) => setData('slug', e.target.value)}
+                                    onChange={(e) => setData('slug', sanitizeSlug(e.target.value))}
                                     placeholder={t('URL-friendly name (e.g., about-us, privacy-policy)')}
                                     error={errors.slug}
                                 />

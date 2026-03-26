@@ -400,8 +400,8 @@ export default function MediaLibraryDemo() {
       breadcrumbs={breadcrumbs}
       pageTitle={t('Manage Media Library')}
       pageActions={
-        <div className="flex gap-2">
-          <Button variant="outline" asChild>
+        <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-wrap">
+          <Button variant="outline" asChild className="w-full sm:w-auto">
             <Link href={route('media.history')}>
               <History className="h-4 w-4 mr-2" />
               {t('Deletion History')}
@@ -410,11 +410,12 @@ export default function MediaLibraryDemo() {
           <Button 
             variant="outline"
             onClick={() => setShowCreateDirectory(true)}
+            className="w-full sm:w-auto"
           >
             <Plus className="h-4 w-4 mr-2" />
             {t('New Folder')}
           </Button>
-          <Button onClick={() => setIsUploadModalOpen(true)}>
+          <Button onClick={() => setIsUploadModalOpen(true)} className="col-span-2 w-full sm:col-span-1 sm:w-auto">
             <Plus className="h-4 w-4 mr-2" />
             {t('Upload Files')}
           </Button>

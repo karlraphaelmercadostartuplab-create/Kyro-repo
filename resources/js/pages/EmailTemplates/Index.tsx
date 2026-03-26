@@ -8,7 +8,6 @@ import { SearchInput } from '@/components/ui/search-input';
 import { PerPageSelector } from '@/components/ui/per-page-selector';
 import { Pagination } from '@/components/ui/pagination';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Edit, Mail } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -148,8 +147,8 @@ export default function Index() {
             <Card className="shadow-sm">
                 {/* Search & Controls Header */}
                 <CardContent className="p-6 border-b bg-gray-50/50">
-                    <div className="flex items-center justify-between gap-4">
-                        <div className="flex-1 max-w-md">
+                    <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                        <div className="w-full lg:max-w-md">
                             <SearchInput
                                 value={filters.name}
                                 onChange={(value) => setFilters({...filters, name: value})}
@@ -157,15 +156,17 @@ export default function Index() {
                                 placeholder={t('Search email templates...')}
                             />
                         </div>
-                        <div className="flex items-center gap-3">
+                        <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-wrap sm:items-center sm:justify-end">
                             <PerPageSelector
                                 routeName="email-templates.index"
                                 filters={filters}
+                                className="w-full sm:w-32"
                             />
                             <div className="relative">
                                 <FilterButton
                                     showFilters={showFilters}
                                     onToggle={() => setShowFilters(!showFilters)}
+                                    className="w-full justify-between sm:w-auto sm:justify-center"
                                 />
                                 {(() => {
                                     const activeFilters = [filters.module_name].filter(Boolean).length;

@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { allSettingsItems } from '@/utils/settings';
 import { getSettingsComponent } from '@/utils/settings-components';
 
@@ -15,13 +14,18 @@ export default function Settings() {
 
   const sidebarNavItems = allSettingsItems();
 
-
-
   const handleNavClick = (href: string) => {
     const id = href.replace('#', '');
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      const headerOffset = 96;
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+
+      window.scrollTo({
+        top: Math.max(elementPosition - headerOffset, 0),
+        behavior: 'smooth',
+      });
+
       setActiveSection(id);
     }
   };
@@ -53,58 +57,70 @@ export default function Settings() {
     >
       <Head title={t('Settings')} />
 
-      <div className="flex flex-col md:flex-row gap-8">
-        {/* Sidebar Navigation */}
-        <div className="md:w-64 flex-shrink-0">
-          <div className="sticky top-4">
-            <ScrollArea className="h-[calc(100vh-8rem)]">
-              <div className="pr-4 space-y-1">
+      <div className="overflow-x-hidden">
+        <div className="sticky top-4 z-20 mb-4 -mx-1 px-1 xl:hidden">
+          <div className="overflow-x-auto pb-2">
+            <div className="flex w-max min-w-full gap-2">
+              {sidebarNavItems.map((item) => (
+                <Button
+                  key={item.href}
+                  variant={activeSection === item.href.replace('#', '') ? 'default' : 'outline'}
+                  className="shrink-0 whitespace-nowrap"
+                  onClick={() => handleNavClick(item.href)}
+                >
+                  <item.icon className="mr-2 h-4 w-4" />
+                  {item.title}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-6 xl:flex-row xl:items-start">
+          <aside className="hidden xl:block xl:w-72 xl:flex-shrink-0">
+            <div className="sticky top-4 max-h-[calc(100vh-8rem)] overflow-y-auto pr-2">
+              <div className="space-y-1">
                 {sidebarNavItems.map((item) => (
                   <Button
                     key={item.href}
                     variant="ghost"
-                    className={cn('w-full justify-start', {
+                    className={cn('w-full justify-start text-left', {
                       'bg-muted font-medium': activeSection === item.href.replace('#', ''),
                     })}
                     onClick={() => handleNavClick(item.href)}
                   >
-                    <item.icon className="h-4 w-4 mr-2" />
+                    <item.icon className="mr-2 h-4 w-4" />
                     {item.title}
                   </Button>
                 ))}
               </div>
-            </ScrollArea>
-          </div>
-        </div>
-
-        {/* Main Content */}
-        <div className="flex-1">
-          <ScrollArea className="h-[calc(100vh-8rem)]">
-            <div className="pr-4">
-              {sidebarNavItems.map((item) => {
-            const sectionId = item.href.replace('#', '');
-            const canManage = auth.user?.permissions?.includes(item.permission);
-
-            if (!canManage) return null;
-
-            const Component = getSettingsComponent(item.component);
-            if (!Component) return null;
-
-            return (
-              <section key={sectionId} id={sectionId} className="mb-8">
-                <Suspense fallback={<div className="p-4">Loading...</div>}>
-                  <Component
-                    userSettings={globalSettings}
-                    auth={auth}
-                    emailProviders={emailProviders}
-                    cacheSize={cacheSize}
-                  />
-                </Suspense>
-              </section>
-                );
-              })}
             </div>
-          </ScrollArea>
+          </aside>
+
+          <div className="min-w-0 flex-1 space-y-8">
+            {sidebarNavItems.map((item) => {
+              const sectionId = item.href.replace('#', '');
+              const canManage = auth.user?.permissions?.includes(item.permission);
+
+              if (!canManage) return null;
+
+              const Component = getSettingsComponent(item.component);
+              if (!Component) return null;
+
+              return (
+                <section key={sectionId} id={sectionId} className="scroll-mt-24">
+                  <Suspense fallback={<div className="p-4">Loading...</div>}>
+                    <Component
+                      userSettings={globalSettings}
+                      auth={auth}
+                      emailProviders={emailProviders}
+                      cacheSize={cacheSize}
+                    />
+                  </Suspense>
+                </section>
+              );
+            })}
+          </div>
         </div>
       </div>
     </AuthenticatedLayout>

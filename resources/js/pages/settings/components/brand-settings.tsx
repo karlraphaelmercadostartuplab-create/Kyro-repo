@@ -109,9 +109,9 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
   };
 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div className="order-1 rtl:order-2">
+    <Card className="overflow-hidden">
+      <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="order-1 min-w-0 rtl:order-2">
           <CardTitle className="flex items-center gap-2 text-lg">
             <Palette className="h-5 w-5" />
             {t('Brand Settings')}
@@ -121,21 +121,21 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
           </p>
         </div>
         {canEdit && (
-          <Button className="order-2 rtl:order-1" onClick={saveSettings} disabled={isLoading} size="sm">
+          <Button className="order-2 w-full sm:w-auto rtl:order-1" onClick={saveSettings} disabled={isLoading} size="sm">
             <Save className="h-4 w-4 mr-2" />
             {isLoading ? t('Saving...') : t('Save Changes')}
           </Button>
         )}
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <div className="flex space-x-2 mb-6">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <div className="min-w-0 lg:col-span-2">
+            <div className="mb-6 flex flex-col gap-2 sm:flex-row">
               <Button
                 variant={activeSection === 'logos' ? "default" : "outline"}
                 size="sm"
                 onClick={() => setActiveSection('logos')}
-                className="flex-1"
+                className="w-full sm:flex-1"
               >
                 <Upload className="h-4 w-4 mr-2" />
                 {t('Logos')}
@@ -144,7 +144,7 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
                 variant={activeSection === 'text' ? "default" : "outline"}
                 size="sm"
                 onClick={() => setActiveSection('text')}
-                className="flex-1"
+                className="w-full sm:flex-1"
               >
                 <FileText className="h-4 w-4 mr-2" />
                 {t('Text')}
@@ -153,7 +153,7 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
                 variant={activeSection === 'theme' ? "default" : "outline"}
                 size="sm"
                 onClick={() => setActiveSection('theme')}
-                className="flex-1"
+                className="w-full sm:flex-1"
               >
                 <SettingsIcon className="h-4 w-4 mr-2" />
                 {t('Theme')}
@@ -303,7 +303,7 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
                     </div>
                     <Separator className="my-2" />
 
-                    <div className="grid grid-cols-6 gap-2">
+                    <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
                       {Object.entries({ blue: '#3b82f6', green: '#10b77f', purple: '#8b5cf6', orange: '#f97316', red: '#ef4444' }).map(([color, hex]) => (
                         <Button
                           key={color}
@@ -374,13 +374,13 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
                     <div className="space-y-6">
                       <div>
                         <Label className="mb-2 block">{t('Sidebar Variant')}</Label>
-                        <div className="grid grid-cols-3 gap-3">
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                           {['inset', 'floating', 'minimal'].map((variant) => (
                             <Button
                               key={variant}
                               type="button"
                               variant={settings.sidebarVariant === variant ? "default" : "outline"}
-                              className="h-10 justify-start"
+                              className="h-auto min-h-10 justify-between whitespace-normal text-left sm:justify-start"
                               onClick={() => handleSelectChange('sidebarVariant', variant)}
                             >
                               {variant.charAt(0).toUpperCase() + variant.slice(1)}
@@ -394,7 +394,7 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
 
                       <div>
                         <Label className="mb-2 block">{t('Sidebar Style')}</Label>
-                        <div className="grid grid-cols-3 gap-3">
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                           {[
                             { id: 'plain', name: 'Plain' },
                             { id: 'colored', name: 'Colored' },
@@ -404,7 +404,7 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
                               key={style.id}
                               type="button"
                               variant={settings.sidebarStyle === style.id ? "default" : "outline"}
-                              className="h-10 justify-start"
+                              className="h-auto min-h-10 justify-between whitespace-normal text-left sm:justify-start"
                               onClick={() => handleSelectChange('sidebarStyle', style.id)}
                             >
                               {style.name}
@@ -428,11 +428,11 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
 
                     <div className="space-y-2">
                       <Label className="mb-2 block">{t('Layout Direction')}</Label>
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                         <Button
                           type="button"
                           variant={settings.layoutDirection === "ltr" ? "default" : "outline"}
-                          className="h-10 justify-start"
+                          className="h-auto min-h-10 justify-between whitespace-normal text-left sm:justify-start"
                           onClick={() => handleSelectChange('layoutDirection', 'ltr')}
                         >
                           {t('Left-to-Right')}
@@ -443,7 +443,7 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
                         <Button
                           type="button"
                           variant={settings.layoutDirection === "rtl" ? "default" : "outline"}
-                          className="h-10 justify-start"
+                          className="h-auto min-h-10 justify-between whitespace-normal text-left sm:justify-start"
                           onClick={() => handleSelectChange('layoutDirection', 'rtl')}
                         >
                           {t('Right-to-Left')}
@@ -464,11 +464,11 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
                     <Separator className="my-2" />
 
                     <div className="space-y-2">
-                      <div className="grid grid-cols-3 gap-2">
+                      <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                         <Button
                           type="button"
                           variant={settings.themeMode === "light" ? "default" : "outline"}
-                          className="h-10 justify-start"
+                          className="h-auto min-h-10 justify-between whitespace-normal text-left sm:justify-start"
                           onClick={() => handleSelectChange('themeMode', 'light')}
                         >
                           {t('Light')}
@@ -479,7 +479,7 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
                         <Button
                           type="button"
                           variant={settings.themeMode === "dark" ? "default" : "outline"}
-                          className="h-10 justify-start"
+                          className="h-auto min-h-10 justify-between whitespace-normal text-left sm:justify-start"
                           onClick={() => handleSelectChange('themeMode', 'dark')}
                         >
                           {t('Dark')}
@@ -490,7 +490,7 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
                         <Button
                           type="button"
                           variant={settings.themeMode === "system" ? "default" : "outline"}
-                          className="h-10 justify-start"
+                          className="h-auto min-h-10 justify-between whitespace-normal text-left sm:justify-start"
                           onClick={() => handleSelectChange('themeMode', 'system')}
                         >
                           {t('System')}
@@ -507,8 +507,8 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
           </div>
 
           {/* Preview Column */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-20 space-y-6">
+          <div className="min-w-0 lg:col-span-1">
+            <div className="space-y-6 lg:sticky lg:top-20">
               <div className="border rounded-md p-4">
                 <div className="flex items-center gap-2 mb-4">
                   <Palette className="h-4 w-4" />

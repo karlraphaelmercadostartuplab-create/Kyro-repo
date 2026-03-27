@@ -13,6 +13,7 @@ use Workdo\ProductService\Listeners\ApprovePurchaseReturnListener;
 use Workdo\ProductService\Listeners\CompleteSalesReturnListener;
 use Workdo\ProductService\Listeners\PosCreateListener;
 use Workdo\ProductService\Listeners\PostSalesInvoiceListener;
+use Workdo\ProductService\Listeners\ConvertSalesRetainerListener;
 use Workdo\Retainer\Events\ConvertSalesRetainer;
 
 class EventServiceProvider extends ServiceProvider
@@ -34,7 +35,7 @@ class EventServiceProvider extends ServiceProvider
             PosCreateListener::class,
         ],
         ConvertSalesRetainer::class => [
-            CompleteSalesReturnListener::class,
+            ConvertSalesRetainerListener::class,
         ],
     ];
 }

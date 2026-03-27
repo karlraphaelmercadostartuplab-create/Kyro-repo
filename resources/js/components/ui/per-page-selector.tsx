@@ -22,7 +22,7 @@ export function PerPageSelector({
   filters = {},
   defaultValue = '10',
   options,
-  className = 'w-32',
+  className = 'w-full sm:w-32',
   onPageChange
 }: PerPageSelectorProps) {
   const { t } = useTranslation();

@@ -175,9 +175,9 @@ export default function Index() {
             {/* Main Content Card */}
             <Card className="shadow-sm">
                 {/* Search & Controls Header */}
-                <CardContent className="p-6 border-b bg-gray-50/50">
-                    <div className="flex items-center justify-between gap-4">
-                        <div className="flex-1 max-w-md">
+                <CardContent className="border-b bg-gray-50/50 p-4 sm:p-6">
+                    <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+                        <div className="min-w-0 w-full lg:max-w-md xl:max-w-lg">
                             <SearchInput
                                 value={filters.name}
                                 onChange={(value) => setFilters({...filters, name: value})}
@@ -185,15 +185,17 @@ export default function Index() {
                                 placeholder={t('Search roles...')}
                             />
                         </div>
-                        <div className="flex items-center gap-3">
+                        <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-wrap sm:items-center sm:justify-end">
                             <ListGridToggle
                                 currentView={viewMode}
                                 routeName="roles.index"
                                 filters={{...filters, per_page: perPage}}
+                                className="w-full"
                             />
                             <PerPageSelector
                                 routeName="roles.index"
                                 filters={{...filters, view: viewMode}}
+                                className="col-span-2 w-full sm:col-span-1 sm:w-[140px]"
                             />
                         </div>
                     </div>

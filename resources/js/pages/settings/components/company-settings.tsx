@@ -104,9 +104,9 @@ export default function CompanySettings({ userSettings, auth }: CompanySettingsP
   };
 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div className="order-1 rtl:order-2">
+    <Card className="overflow-hidden">
+      <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="order-1 min-w-0 rtl:order-2">
           <CardTitle className="flex items-center gap-2 text-lg">
             <Building className="h-5 w-5" />
             {t('Company Settings')}
@@ -116,7 +116,7 @@ export default function CompanySettings({ userSettings, auth }: CompanySettingsP
           </p>
         </div>
         {canEdit && (
-          <Button className="order-2 rtl:order-1" onClick={saveSettings} disabled={isLoading} size="sm">
+          <Button className="order-2 w-full sm:w-auto rtl:order-1" onClick={saveSettings} disabled={isLoading} size="sm">
             <Save className="h-4 w-4 mr-2" />
             {isLoading ? t('Saving...') : t('Save Changes')}
           </Button>
@@ -248,8 +248,8 @@ export default function CompanySettings({ userSettings, auth }: CompanySettingsP
             </p>
           </div>
 
-          <div className="space-y-3 md:col-span-2">
-            <div className="flex items-center gap-4">
+          <div className="space-y-3 md:col-span-2 min-w-0">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
               <Label htmlFor="vat_gst_number_switch">{t('Tax Number')}</Label>
               <Switch
                 id="vat_gst_number_switch"
@@ -258,11 +258,11 @@ export default function CompanySettings({ userSettings, auth }: CompanySettingsP
                 disabled={!canEdit}
               />
               {settings.vat_gst_number_switch === 'on' && (
-                <>
+                <div className="flex min-w-0 flex-1 flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
                   <RadioGroup
                     value={settings.tax_type}
                     onValueChange={handleTaxTypeChange}
-                    className="flex gap-4"
+                    className="flex flex-wrap gap-4"
                     disabled={!canEdit}
                   >
                     <div className="flex items-center space-x-2">
@@ -279,10 +279,10 @@ export default function CompanySettings({ userSettings, auth }: CompanySettingsP
                     value={settings.vat_number}
                     onChange={handleInputChange}
                     placeholder={t('Enter VAT / GST Number')}
-                    className="flex-1"
+                    className="min-w-0 flex-1"
                     disabled={!canEdit}
                   />
-                </>
+                </div>
               )}
             </div>
           </div>

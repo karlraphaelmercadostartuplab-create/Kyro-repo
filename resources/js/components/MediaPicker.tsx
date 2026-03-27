@@ -100,9 +100,10 @@ export default function MediaPicker({
     <div>
       {label && <Label htmlFor={id} required={required}>{label}</Label>}
 
-      <div className="flex gap-2">
+      <div className="flex flex-col gap-2 sm:flex-row">
         <Input
           id={id}
+          className="min-w-0 flex-1"
           value={multiple ? (Array.isArray(safeValue) ? safeValue.join(', ') : '') : (safeValue as string)}
           onChange={(e) => !multiple && onChange(e.target.value)}
           placeholder={placeholder}
@@ -114,6 +115,7 @@ export default function MediaPicker({
           variant="outline"
           onClick={() => setIsModalOpen(true)}
           disabled={readOnly || disabled}
+          className="w-full sm:w-auto"
         >
           <ImageIcon className="h-4 w-4 mr-2" />
           Browse
@@ -125,6 +127,7 @@ export default function MediaPicker({
             size="icon"
             onClick={handleClear}
             disabled={readOnly || disabled}
+            className="w-full sm:w-10"
           >
             <X className="h-4 w-4" />
           </Button>

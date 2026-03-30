@@ -19,6 +19,10 @@ export default function Create({ onSuccess }: CreateCouponProps) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { props } = usePage();
     const currencySymbol = (props as any)?.companyAllSetting?.currencySymbol || '$';
+    const minExpiryDate = new Date();
+    minExpiryDate.setHours(0, 0, 0, 0);
+    minExpiryDate.setDate(minExpiryDate.getDate() + 1);
+    const maxExpiryDate = new Date('2038-01-19T23:59:59');
 
     const { data, setData, post, errors, reset } = useForm<CreateCouponFormData>({
         name: '',
@@ -187,6 +191,8 @@ export default function Create({ onSuccess }: CreateCouponProps) {
                         onChange={(value) => setData('expiry_date', value)}
                         placeholder={t('Select expiry date')}
                         className={errors.expiry_date ? 'border-red-500' : ''}
+                        minDate={minExpiryDate}
+                        maxDate={maxExpiryDate}
                     />
                     {errors.expiry_date && <p className="text-sm text-red-500">{errors.expiry_date}</p>}
                 </div>

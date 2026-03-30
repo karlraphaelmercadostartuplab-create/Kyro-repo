@@ -95,47 +95,49 @@ class DashboardController extends Controller
         $monthlyCustomerPayments = [];
         $monthlyVendorPayments = [];
 
+        $currentDate = Carbon::now();
+
         if (config('app.is_demo', false)) {
-            for ($i = 11; $i >= 0; $i--) {
-                $date = Carbon::now()->subMonths($i);
+             for ($month = 1; $month <= $currentDate->month; $month++) {
+                $date = Carbon::create($currentDate->year, $month, 1);
                 $monthName = $date->format('M');
                 $monthlyCustomerPayments[] = [
                     'month' => $monthName,
-                    'customer_payments' => rand(15000, 45000) + rand(0, 99) / 100
+                    'customer_payments' => rand(15000, 45000) + rand(0, 99) / 100,
                 ];
                 $monthlyVendorPayments[] = [
                     'month' => $monthName,
-                    'vendor_payments' => rand(5000, 25000) + rand(0, 99) / 100
+                    'vendor_payments' => rand(5000, 25000) + rand(0, 99) / 100,
                 ];
             }
         } else {
-            for ($i = 11; $i >= 0; $i--) {
-                $date = Carbon::now()->subMonths($i);
+             for ($month = 1; $month <= $currentDate->month; $month++) {
+                $date = Carbon::create($currentDate->year, $month, 1);
                 $monthName = $date->format('M');
                 
-                $customerPayments = CustomerPayment::whereHas('customer', function($q) use ($creatorId) {
+                $customerPayments = CustomerPayment::whereHas('customer', function ($q) use ($creatorId) {
                     $q->where('created_by', $creatorId);
                 })
-                ->where('status', '!=', 'cancelled')
-                ->whereMonth('created_at', $date->month)
-                ->whereYear('created_at', $date->year)
-                ->sum('payment_amount');
-                
-                $vendorPayments = VendorPayment::whereHas('vendor', function($q) use ($creatorId) {
+                    ->where('status', '!=', 'cancelled')
+                    ->whereMonth('created_at', $date->month)
+                    ->whereYear('created_at', $date->year)
+                    ->sum('payment_amount');
+
+                $vendorPayments = VendorPayment::whereHas('vendor', function ($q) use ($creatorId) {
                     $q->where('created_by', $creatorId);
                 })
-                ->whereMonth('created_at', $date->month)
-                ->whereYear('created_at', $date->year)
-                ->sum('payment_amount');
+                    ->whereMonth('created_at', $date->month)
+                    ->whereYear('created_at', $date->year)
+                    ->sum('payment_amount');
                 
                 $monthlyCustomerPayments[] = [
                     'month' => $monthName,
-                    'customer_payments' => $customerPayments
+                    'customer_payments' => $customerPayments,
                 ];
                 
                 $monthlyVendorPayments[] = [
                     'month' => $monthName,
-                    'vendor_payments' => $vendorPayments
+                    'vendor_payments' => $vendorPayments,
                 ];
             }
         }

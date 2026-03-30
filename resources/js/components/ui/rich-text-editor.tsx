@@ -4,6 +4,7 @@ import StarterKit from '@tiptap/starter-kit'
 import { Strike } from '@tiptap/extension-strike'
 import { Highlight } from '@tiptap/extension-highlight'
 import { TextAlign } from '@tiptap/extension-text-align'
+import { Blockquote } from '@tiptap/extension-blockquote'
 import { Link } from '@tiptap/extension-link'
 import { Color } from '@tiptap/extension-color'
 import { TextStyle } from '@tiptap/extension-text-style'
@@ -46,6 +47,7 @@ export function RichTextEditor({
       }),
 
       Strike,
+      Blockquote,
       Highlight.configure({ multicolor: true }),
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
       Link.configure({ 

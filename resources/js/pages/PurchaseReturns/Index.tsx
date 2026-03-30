@@ -299,8 +299,8 @@ export default function Index() {
 
             <Card className="shadow-sm">
                 <CardContent className="p-6 border-b bg-gray-50/50">
-                    <div className="flex items-center justify-between gap-4">
-                        <div className="flex-1 max-w-md">
+                    <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+                        <div className="w-full xl:max-w-md">
                             <SearchInput
                                 value={filters.search || ''}
                                 onChange={(value) => setFilters({...filters, search: value})}

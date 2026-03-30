@@ -96,7 +96,7 @@ class DashboardController extends Controller
         $monthlyVendorPayments = [];
 
         if (config('app.is_demo', false)) {
-            for ($i = 5; $i >= 0; $i--) {
+            for ($i = 11; $i >= 0; $i--) {
                 $date = Carbon::now()->subMonths($i);
                 $monthName = $date->format('M');
                 $monthlyCustomerPayments[] = [
@@ -109,7 +109,7 @@ class DashboardController extends Controller
                 ];
             }
         } else {
-            for ($i = 5; $i >= 0; $i--) {
+            for ($i = 11; $i >= 0; $i--) {
                 $date = Carbon::now()->subMonths($i);
                 $monthName = $date->format('M');
                 

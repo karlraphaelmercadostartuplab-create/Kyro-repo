@@ -24,7 +24,7 @@ class UpdateCouponRequest extends FormRequest
             'minimum_spend' => 'nullable|numeric|min:0',
             'maximum_spend' => 'nullable|numeric|min:0',
             'limit_per_user' => 'nullable|integer|min:1',
-            'expiry_date' => 'nullable|date|after:today',
+            'expiry_date' => 'nullable|date|after:today|before_or_equal:2038-01-19',
             'included_module' => 'nullable|array',
             'excluded_module' => 'nullable|array',
             'status' => 'boolean'
@@ -57,6 +57,7 @@ class UpdateCouponRequest extends FormRequest
             'limit_per_user.min' => __('Limit per user must be at least 1.'),
             'expiry_date.date' => __('Please enter a valid expiry date.'),
             'expiry_date.after' => __('Expiry date must be after today.'),
+            'expiry_date.before_or_equal' => __('Expiry date must be on or before January 19, 2038.'),
             'included_module.array' => __('Included modules must be a valid list.'),
             'excluded_module.array' => __('Excluded modules must be a valid list.'),
             'status.boolean' => __('Status must be true or false.'),

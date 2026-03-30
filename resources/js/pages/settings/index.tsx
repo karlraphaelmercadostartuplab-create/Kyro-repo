@@ -1,4 +1,4 @@
-import { useState, Suspense, useEffect } from 'react';
+import { useState, Suspense } from 'react';
 import { Head, usePage } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
@@ -11,6 +11,11 @@ export default function Settings() {
   const { t } = useTranslation();
   const { auth, globalSettings = {}, emailProviders = {}, cacheSize = '0.00' } = usePage().props as any;
   const [activeSection, setActiveSection] = useState('brand-settings');
+  const desktopSidebarStyle = {
+    left: 'calc(var(--sidebar-width, 16rem) + 1rem)',
+    top: '3.25rem',
+    width: '16rem',
+  } as const;
 
   const sidebarNavItems = allSettingsItems();
 
@@ -30,34 +35,13 @@ export default function Settings() {
     }
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = sidebarNavItems.map(item => item.href.replace('#', ''));
-
-      for (const sectionId of sections) {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 100 && rect.bottom >= 100) {
-            setActiveSection(sectionId);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [sidebarNavItems]);
-
   return (
     <AuthenticatedLayout
       breadcrumbs={[{ label: t('Settings') }]}
-      pageTitle={t('Settings')}
     >
       <Head title={t('Settings')} />
 
-      <div className="overflow-x-hidden">
+      <div className="min-w-0">
         <div className="sticky top-4 z-20 mb-4 -mx-1 px-1 xl:hidden">
           <div className="overflow-x-auto pb-2">
             <div className="flex w-max min-w-full gap-2">
@@ -76,28 +60,31 @@ export default function Settings() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-6 xl:flex-row xl:items-start">
-          <aside className="hidden xl:block xl:w-72 xl:flex-shrink-0">
-            <div className="sticky top-4 max-h-[calc(100vh-8rem)] overflow-y-auto pr-2">
-              <div className="space-y-1">
+        <div className="min-w-0">
+          <aside className="hidden xl:block">
+            <div className="fixed z-20" style={desktopSidebarStyle}>
+              <div className="mb-2 px-1">
+                <h1 className="text-base font-semibold">{t('Settings')}</h1>
+              </div>
+              <div className="space-y-1 pr-2">
                 {sidebarNavItems.map((item) => (
                   <Button
                     key={item.href}
                     variant="ghost"
-                    className={cn('w-full justify-start text-left', {
+                    className={cn('h-9 w-full justify-start gap-2 px-2.5 text-left text-sm leading-tight', {
                       'bg-muted font-medium': activeSection === item.href.replace('#', ''),
                     })}
                     onClick={() => handleNavClick(item.href)}
                   >
-                    <item.icon className="mr-2 h-4 w-4" />
-                    {item.title}
+                    <item.icon className="h-4 w-4 shrink-0" />
+                    <span className="truncate">{item.title}</span>
                   </Button>
                 ))}
               </div>
             </div>
           </aside>
 
-          <div className="min-w-0 flex-1 space-y-8">
+          <div className="min-w-0 space-y-8 xl:pl-[17.5rem]">
             {sidebarNavItems.map((item) => {
               const sectionId = item.href.replace('#', '');
               const canManage = auth.user?.permissions?.includes(item.permission);

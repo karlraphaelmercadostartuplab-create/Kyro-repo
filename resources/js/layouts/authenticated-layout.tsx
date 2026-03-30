@@ -59,10 +59,10 @@ function AuthenticatedLayoutContent({
             dir={settings.layoutDirection === 'rtl' ? 'rtl' : 'ltr'}
             style={{ direction: settings.layoutDirection === 'rtl' ? 'rtl' : 'ltr' }}
         >
-        <SidebarProvider defaultOpen={true} className="min-w-0 overflow-x-hidden">
+        <SidebarProvider defaultOpen={true} className="min-w-0 overflow-x-clip">
             <AppSidebar />
 
-            <SidebarInset className="min-w-0 overflow-x-hidden"
+            <SidebarInset className="min-w-0 overflow-x-clip"
                 style={{ direction: settings.layoutDirection === 'rtl' ? 'rtl' : 'ltr' }}
                 dir={settings.layoutDirection === 'rtl' ? 'rtl' : 'ltr'}
             >
@@ -125,7 +125,7 @@ function AuthenticatedLayoutContent({
                     </div>
                 </header>
 
-                <main className="min-w-0 overflow-x-hidden p-4 md:pt-0 h-full">
+                <main className="min-w-0 overflow-x-clip p-4 md:pt-0 h-full">
                     {pageTitle && (
                         <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center" dir={settings.layoutDirection}>
                             <h1 className="min-w-0 flex-1 break-words text-xl font-semibold">{pageTitle}</h1>

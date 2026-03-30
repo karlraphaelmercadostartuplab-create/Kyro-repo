@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCouponRequest;
 use App\Http\Requests\UpdateCouponRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 use App\Models\UserCoupon;
 
@@ -40,20 +41,7 @@ class CouponController extends Controller
             $validated = $request->validated();
 
             $coupon = new Coupon();
-            $coupon->name = $validated['name'] ?? '';
-            $coupon->description = $validated['description'] ?? null;
-            $coupon->code = $validated['code'] ?? '';
-            $coupon->discount = $validated['discount'] ?? 0;
-            $coupon->limit = $validated['limit'] ?? null;
-            $coupon->type = $validated['type'] ?? '';
-            $coupon->minimum_spend = $validated['minimum_spend'] ?? null;
-            $coupon->maximum_spend = $validated['maximum_spend'] ?? null;
-            $coupon->limit_per_user = $validated['limit_per_user'] ?? null;
-            $coupon->expiry_date = $validated['expiry_date'] ?? null;
-            $coupon->included_module = $validated['included_module'] ?? null;
-            $coupon->excluded_module = $validated['excluded_module'] ?? null;
-            $coupon->status = $request->boolean('status', true);
-            $coupon->created_by = creatorId();
+            $this->fillCouponFromRequest($coupon, $validated, $request);
             $coupon->save();
 
             return redirect()->route('coupons.index')->with('success', __('The coupon has been created successfully.'));
@@ -68,19 +56,7 @@ class CouponController extends Controller
         if(Auth::user()->can('edit-coupons')){
             $validated = $request->validated();
 
-            $coupon->name = $validated['name'] ?? '';
-            $coupon->description = $validated['description'] ?? null;
-            $coupon->code = $validated['code'] ?? '';
-            $coupon->discount = $validated['discount'] ?? 0;
-            $coupon->limit = $validated['limit'] ?? null;
-            $coupon->type = $validated['type'] ?? '';
-            $coupon->minimum_spend = $validated['minimum_spend'] ?? null;
-            $coupon->maximum_spend = $validated['maximum_spend'] ?? null;
-            $coupon->limit_per_user = $validated['limit_per_user'] ?? null;
-            $coupon->expiry_date = $validated['expiry_date'] ?? null;
-            $coupon->included_module = $validated['included_module'] ?? null;
-            $coupon->excluded_module = $validated['excluded_module'] ?? null;
-            $coupon->status = $request->boolean('status', true);
+            $this->fillCouponFromRequest($coupon, $validated, $request);
             $coupon->save();
 
             return back()->with('success', __('The coupon details are updated successfully.'));
@@ -122,5 +98,42 @@ class CouponController extends Controller
         else{
             return back()->with('error', __('Permission denied'));
         }
+    }
+    private function fillCouponFromRequest(Coupon $coupon, array $validated, Request $request): void
+    {
+        $columns = $this->couponColumns();
+        $values = [
+            'name' => $validated['name'] ?? '',
+            'description' => $validated['description'] ?? null,
+            'code' => $validated['code'] ?? '',
+            'discount' => $validated['discount'] ?? 0,
+            'limit' => $validated['limit'] ?? null,
+            'type' => $validated['type'] ?? '',
+            'minimum_spend' => $validated['minimum_spend'] ?? null,
+            'maximum_spend' => $validated['maximum_spend'] ?? null,
+            'limit_per_user' => $validated['limit_per_user'] ?? null,
+            'expiry_date' => $validated['expiry_date'] ?? null,
+            'included_module' => $validated['included_module'] ?? null,
+            'excluded_module' => $validated['excluded_module'] ?? null,
+            'status' => $request->boolean('status', true),
+            'created_by' => creatorId(),
+        ];
+
+        foreach ($values as $field => $value) {
+            if (in_array($field, $columns, true) && !($field === 'created_by' && $coupon->exists)) {
+                $coupon->{$field} = $value;
+            }
+        }
+    }
+
+    private function couponColumns(): array
+    {
+        static $columns = null;
+
+        if ($columns === null) {
+            $columns = Schema::getColumnListing((new Coupon())->getTable());
+        }
+
+        return $columns;
     }
 }

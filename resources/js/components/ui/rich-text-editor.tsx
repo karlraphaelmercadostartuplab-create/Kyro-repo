@@ -179,8 +179,45 @@ export function RichTextEditor({
           type="button"
           variant="ghost"
           size="sm"
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          className={editor.isActive('blockquote') ? 'bg-muted' : ''}
+          onClick={() => {
+            const { from, to, empty, $from } = editor.state.selection
+            const start = empty ? $from.start() : from
+            const end = empty ? $from.end() : to
+
+            const selectedText = editor.state.doc.textBetween(start, end, '', '')
+            const beforeQuote = start > 1 ? editor.state.doc.textBetween(start - 1, start, '', '') : ''
+            const afterQuote = editor.state.doc.textBetween(end, end + 1, '', '')
+            const isWrappedWithOutsideQuotes = beforeQuote === '"' && afterQuote === '"'
+            const isWrappedInsideSelection =
+              selectedText.length >= 2 && selectedText.startsWith('"') && selectedText.endsWith('"')
+
+            if (isWrappedWithOutsideQuotes) {
+              editor
+                .chain()
+                .focus()
+                .deleteRange({ from: end, to: end + 1 })
+                .deleteRange({ from: start - 1, to: start })
+                .run()
+              return
+            }
+
+            if (!empty && isWrappedInsideSelection) {
+              editor
+                .chain()
+                .focus()
+                .deleteRange({ from: end - 1, to: end })
+                .deleteRange({ from: start, to: start + 1 })
+                .run()
+              return
+            }
+
+            if (start === end) {
+              editor.chain().focus().insertContentAt(start, '""').setTextSelection(start + 1).run()
+              return
+            }
+
+            editor.chain().focus().insertContentAt(end, '"').insertContentAt(start, '"').run()
+          }}
         >
           <Quote className="h-4 w-4" />
         </Button>

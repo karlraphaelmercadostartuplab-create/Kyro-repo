@@ -4,7 +4,6 @@ import StarterKit from '@tiptap/starter-kit'
 import { Strike } from '@tiptap/extension-strike'
 import { Highlight } from '@tiptap/extension-highlight'
 import { TextAlign } from '@tiptap/extension-text-align'
-import { Blockquote } from '@tiptap/extension-blockquote'
 import { Link } from '@tiptap/extension-link'
 import { Color } from '@tiptap/extension-color'
 import { TextStyle } from '@tiptap/extension-text-style'
@@ -47,7 +46,6 @@ export function RichTextEditor({
       }),
 
       Strike,
-      Blockquote,
       Highlight.configure({ multicolor: true }),
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
       Link.configure({ 
@@ -181,8 +179,32 @@ export function RichTextEditor({
           type="button"
           variant="ghost"
           size="sm"
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          className={editor.isActive('blockquote') ? 'bg-muted' : ''}
+          onClick={() => {
+            const { from, to, empty, $from } = editor.state.selection
+            const start = empty ? $from.start() : from
+            const end = empty ? $from.end() : to
+
+            const beforeQuote = start > 1 ? editor.state.doc.textBetween(start - 1, start, '', '') : ''
+            const afterQuote = editor.state.doc.textBetween(end, end + 1, '', '')
+            const isWrappedWithQuotes = beforeQuote === '"' && afterQuote === '"'
+
+            if (isWrappedWithQuotes) {
+              editor
+                .chain()
+                .focus()
+                .deleteRange({ from: end, to: end + 1 })
+                .deleteRange({ from: start - 1, to: start })
+                .run()
+              return
+            }
+
+            if (start === end) {
+              editor.chain().focus().insertContentAt(start, '""').setTextSelection(start + 1).run()
+              return
+            }
+
+            editor.chain().focus().insertContentAt(end, '"').insertContentAt(start, '"').run()
+          }}
         >
           <Quote className="h-4 w-4" />
         </Button>

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link, router, usePage } from '@inertiajs/react';
 import { getAdminSetting, getImagePath } from '@/utils/helpers';
 import { useTranslation } from 'react-i18next';
+import { normalizeSafeLandingLink } from '../../utils/safeLink';
 
 interface HeaderProps {
     settings?: any;
@@ -96,7 +97,7 @@ export default function Header({ settings }: HeaderProps) {
 
     const resolveNavHref = (rawHref?: string) => {
         if (!rawHref) return route('landing.page');
-        const normalizedHref = rawHref.trim();
+        const normalizedHref = normalizeSafeLandingLink(rawHref, route('landing.page'));
 
         if (normalizedHref === '/' || normalizedHref.toLowerCase() === 'home') {
             return route('landing.page');

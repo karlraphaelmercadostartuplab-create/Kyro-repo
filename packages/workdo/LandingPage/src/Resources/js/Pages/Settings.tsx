@@ -116,24 +116,29 @@ export default function Settings({ settings, customPages }: SettingsProps) {
         const invalidLabels: string[] = [];
         const sections = data.config_sections?.sections || {};
 
+         const maybeCollectUnsafeLink = (href: unknown, label: string) => {
+            const normalizedHref = String(href || '').trim();
+            if (normalizedHref && !isSafeLandingLink(normalizedHref)) {
+                invalidLabels.push(label);
+            }
+        };
+
         const headerItems = sections.header?.navigation_items || [];
         headerItems.forEach((item: any, index: number) => {
-            const href = String(item?.href || '').trim();
-            if (href && !isSafeLandingLink(href)) {
-                invalidLabels.push(`Header navigation item #${index + 1}`);
-            }
+            maybeCollectUnsafeLink(item?.href, `Header navigation item #${index + 1}`);
         });
+        maybeCollectUnsafeLink(sections.hero?.primary_button_link, 'Hero primary button link');
+        maybeCollectUnsafeLink(sections.hero?.secondary_button_link, 'Hero secondary button link');
 
         const footerSections = sections.footer?.navigation_sections || [];
         footerSections.forEach((section: any, sectionIndex: number) => {
             const links = section?.links || [];
             links.forEach((link: any, linkIndex: number) => {
-                const href = String(link?.href || '').trim();
-                if (href && !isSafeLandingLink(href)) {
-                    invalidLabels.push(`Footer section #${sectionIndex + 1} link #${linkIndex + 1}`);
-                }
+                maybeCollectUnsafeLink(link?.href, `Footer section #${sectionIndex + 1} link #${linkIndex + 1}`);
             });
         });
+        maybeCollectUnsafeLink(sections.cta?.primary_button_link, 'Engagement CTA primary button link');
+        maybeCollectUnsafeLink(sections.cta?.secondary_button_link, 'Engagement CTA secondary button link');
 
         return invalidLabels;
     };

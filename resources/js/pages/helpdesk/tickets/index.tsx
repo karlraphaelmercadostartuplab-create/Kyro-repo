@@ -21,6 +21,7 @@ import Create from './create';
 import Edit from './edit';
 import NoRecordsFound from '@/components/no-records-found';
 import { HelpdeskTicketsIndexProps, HelpdeskTicketFilters, HelpdeskTicketModalState } from './types';
+import { formatDate } from '@/utils/helpers';
 
 export default function Index() {
     const { t } = useTranslation();
@@ -156,6 +157,12 @@ export default function Index() {
             key: 'creator',
             header: t('Created By'),
             render: (_: any, ticket: any) => ticket.creator?.name || '-'
+        },
+        {
+            key: 'created_at',
+            header: t('Created At'),
+            sortable: true,
+            render: (value: string) => value ? formatDate(value) : '-'
         },
         ...(auth.user?.permissions?.some((p: string) => ['view-helpdesk-tickets', 'edit-helpdesk-tickets', 'delete-helpdesk-tickets'].includes(p)) ? [{
             key: 'actions',
@@ -408,6 +415,10 @@ export default function Index() {
                                                             <p className="mb-1 text-xs font-medium text-gray-600">{t('Created By')}</p>
                                                             <p className="break-words text-sm text-gray-900">{ticket.creator?.name || '-'}</p>
                                                         </div>
+                                                        <div className="min-w-0">
+                                                            <p className="mb-1 text-xs font-medium text-gray-600">{t('Created At')}</p>
+                                                            <p className="break-words text-sm text-gray-900">{ticket.created_at ? formatDate(ticket.created_at) : '-'}</p>
+                                                        </div>
                                                     </div>
 
                                                     <div className="flex flex-wrap justify-end gap-1 border-t pt-3">
@@ -518,6 +529,10 @@ export default function Index() {
                                                         <div>
                                                             <p className="text-xs font-medium text-gray-600 mb-1">{t('Created By')}</p>
                                                             <p className="break-words text-xs text-gray-900">{ticket.creator?.name || '-'}</p>
+                                                        </div>
+                                                        <div>
+                                                            <p className="text-xs font-medium text-gray-600 mb-1">{t('Created At')}</p>
+                                                            <p className="break-words text-xs text-gray-900">{ticket.created_at ? formatDate(ticket.created_at) : '-'}</p>
                                                         </div>
                                                     </div>
                                                 </div>

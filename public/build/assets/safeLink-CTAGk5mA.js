@@ -1,1 +1,0 @@
-const s=r=>{if(!r)return!1;const t=r.trim();if(!t||/[\u0000-\u001F\u007F]/.test(t))return!1;if(t.startsWith("#"))return/^#[A-Za-z0-9\-_.:]+$/.test(t);if(t.startsWith("/"))return!t.startsWith("//");try{const n=new URL(t);return n.protocol==="http:"||n.protocol==="https:"}catch{return!1}},e=(r,t="/")=>s(r)?r.trim():t;export{e as n};

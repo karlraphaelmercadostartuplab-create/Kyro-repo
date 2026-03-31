@@ -9,9 +9,10 @@
 }
 
 .kyro-chat-launcher.kyro-chat-docked {
-    transform: translateX(58%);
-    opacity: 0.96;
-    filter: drop-shadow(0 12px 24px rgba(96, 165, 250, 0.16));
+    transform: translateX(120%);
+    opacity: 0;
+    pointer-events: none;
+    filter: none;
 }
 
 .kyro-chat-reveal-tab {

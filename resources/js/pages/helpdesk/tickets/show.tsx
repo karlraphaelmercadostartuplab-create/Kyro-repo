@@ -17,6 +17,16 @@ export default function Show() {
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const [deleteDialog, setDeleteDialog] = useState({ isOpen: false, replyId: null as number | null });
 
+    const isOwnReply = (reply: HelpdeskReply) => {
+        const currentUserId = auth.user?.id;
+        if (currentUserId == null) return false;
+
+        const replyUserId = reply.created_by ?? reply.creator?.id;
+        if (replyUserId == null) return false;
+
+        return Number(replyUserId) === Number(currentUserId);
+    };
+
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -174,7 +184,7 @@ export default function Show() {
                                         <ChatMessage
                                             key={reply.id}
                                             reply={reply}
-                                            isOwnMessage={reply.created_by === auth.user?.id}
+                                            isOwnMessage={isOwnReply(reply)}
                                             onDelete={handleDeleteReply}
                                             canDelete={auth.user?.permissions?.includes('delete-helpdesk-replies')}
                                         />

@@ -32,7 +32,7 @@ export interface HelpdeskReply {
     message: string;
     attachments?: string[];
     is_internal: boolean;
-    created_by: number;
+    created_by: number | string;
     creator?: {
         id: number;
         name: string;

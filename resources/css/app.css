@@ -9,17 +9,15 @@
 }
 
 .kyro-chat-launcher.kyro-chat-docked {
-    transform: translateX(58%);
-    opacity: 0.96;
-    transform: translateX(140%);
+    transform: translateX(120%);
     opacity: 0;
     pointer-events: none;
-    filter: drop-shadow(0 12px 24px rgba(96, 165, 250, 0.16));
+    filter: none;
 }
 
 .kyro-chat-reveal-tab {
     position: fixed;
-    right: 0;
+    right: -42px;
     bottom: 96px;
     z-index: 2147483646;
     display: inline-flex;

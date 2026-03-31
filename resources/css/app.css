@@ -16,7 +16,7 @@
 
 .kyro-chat-reveal-tab {
     position: fixed;
-    right: 0;
+    right: -42px;
     bottom: 96px;
     z-index: 2147483646;
     display: inline-flex;
@@ -27,6 +27,7 @@
     height: 72px;
     border-radius: 18px 0 0 18px;
     border: 1px solid rgba(255, 255, 255, 0.5);
+    border-right: none;
     border-right: none;
     background: #93c5fd;
     color: #040404;

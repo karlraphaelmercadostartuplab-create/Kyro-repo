@@ -43,7 +43,7 @@
                 position: fixed;
                 right: 0.75rem;
                 bottom: 0.75rem;
-                max-width: calc(100vw - 1.5rem);
+                max-width: none;
             }
 
             .kyro-chat-launcher,

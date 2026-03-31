@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Link, router, usePage } from '@inertiajs/react';
 import { getAdminSetting, getImagePath } from '@/utils/helpers';
 import { useTranslation } from 'react-i18next';
-import { normalizeSafeLandingLink } from '../../utils/safeLink';
+import { normalizeSafeLandingLink } from '../../units/safeLink';
 
 interface HeaderProps {
     settings?: any;

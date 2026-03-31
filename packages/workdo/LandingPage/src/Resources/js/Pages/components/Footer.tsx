@@ -3,7 +3,7 @@ import { Link, router, usePage } from '@inertiajs/react';
 import { getAdminSetting, getImagePath } from '@/utils/helpers';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { normalizeSafeLandingLink } from '../../utils/safeLink';
+import { normalizeSafeLandingLink } from '../../units/safeLink';
 
 interface FooterProps {
     settings?: any;

@@ -121,7 +121,7 @@ export default function Index() {
                                 </TooltipContent>
                             </Tooltip>
                         )}
-                        {auth.user?.permissions?.includes('delete-roles') && role.editable == true && (
+                         {auth.user?.permissions?.includes('delete-roles') && (
                             <Tooltip delayDuration={0}>
                                 <TooltipTrigger asChild>
                                     <Button
@@ -259,7 +259,7 @@ export default function Index() {
                                                                     </TooltipContent>
                                                                 </Tooltip>
                                                             )}
-                                                            {auth.user?.permissions?.includes('delete-roles') && role.editable == true && (
+                                                            {auth.user?.permissions?.includes('delete-roles') && (
                                                                 <Tooltip delayDuration={300}>
                                                                     <TooltipTrigger asChild>
                                                                         <Button

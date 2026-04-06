@@ -6,6 +6,7 @@ export interface HelpdeskCategory {
     description?: string;
     color: string;
     is_active: boolean;
+    tickets_count: number;
     created_at: string;
 }
 

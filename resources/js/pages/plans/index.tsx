@@ -60,6 +60,7 @@ export default function PlansIndex({ plans, canCreate, activeModules }: Props) {
 
     const allModules = activeModules.sort((a, b) => a.alias.localeCompare(b.alias));
     const activePlans = plans.filter((plan) => plan.status);
+    const isUnlimitedUsers = (userCount: unknown) => Number(userCount) === -1;
 
     const mostPopularPlanId = activePlans.length > 0
         ? activePlans.reduce((prev, current) => ((current.orders_count || 0) > (prev.orders_count || 0) ? current : prev)).id
@@ -290,7 +291,7 @@ export default function PlansIndex({ plans, canCreate, activeModules }: Props) {
                                                 <div className="flex items-center space-x-2">
                                                     <div className="h-2 w-2 flex-shrink-0 rounded-full bg-primary"></div>
                                                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                                        {plan.number_of_users === -1 ? t('Unlimited users') : `${plan.number_of_users} ${t('users')}`}
+                                                        {isUnlimitedUsers(plan.number_of_users) ? t('Unlimited users') : `${plan.number_of_users} ${t('users')}`}
                                                     </span>
                                                 </div>
                                                 <div className="flex items-center space-x-2">
@@ -407,7 +408,7 @@ export default function PlansIndex({ plans, canCreate, activeModules }: Props) {
                                                 <div className="flex items-center space-x-2">
                                                     <div className="h-2 w-2 flex-shrink-0 rounded-full bg-primary"></div>
                                                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                                        {plan.number_of_users === -1 ? t('Unlimited users') : `${plan.number_of_users} ${t('users')}`}
+                                                        {isUnlimitedUsers(plan.number_of_users) ? t('Unlimited users') : `${plan.number_of_users} ${t('users')}`}
                                                     </span>
                                                 </div>
                                                 <div className="flex items-center space-x-2">

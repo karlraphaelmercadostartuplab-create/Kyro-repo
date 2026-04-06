@@ -52,6 +52,7 @@ export default function Create({ onSuccess }: CreateHelpdeskCategoryProps) {
                         value={data.description}
                         onChange={(e) => setData('description', e.target.value)}
                         placeholder={t('Enter category description')}
+                        maxLength={500}
                         rows={3}
                     />
                     <InputError message={errors.description} />

@@ -15,7 +15,7 @@ class StoreHelpdeskCategoryRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'nullable|string|max:500',
             'color' => 'nullable|string|regex:/^#[0-9A-Fa-f]{6}$/',
             'is_active' => 'boolean',
         ];

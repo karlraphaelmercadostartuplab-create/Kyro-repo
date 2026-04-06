@@ -18,7 +18,7 @@ import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
 
 import Create from './create';
 import Edit from './edit';
-import { HelpdeskCategoriesIndexProps, HelpdeskCategoryFilters, HelpdeskCategoryModalState } from './types';
+import { HelpdeskCategoriesIndexProps, HelpdeskCategory, HelpdeskCategoryFilters, HelpdeskCategoryModalState } from './types';
 
 export default function Index() {
     const { categories, auth } = usePage<HelpdeskCategoriesIndexProps>().props;
@@ -43,6 +43,18 @@ export default function Index() {
         routeName: 'helpdesk-categories.destroy',
         defaultMessage: t('Are you sure you want to delete this Helpdesk category?')
     });
+
+    const getDeleteMessage = (category: HelpdeskCategory) => {
+        const ticketCount = Number(category?.tickets_count || 0);
+
+        if (ticketCount > 0) {
+            return t('This category is currently used in {{count}} support ticket(s). Deleting it will remove the category from those tickets. Are you sure you want to continue?', {
+                count: ticketCount
+            });
+        }
+
+        return t('Are you sure you want to delete this Helpdesk category?');
+    };
 
     const handleFilter = () => {
         router.get(route('helpdesk-categories.index'), {
@@ -138,7 +150,7 @@ export default function Index() {
                                     <Button
                                         variant="ghost"
                                         size="sm"
-                                        onClick={() => openDeleteDialog(category.id)}
+                                        onClick={() => openDeleteDialog(category.id, getDeleteMessage(category))}
                                         className="h-8 w-8 p-0 text-destructive hover:text-destructive"
                                     >
                                         <Trash2 className="h-4 w-4" />

@@ -48,7 +48,7 @@ export default function Index() {
         const ticketCount = Number(category?.tickets_count || 0);
 
         if (ticketCount > 0) {
-            return t('This category is currently used in {{count}} support ticket(s). Deleting it will remove the category from those tickets. Are you sure you want to continue?', {
+            return t('This Category is being used in {{count}} support ticket(s). Deleting it will remove the category from those tickets. Are you sure you want to continue?', {
                 count: ticketCount
             });
         }

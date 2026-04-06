@@ -55,6 +55,9 @@ export default function Edit({ category, onSuccess }: EditHelpdeskCategoryProps)
                         maxLength={500}
                         rows={3}
                     />
+                     <p className="mt-1 text-xs text-gray-500 text-right">
+                        {(data.description || '').length}/500
+                    </p>
                     <InputError message={errors.description} />
                 </div>
 

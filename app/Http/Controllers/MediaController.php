@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MediaDirectory;
+use App\Models\MediaDeletionHistory;
 use App\Models\User;
 use App\Services\StorageConfigService;
 use App\Services\DynamicStorageService;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 class MediaController extends Controller
 {
@@ -101,6 +103,61 @@ class MediaController extends Controller
         {
             return response()->json(['message' => __('Permission denied')], 403);
         }
+    }
+
+    public function history(Request $request)
+    {
+        if (! Auth::user()->can('manage-media')) {
+            return back()->with('error', __('Permission denied'));
+        }
+
+        $histories = collect();
+
+        if (Schema::hasTable('media_deletion_histories')) {
+            $user = auth()->user();
+            $search = trim((string) $request->get('search', ''));
+            $sort = $request->get('sort', 'deleted_at');
+            $direction = strtolower((string) $request->get('direction', 'desc')) === 'asc' ? 'asc' : 'desc';
+            $perPage = (int) $request->get('per_page', 10);
+            $allowedSorts = ['file_name', 'directory_name', 'mime_type', 'size', 'deleted_at'];
+
+            $historyQuery = MediaDeletionHistory::query()
+                ->with(['user:id,name,email']);
+
+            if ($user->type === 'superadmin') {
+                $historyQuery->where('created_by', creatorId());
+            } elseif ($user->can('manage-any-media')) {
+                $historyQuery->where('created_by', creatorId());
+            } elseif ($user->can('manage-own-media')) {
+                $historyQuery->where('user_id', $user->id);
+            } else {
+                $historyQuery->whereRaw('1 = 0');
+            }
+
+            if ($search !== '') {
+                $historyQuery->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('file_name', 'like', "%{$search}%")
+                        ->orWhereHas('user', function ($userQuery) use ($search) {
+                            $userQuery->where('name', 'like', "%{$search}%")
+                                ->orWhere('email', 'like', "%{$search}%");
+                        });
+                });
+            }
+
+            $sortColumn = in_array($sort, $allowedSorts, true) ? $sort : 'deleted_at';
+
+            $histories = $historyQuery
+                ->orderBy($sortColumn, $direction)
+                ->paginate($perPage)
+                ->withQueryString();
+        } else {
+            $histories = MediaDeletionHistory::query()->whereRaw('1 = 0')->paginate((int) $request->get('per_page', 10));
+        }
+
+        return Inertia::render('media-history', [
+            'histories' => $histories,
+        ]);
     }
 
     private function getUserFriendlyError(\Exception $e, $fileName): string
@@ -357,14 +414,41 @@ class MediaController extends Controller
             }
 
             $media = $query->firstOrFail();
-            $fileSize = $media->size;
+            $directoryName = null;
+
+            if ($media->directory_id) {
+                $directoryName = MediaDirectory::where('id', $media->directory_id)->value('name');
+            }
+
+            $historyPayload = [
+                'media_id' => $media->id,
+                'user_id' => auth()->id(),
+                'created_by' => $media->created_by,
+                'directory_id' => $media->directory_id,
+                'directory_name' => $directoryName,
+                'name' => $media->name,
+                'file_name' => $media->file_name,
+                'mime_type' => $media->mime_type,
+                'disk' => $media->disk,
+                'size' => $media->size,
+                'deleted_at' => now(),
+            ];
 
             try {
+                if (Schema::hasTable('media_deletion_histories')) {
+                    MediaDeletionHistory::create($historyPayload);
+                }
+
                 // Delete file from storage
                 Storage::disk($media->disk)->delete('media/' . $media->file_name);
                 $media->delete();
             } catch (\Exception $e) {
                 // If storage disk is unavailable, force delete from database
+                if (Schema::hasTable('media_deletion_histories')
+                    && ! MediaDeletionHistory::where('media_id', $media->id)->where('deleted_at', $historyPayload['deleted_at'])->exists()) {
+                    MediaDeletionHistory::create($historyPayload);
+                }
+
                 $media->forceDelete();
             }
 

@@ -15,6 +15,8 @@ import { DataTable } from "@/components/ui/data-table";
 import NoRecordsFound from '@/components/no-records-found';
 import { Pagination } from "@/components/ui/pagination";
 import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
+import { FilterButton } from "@/components/ui/filter-button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import Create from './create';
 import Edit from './edit';
@@ -26,10 +28,12 @@ export default function Index() {
     const urlParams = new URLSearchParams(window.location.search);
 
     const [searchName, setSearchName] = useState(urlParams.get('name') || '');
+    const [statusFilter, setStatusFilter] = useState(urlParams.get('is_active') || 'all');
 
     const [perPage] = useState(urlParams.get('per_page') || '10');
     const [sortField, setSortField] = useState(urlParams.get('sort') || '');
     const [sortDirection, setSortDirection] = useState(urlParams.get('direction') || 'asc');
+    const [showFilters, setShowFilters] = useState(false);
     const [modalState, setModalState] = useState<HelpdeskCategoryModalState>({
         isOpen: false,
         mode: '',
@@ -59,6 +63,7 @@ export default function Index() {
     const handleFilter = () => {
         router.get(route('helpdesk-categories.index'), {
             name: searchName,
+            is_active: statusFilter !== 'all' ? statusFilter : '',
             per_page: perPage,
             sort: sortField,
             direction: sortDirection
@@ -74,6 +79,7 @@ export default function Index() {
         setSortDirection(direction);
         router.get(route('helpdesk-categories.index'), {
             name: searchName,
+            is_active: statusFilter !== 'all' ? statusFilter : '',
             per_page: perPage,
             sort: field,
             direction
@@ -85,6 +91,7 @@ export default function Index() {
 
     const clearFilters = () => {
         setSearchName('');
+        setStatusFilter('all');
         router.get(route('helpdesk-categories.index'), {per_page: perPage});
     };
 
@@ -207,14 +214,46 @@ export default function Index() {
                         <div className="flex items-center gap-3">
                             <PerPageSelector
                                 routeName="helpdesk-categories.index"
-                                filters={{name: searchName}}
+                                filters={{name: searchName, is_active: statusFilter !== 'all' ? statusFilter : ''}}
                             />
+                            <div className="relative">
+                                <FilterButton
+                                    showFilters={showFilters}
+                                    onToggle={() => setShowFilters(!showFilters)}
+                                />
+                                {statusFilter !== 'all' && (
+                                    <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
+                                        1
+                                    </span>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </CardContent>
 
-
-
+                {showFilters && (
+                    <CardContent className="p-6 bg-blue-50/30 border-b">
+                        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">{t('Status')}</label>
+                                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder={t('Filter by status')} />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="all">{t('All Statuses')}</SelectItem>
+                                        <SelectItem value="1">{t('Active')}</SelectItem>
+                                        <SelectItem value="0">{t('Inactive')}</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            <div className="flex items-end gap-2">
+                                <Button onClick={handleFilter} size="sm">{t('Apply')}</Button>
+                                <Button variant="outline" onClick={clearFilters} size="sm">{t('Clear')}</Button>
+                            </div>
+                        </div>
+                    </CardContent>
+                )}
                 <CardContent className="p-0">
                     <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 max-h-[70vh] rounded-none w-full">
                         <div className="min-w-[800px]">
@@ -230,7 +269,7 @@ export default function Index() {
                                         icon={Tag}
                                         title="No categories found"
                                         description="Get started by creating your first category."
-                                        hasFilters={!!searchName}
+                                        hasFilters={!!(searchName || statusFilter !== 'all')}
                                         onClearFilters={clearFilters}
                                         createPermission="create-helpdesk-categories"
                                         onCreateClick={() => openModal('add')}
@@ -247,7 +286,7 @@ export default function Index() {
                     <Pagination
                         data={categories}
                         routeName="helpdesk-categories.index"
-                        filters={{name: searchName, per_page: perPage}}
+                        filters={{name: searchName, is_active: statusFilter !== 'all' ? statusFilter : '', per_page: perPage}}
                     />
                 </CardContent>
             </Card>

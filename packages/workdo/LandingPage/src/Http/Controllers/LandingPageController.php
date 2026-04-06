@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Workdo\LandingPage\Models\CustomPage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class LandingPageController extends Controller
 {
@@ -143,6 +144,7 @@ class LandingPageController extends Controller
             // Handle image paths - store only filename
             if (isset($validated['config_sections']['sections'])) {
                 $this->processImagePaths($validated['config_sections']['sections']);
+                $this->sanitizeNavigationLinks($validated['config_sections']['sections']);
             }
 
             LandingPageSetting::updateOrCreate(['id' => 1], $validated);
@@ -177,5 +179,95 @@ class LandingPageController extends Controller
             return $imagePath;
         }
         return basename($imagePath);
+    }
+    private function sanitizeNavigationLinks(array &$sections): void
+    {
+        $invalidLinks = [];
+
+        if (isset($sections['header']['navigation_items']) && is_array($sections['header']['navigation_items'])) {
+            foreach ($sections['header']['navigation_items'] as $index => &$item) {
+                if (!is_array($item) || !isset($item['href'])) {
+                    continue;
+                }
+
+                $item['href'] = $this->validateAndNormalizeHref(
+                    $item['href'],
+                    "Header navigation item #" . ($index + 1),
+                    $invalidLinks
+                );
+            }
+        }
+
+        if (isset($sections['footer']['navigation_sections']) && is_array($sections['footer']['navigation_sections'])) {
+            foreach ($sections['footer']['navigation_sections'] as $sectionIndex => &$section) {
+                if (!is_array($section) || !isset($section['links']) || !is_array($section['links'])) {
+                    continue;
+                }
+
+                foreach ($section['links'] as $linkIndex => &$link) {
+                    if (!is_array($link) || !isset($link['href'])) {
+                        continue;
+                    }
+
+                    $link['href'] = $this->validateAndNormalizeHref(
+                        $link['href'],
+                        "Footer section #" . ($sectionIndex + 1) . " link #" . ($linkIndex + 1),
+                        $invalidLinks
+                    );
+                }
+            }
+        }
+
+        if (!empty($invalidLinks)) {
+            throw ValidationException::withMessages([
+                'config_sections' => __('Some links are invalid or unsafe. Allowed formats: #anchor, /path, /page/{slug}, or full https:// URL. Invalid: :links', [
+                    'links' => implode(', ', $invalidLinks),
+                ]),
+            ]);
+        }
+    }
+
+    private function validateAndNormalizeHref(mixed $href, string $label, array &$invalidLinks): string
+    {
+        $normalizedHref = trim((string) $href);
+
+        if ($normalizedHref === '') {
+            return '';
+        }
+
+        if (preg_match('/[\x00-\x1F\x7F]/', $normalizedHref)) {
+            $invalidLinks[] = $label;
+            return '';
+        }
+
+        if (str_starts_with($normalizedHref, '#')) {
+            if (preg_match('/^#[A-Za-z0-9\-_:.]+$/', $normalizedHref) !== 1) {
+                $invalidLinks[] = $label;
+                return '';
+            }
+            return $normalizedHref;
+        }
+
+        if (str_starts_with($normalizedHref, '/')) {
+            if (str_starts_with($normalizedHref, '//')) {
+                $invalidLinks[] = $label;
+                return '';
+            }
+
+            return $normalizedHref;
+        }
+
+        if (filter_var($normalizedHref, FILTER_VALIDATE_URL) === false) {
+            $invalidLinks[] = $label;
+            return '';
+        }
+
+        $scheme = strtolower((string) parse_url($normalizedHref, PHP_URL_SCHEME));
+        if (!in_array($scheme, ['http', 'https'], true)) {
+            $invalidLinks[] = $label;
+            return '';
+        }
+
+        return $normalizedHref;
     }
 }

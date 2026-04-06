@@ -157,7 +157,7 @@ export default function Index() {
                 <div className="flex gap-1">
                     <TooltipProvider>
 
-                        {auth.user?.permissions?.includes('edit-contract-types') && (contracttype.creator_id === auth.user?.id || contracttype.created_by === auth.user?.id) && (
+                        {auth.user?.permissions?.includes('edit-contract-types') && (
                             <Tooltip >
                                 <TooltipTrigger asChild>
                                     <Button variant="ghost" size="sm" onClick={() => openModal('edit', contracttype)} className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700">
@@ -169,7 +169,7 @@ export default function Index() {
                                 </TooltipContent>
                             </Tooltip>
                         )}
-                        {auth.user?.permissions?.includes('delete-contract-types') && (contracttype.creator_id === auth.user?.id || contracttype.created_by === auth.user?.id) && (
+                        {auth.user?.permissions?.includes('delete-contract-types') && (
                             <Tooltip >
                                 <TooltipTrigger asChild>
                                     <Button

@@ -3,6 +3,7 @@ import { Link, router, usePage } from '@inertiajs/react';
 import { getAdminSetting, getImagePath } from '@/utils/helpers';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { normalizeSafeLandingLink } from '../../units/safeLink';
 
 interface FooterProps {
     settings?: any;
@@ -174,7 +175,7 @@ export default function Footer({ settings }: FooterProps) {
     const resolveFooterHref = (rawHref?: string) => {
         if (!rawHref) return route('landing.page');
 
-        const normalizedHref = rawHref.trim();
+        const normalizedHref = normalizeSafeLandingLink(rawHref, route('landing.page'));
 
         if (normalizedHref.startsWith('/page/')) {
             return route('custom-page.show', normalizedHref.replace('/page/', ''));

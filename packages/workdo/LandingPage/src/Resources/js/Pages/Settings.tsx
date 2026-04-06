@@ -7,6 +7,7 @@ import { Save, Eye } from 'lucide-react';
 import { useState } from 'react';
 import { router, useForm } from '@inertiajs/react';
 import { toast } from 'sonner';
+import { isSafeLandingLink } from '../units/safeLink';
 
 // Import section components
 import General from './components/settings/General';
@@ -111,8 +112,43 @@ export default function Settings({ settings, customPages }: SettingsProps) {
             section_visibility: { ...data.config_sections?.section_visibility, [sectionKey]: visible }
         });
     };
+    const collectUnsafeLinks = () => {
+        const invalidLabels: string[] = [];
+        const sections = data.config_sections?.sections || {};
+
+         const maybeCollectUnsafeLink = (href: unknown, label: string) => {
+            const normalizedHref = String(href || '').trim();
+            if (normalizedHref && !isSafeLandingLink(normalizedHref)) {
+                invalidLabels.push(label);
+            }
+        };
+
+        const headerItems = sections.header?.navigation_items || [];
+        headerItems.forEach((item: any, index: number) => {
+            maybeCollectUnsafeLink(item?.href, `Header navigation item #${index + 1}`);
+        });
+        maybeCollectUnsafeLink(sections.hero?.primary_button_link, 'Hero primary button link');
+        maybeCollectUnsafeLink(sections.hero?.secondary_button_link, 'Hero secondary button link');
+
+        const footerSections = sections.footer?.navigation_sections || [];
+        footerSections.forEach((section: any, sectionIndex: number) => {
+            const links = section?.links || [];
+            links.forEach((link: any, linkIndex: number) => {
+                maybeCollectUnsafeLink(link?.href, `Footer section #${sectionIndex + 1} link #${linkIndex + 1}`);
+            });
+        });
+        maybeCollectUnsafeLink(sections.cta?.primary_button_link, 'Engagement CTA primary button link');
+        maybeCollectUnsafeLink(sections.cta?.secondary_button_link, 'Engagement CTA secondary button link');
+
+        return invalidLabels;
+    };
 
     const saveSettings = () => {
+        const invalidLinks = collectUnsafeLinks();
+        if (invalidLinks.length > 0) {
+            toast.warning(t('Malicious or unsafe link detected. Please review: {{links}}', { links: invalidLinks.join(', ') }));
+            return;
+        }
         setIsLoading(true);
 
         post(route('landing-page.store'), {
@@ -125,7 +161,9 @@ export default function Settings({ settings, customPages }: SettingsProps) {
             },
             onError: (errors) => {
                 setIsLoading(false);
-                if (errors.message) {
+                if (errors.config_sections) {
+                    toast.warning(errors.config_sections);
+                } else if (errors.message) {
                     toast.error(errors.message);
                 } else {
                     toast.error(t('Failed to save settings'));

@@ -43,7 +43,7 @@
                 position: fixed;
                 right: 0.75rem;
                 bottom: 0.75rem;
-                max-width: calc(100vw - 1.5rem);
+                max-width: none;
             }
 
             .kyro-chat-launcher,
@@ -66,7 +66,7 @@
         <script src="https://helpdesk.startuplab.cc/livechat-loader.js"></script>
         <script>
             (function () {
-                const idleDelayMs = 30000;
+                const idleDelayMs = 10000;
                 const launcherSelectors = [
                     '.kyro-chat-launcher',
                     'iframe[src*="helpdesk.startuplab.cc"]',
@@ -160,6 +160,9 @@
                     for (const selector of launcherSelectors) {
                         const elements = Array.from(document.querySelectorAll(selector));
                         const candidate = elements.find((el) => {
+                            if (el.classList.contains('kyro-chat-reveal-tab')) {
+                                return false;
+                            }
                             const style = window.getComputedStyle(el);
                             const rect = el.getBoundingClientRect();
                             const fixedLike = style.position === 'fixed' || style.position === 'sticky';

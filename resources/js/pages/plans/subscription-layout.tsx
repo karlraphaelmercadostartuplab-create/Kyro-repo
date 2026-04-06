@@ -62,6 +62,7 @@ function SubscriptionLayout({ plan, allModules, pricingPeriod, onSubscribe, bank
     const [couponError, setCouponError] = useState<string>('');
     const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
     const [fileError, setFileError] = useState<string>('');
+    const isUnlimitedUsers = (userCount: unknown) => Number(userCount) === -1;
     
     // Add payment method buttons hook
     const paymentButtons = usePageButtons('paymentMethodBtn', {        
@@ -227,7 +228,7 @@ function SubscriptionLayout({ plan, allModules, pricingPeriod, onSubscribe, bank
                         <div className="flex justify-between">
                             <span className="text-gray-600 dark:text-gray-400">{t('Users')}</span>
                             <span className="font-medium text-gray-900 dark:text-white">           
-                                {plan.number_of_users === -1 ? t('Unlimited users') : `${plan.number_of_users} ${t('users')}`}
+                                {isUnlimitedUsers(plan.number_of_users) ? t('Unlimited users') : `${plan.number_of_users} ${t('users')}`}
                             </span>
                         </div>
                         <div className="flex justify-between">
@@ -320,7 +321,7 @@ function SubscriptionLayout({ plan, allModules, pricingPeriod, onSubscribe, bank
                                 </svg>
                                 <span className="text-sm font-medium">{t('Users')}</span>
                             </div>
-                            <span className="text-sm text-gray-600 dark:text-gray-400">{plan.number_of_users === -1 ? t('Unlimited Users') : plan.number_of_users}</span>
+                            <span className="text-sm text-gray-600 dark:text-gray-400">{isUnlimitedUsers(plan.number_of_users) ? t('Unlimited Users') : plan.number_of_users}</span>
                         </div>
                         <div className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
                             <div className="flex items-center space-x-2">

@@ -67,10 +67,10 @@ function AuthenticatedLayoutContent({
                 dir={settings.layoutDirection === 'rtl' ? 'rtl' : 'ltr'}
             >
                 <header
-                    className={`bg-background mb-2 flex h-12 min-w-0 shrink-0 items-center justify-between gap-2 overflow-x-hidden border-b px-4 py-1`}
+                    className={`bg-background mb-2 flex h-20 min-w-0 shrink-0 flex-wrap items-start justify-between gap-2 overflow-visible border-b px-4 py-3 sm:h-12 sm:flex-nowrap sm:items-center sm:overflow-x-hidden sm:py-1`}
                     >
                     {/* Sidebar + Breadcrumb */}
-                    <div className={`flex min-w-0 items-center gap-2 ${ settings.layoutDirection === "rtl" ? "order-2 flex-row-reverse" : "order-1" }`} >
+                    <div className={`flex min-w-0 flex-1 items-start gap-2 ${ settings.layoutDirection === "rtl" ? "order-2 flex-row-reverse" : "order-1" } sm:items-center`} >
                         {/* SidebarTrigger */}
                         <SidebarTrigger className={`-ml-1 ${ settings.layoutDirection === "rtl" ? "order-3" : "order-1" }`} />
 
@@ -78,8 +78,8 @@ function AuthenticatedLayoutContent({
                         <Separator orientation="vertical" className="mr-2 h-4 order-2" />
 
                         {/* Breadcrumb */}
-                        <Breadcrumb className={`min-w-0 ${ settings.layoutDirection === "rtl" ? "order-1" : "order-3" }`} >
-                            <BreadcrumbList className={`flex min-w-0 flex-wrap ${ settings.layoutDirection === "rtl" ? "justify-end" : "justify-start" }`} >
+                        <Breadcrumb className={`min-w-0 flex-1 ${ settings.layoutDirection === "rtl" ? "order-1" : "order-3" }`} >
+                            <BreadcrumbList className={`flex min-w-0 flex-wrap text-xs sm:text-sm ${ settings.layoutDirection === "rtl" ? "justify-end" : "justify-start" }`} >
                             <BreadcrumbItem>
                                 <BreadcrumbLink asChild>
                                     <Link href={route("dashboard")}>{t('Dashboard')}</Link>

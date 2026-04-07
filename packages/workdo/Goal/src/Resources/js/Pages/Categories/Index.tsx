@@ -105,7 +105,11 @@ export default function Index() {
             key: 'description',
             header: t('Description'),
             sortable: false,
-            render: (value: string) => value || '-'
+            render: (value: string) => value ? (
+                <div className="max-w-[420px] whitespace-pre-wrap break-all">
+                    {value}
+                </div>
+            ) : '-'
         },
         {
             key: 'is_active',

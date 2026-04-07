@@ -50,33 +50,33 @@ export default function View({ assetLocation }: ViewProps) {
                         <h3 className="text-sm font-semibold text-gray-900 mb-3">{t('Address')}</h3>
                         <div className="space-y-2">
                             {assetLocation.address && (
-                                <div className="flex justify-between">
+                                <div className="flex items-start justify-between gap-3">
                                     <span className="text-sm text-gray-600">{t('Address')}</span>
-                                    <span className="text-sm text-gray-900">{assetLocation.address}</span>
+                                    <span className="text-sm text-gray-900 text-right break-words max-w-[65%]">{assetLocation.address}</span>
                                 </div>
                             )}
                             {assetLocation.city && (
-                                <div className="flex justify-between">
+                                <div className="flex items-start justify-between gap-3">
                                     <span className="text-sm text-gray-600">{t('City')}</span>
-                                    <span className="text-sm text-gray-900">{assetLocation.city}</span>
+                                   <span className="text-sm text-gray-900 text-right break-words max-w-[65%]">{assetLocation.country}</span>
                                 </div>
                             )}
                             {assetLocation.state && (
-                                <div className="flex justify-between">
+                                <div className="flex items-start justify-between gap-3">
                                     <span className="text-sm text-gray-600">{t('State')}</span>
-                                    <span className="text-sm text-gray-900">{assetLocation.state}</span>
+                                    <span className="text-sm text-gray-900 text-right break-words max-w-[65%]">{assetLocation.state}</span>
                                 </div>
                             )}
                             {assetLocation.country && (
-                                <div className="flex justify-between">
+                                <div className="flex items-start justify-between gap-3">
                                     <span className="text-sm text-gray-600">{t('Country')}</span>
                                     <span className="text-sm text-gray-900">{assetLocation.country}</span>
                                 </div>
                             )}
                             {assetLocation.postal_code && (
-                                <div className="flex justify-between">
+                                <div className="flex items-start justify-between gap-3">
                                     <span className="text-sm text-gray-600">{t('Postal Code')}</span>
-                                    <span className="text-sm text-gray-900">{assetLocation.postal_code}</span>
+                                    <span className="text-sm text-gray-900 text-right break-words max-w-[65%]">{assetLocation.postal_code}</span>
                                 </div>
                             )}
                         </div>

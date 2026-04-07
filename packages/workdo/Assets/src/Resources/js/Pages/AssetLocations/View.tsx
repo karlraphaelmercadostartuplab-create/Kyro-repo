@@ -58,7 +58,7 @@ export default function View({ assetLocation }: ViewProps) {
                             {assetLocation.city && (
                                 <div className="flex items-start justify-between gap-3">
                                     <span className="text-sm text-gray-600">{t('City')}</span>
-                                   <span className="text-sm text-gray-900 text-right break-words max-w-[65%]">{assetLocation.country}</span>
+                                    <span className="text-sm text-gray-900 text-right break-words max-w-[65%]">{assetLocation.city}</span>
                                 </div>
                             )}
                             {assetLocation.state && (
@@ -112,7 +112,7 @@ export default function View({ assetLocation }: ViewProps) {
                 {assetLocation.description && (
                     <div className="border-t pt-4">
                         <h3 className="text-sm font-semibold text-gray-900 mb-3">{t('Description')}</h3>
-                        <p className="text-sm text-gray-700">{assetLocation.description}</p>
+                        <p className="text-sm text-gray-700 break-words whitespace-pre-wrap">{assetLocation.description}</p>
                     </div>
                 )}
             </div>

@@ -151,7 +151,7 @@ export default function Index() {
             header: t('Status'),
             sortable: false,
             render: (value: string) => (
-                <span className={`px-2 py-1 rounded-full text-sm ${
+                <span className={`inline-flex items-center px-2 py-1 rounded-full text-sm leading-5 whitespace-nowrap ${
                     value === 'ahead' ? 'bg-green-100 text-green-800' :
                     value === 'on_track' ? 'bg-blue-100 text-blue-800' :
                     value === 'behind' ? 'bg-yellow-100 text-yellow-800' :
@@ -393,7 +393,7 @@ export default function Index() {
                                                 </div>
 
                                                 <div className="flex justify-between items-center pt-3 border-t">
-                                                    <span className={`px-2 py-1 rounded-full text-sm ${
+                                                    <span className={`inline-flex items-center px-2 py-1 rounded-full text-sm leading-5 whitespace-nowrap ${
                                                         tracking.on_track_status === 'ahead' ? 'bg-green-100 text-green-800' :
                                                         tracking.on_track_status === 'on_track' ? 'bg-blue-100 text-blue-800' :
                                                         tracking.on_track_status === 'behind' ? 'bg-yellow-100 text-yellow-800' :

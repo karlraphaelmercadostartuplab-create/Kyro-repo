@@ -37,6 +37,7 @@ function AuthenticatedLayoutContent({
     const { t } = useTranslation();
     const { auth, companyAllSetting, adminAllSetting } = usePage<PageProps>().props as any;
     const { settings } = useBrand();
+    const mobileBreadcrumbs = breadcrumbs?.length ? [breadcrumbs[breadcrumbs.length - 1]] : [];
     useFavicon();
     useFlashMessages();
 
@@ -79,7 +80,28 @@ function AuthenticatedLayoutContent({
 
                         {/* Breadcrumb */}
                         <Breadcrumb className={`min-w-0 flex-1 ${ settings.layoutDirection === "rtl" ? "order-1" : "order-3" }`} >
-                            <BreadcrumbList className={`flex min-w-0 flex-wrap text-xs sm:text-sm ${ settings.layoutDirection === "rtl" ? "justify-end" : "justify-start" }`} >
+                            <BreadcrumbList className={`flex min-w-0 flex-wrap text-xs sm:hidden ${ settings.layoutDirection === "rtl" ? "justify-end" : "justify-start" }`} >
+                            <BreadcrumbItem>
+                                <BreadcrumbLink asChild>
+                                    <Link href={route("dashboard")}>{t('Dashboard')}</Link>
+                                </BreadcrumbLink>
+                            </BreadcrumbItem>
+                            {mobileBreadcrumbs.map((crumb, index) => (
+                                <Fragment key={`mobile-${index}`}>
+                                <BreadcrumbSeparator className={settings.layoutDirection === 'rtl' ? 'rotate-180' : ''} />
+                                <BreadcrumbItem>
+                                    {crumb.url ? (
+                                    <BreadcrumbLink asChild>
+                                        <Link href={crumb.url}>{crumb.label}</Link>
+                                    </BreadcrumbLink>
+                                    ) : (
+                                    <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
+                                    )}
+                                </BreadcrumbItem>
+                                </Fragment>
+                            ))}
+                            </BreadcrumbList>
+                            <BreadcrumbList className={`hidden min-w-0 flex-wrap text-sm sm:flex ${ settings.layoutDirection === "rtl" ? "justify-end" : "justify-start" }`} >
                             <BreadcrumbItem>
                                 <BreadcrumbLink asChild>
                                     <Link href={route("dashboard")}>{t('Dashboard')}</Link>

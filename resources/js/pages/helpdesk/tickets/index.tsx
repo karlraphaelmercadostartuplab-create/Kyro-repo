@@ -353,9 +353,8 @@ export default function Index() {
                 {/* Table Content */}
                 <CardContent className="p-0">
                     {viewMode === 'list' ? (
-                        <>
-                            <div className="overflow-x-auto overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 max-h-[70vh] rounded-none w-full hidden md:block">
-                                <div className="min-w-[720px] lg:min-w-0">
+                        <div className="overflow-x-auto overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 max-h-[70vh] rounded-none w-full">
+                            <div className="min-w-[720px]">
                             <DataTable
                                 data={tickets.data}
                                 columns={tableColumns}
@@ -378,166 +377,67 @@ export default function Index() {
                                 }
                             />
                             </div>
-                            </div>
-                            <div className="block max-h-[70vh] overflow-y-auto p-4 md:hidden">
-                                {tickets.data.length > 0 ? (
-                                    <div className="grid grid-cols-1 gap-4">
-                                        {tickets.data.map((ticket) => (
-                                            <Card key={ticket.id} className="overflow-hidden border border-gray-200">
-                                                <div className="space-y-4 p-4">
-                                                    <div className="flex items-start gap-3">
-                                                        <div className="rounded-lg bg-primary/10 p-2">
-                                                            <Ticket className="h-5 w-5 text-primary" />
-                                                        </div>
-                                                        <div className="min-w-0 flex-1">
-                                                            {auth.user?.permissions?.includes('view-helpdesk-tickets') ? (
-                                                                <h3 className="cursor-pointer break-words text-base font-medium text-blue-600 hover:text-blue-700" onClick={() => router.get(route('helpdesk-tickets.show', ticket.id))}>
-                                                                    #{ticket.ticket_id}
-                                                                </h3>
-                                                            ) : (
-                                                                <h3 className="break-words text-base font-medium text-gray-900">#{ticket.ticket_id}</h3>
-                                                            )}
-                                                            <p className="mt-1 break-words text-sm text-gray-900">{ticket.title}</p>
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="flex flex-wrap gap-2">
-                                                        <div className="text-xs">{getStatusBadge(ticket.status)}</div>
-                                                        <div className="text-xs">{getPriorityBadge(ticket.priority)}</div>
-                                                    </div>
-
-                                                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                                                        <div className="min-w-0">
-                                                            <p className="mb-1 text-xs font-medium text-gray-600">{t('Category')}</p>
-                                                            <p className="break-words text-sm text-gray-900">{ticket.category?.name || '-'}</p>
-                                                        </div>
-                                                        <div className="min-w-0">
-                                                            <p className="mb-1 text-xs font-medium text-gray-600">{t('Created By')}</p>
-                                                            <p className="break-words text-sm text-gray-900">{ticket.creator?.name || '-'}</p>
-                                                        </div>
-                                                        <div className="min-w-0">
-                                                            <p className="mb-1 text-xs font-medium text-gray-600">{t('Created At')}</p>
-                                                            <p className="break-words text-sm text-gray-900">{ticket.created_at ? formatDate(ticket.created_at) : '-'}</p>
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="flex flex-wrap justify-end gap-1 border-t pt-3">
-                                                        <TooltipProvider>
-                                                            {auth.user?.permissions?.includes('view-helpdesk-tickets') && (
-                                                                <Tooltip delayDuration={300}>
-                                                                    <TooltipTrigger asChild>
-                                                                        <Button variant="ghost" size="sm" onClick={() => router.get(route('helpdesk-tickets.show', ticket.id))} className="h-8 w-8 p-0 text-green-600">
-                                                                            <Eye className="h-4 w-4" />
-                                                                        </Button>
-                                                                    </TooltipTrigger>
-                                                                    <TooltipContent>
-                                                                        <p>{t('View')}</p>
-                                                                    </TooltipContent>
-                                                                </Tooltip>
-                                                            )}
-                                                            {auth.user?.permissions?.includes('edit-helpdesk-tickets') && (
-                                                                <Tooltip delayDuration={300}>
-                                                                    <TooltipTrigger asChild>
-                                                                        <Button variant="ghost" size="sm" onClick={() => openModal('edit', ticket)} className="h-8 w-8 p-0 text-blue-600">
-                                                                            <EditIcon className="h-4 w-4" />
-                                                                        </Button>
-                                                                    </TooltipTrigger>
-                                                                    <TooltipContent>
-                                                                        <p>{t('Edit')}</p>
-                                                                    </TooltipContent>
-                                                                </Tooltip>
-                                                            )}
-                                                            {auth.user?.permissions?.includes('delete-helpdesk-tickets') && (
-                                                                <Tooltip delayDuration={300}>
-                                                                    <TooltipTrigger asChild>
-                                                                        <Button
-                                                                            variant="ghost"
-                                                                            size="sm"
-                                                                            onClick={() => openDeleteDialog(ticket.id)}
-                                                                            className="h-8 w-8 p-0 text-red-600"
-                                                                        >
-                                                                            <Trash2 className="h-4 w-4" />
-                                                                        </Button>
-                                                                    </TooltipTrigger>
-                                                                    <TooltipContent>
-                                                                        <p>{t('Delete')}</p>
-                                                                    </TooltipContent>
-                                                                </Tooltip>
-                                                            )}
-                                                        </TooltipProvider>
-                                                    </div>
-                                                </div>
-                                            </Card>
-                                        ))}
-                                    </div>
-                                ) : (
-                                    <NoRecordsFound
-                                        icon={Ticket}
-                                        title={t('No tickets found')}
-                                        description={t('Get started by creating your first support ticket.')}
-                                        hasFilters={!!(filters.title || filters.status || filters.priority || filters.category_id || filters.company_id)}
-                                        onClearFilters={clearFilters}
-                                        createPermission="create-helpdesk-tickets"
-                                        onCreateClick={() => openModal('add')}
-                                        createButtonText={t('Create Ticket')}
-                                    />
-                                )}
-                            </div>
-                        </>
+                        </div>
                     ) : (
                         <div className="max-h-[70vh] overflow-auto p-4">
                             {tickets.data.length > 0 ? (
                                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
                                     {tickets.data.map((ticket) => (
                                         <Card key={ticket.id} className="overflow-hidden border border-gray-200">
-                                            <div className="p-4">
-                                                <div className="flex items-center gap-3 mb-3">
-                                                    <div className="p-2 bg-primary/10 rounded-lg">
+                                            <div className="space-y-4 p-4">
+                                                <div className="flex items-start gap-3">
+                                                    <div className="rounded-lg bg-primary/10 p-2">
                                                         <Ticket className="h-5 w-5 text-primary" />
                                                     </div>
                                                     <div className="min-w-0 flex-1">
                                                         {auth.user?.permissions?.includes('view-helpdesk-tickets') ? (
-                                                            <h3 className="cursor-pointer break-words text-base text-blue-600 hover:text-blue-700" onClick={() => router.get(route('helpdesk-tickets.show', ticket.id))}>#{ticket.ticket_id}</h3>
+                                                            <h3 className="cursor-pointer break-words text-base font-medium text-blue-600 hover:text-blue-700" onClick={() => router.get(route('helpdesk-tickets.show', ticket.id))}>#{ticket.ticket_id}</h3>
                                                         ) : (
-                                                            <h3 className="break-words text-base text-gray-900">#{ticket.ticket_id}</h3>
+                                                            <h3 className="break-words text-base font-medium text-gray-900">#{ticket.ticket_id}</h3>
                                                         )}
+                                                        <p className="mt-1 break-words text-sm text-gray-900" title={ticket.title}>{ticket.title}</p>
                                                     </div>
                                                 </div>
 
-                                                <div className="space-y-3 mb-3">
-                                                    <div>
+                                                <div className="space-y-3">
+                                                    <div className="hidden sm:block">
                                                         <p className="text-xs font-medium text-gray-600 mb-2">{t('Title')}</p>
                                                         <p className="break-words text-xs text-gray-900" title={ticket.title}>{ticket.title}</p>
                                                     </div>
 
-                                                    <div className="grid grid-cols-2 gap-2">
-                                                        <div>
+                                                    <div className="flex flex-wrap gap-2 sm:hidden">
+                                                        <div className="text-xs">{getStatusBadge(ticket.status)}</div>
+                                                        <div className="text-xs">{getPriorityBadge(ticket.priority)}</div>
+                                                    </div>
+
+                                                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                                                        <div className="min-w-0">
                                                             <p className="text-xs font-medium text-gray-600 mb-1">{t('Status')}</p>
                                                             <div className="text-xs">{getStatusBadge(ticket.status)}</div>
                                                         </div>
-                                                        <div>
+                                                        <div className="min-w-0">
                                                             <p className="text-xs font-medium text-gray-600 mb-1">{t('Priority')}</p>
                                                             <div className="text-xs">{getPriorityBadge(ticket.priority)}</div>
                                                         </div>
                                                     </div>
 
-                                                    <div className="grid grid-cols-2 gap-2">
-                                                        <div>
+                                                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                                                        <div className="min-w-0">
                                                             <p className="text-xs font-medium text-gray-600 mb-1">{t('Category')}</p>
-                                                            <p className="break-words text-xs text-gray-900">{ticket.category?.name || '-'}</p>
+                                                            <p className="break-words text-sm text-gray-900">{ticket.category?.name || '-'}</p>
                                                         </div>
-                                                        <div>
+                                                        <div className="min-w-0">
                                                             <p className="text-xs font-medium text-gray-600 mb-1">{t('Created By')}</p>
-                                                            <p className="break-words text-xs text-gray-900">{ticket.creator?.name || '-'}</p>
+                                                            <p className="break-words text-sm text-gray-900">{ticket.creator?.name || '-'}</p>
                                                         </div>
-                                                        <div>
+                                                        <div className="min-w-0 sm:col-span-2">
                                                             <p className="text-xs font-medium text-gray-600 mb-1">{t('Created At')}</p>
-                                                            <p className="break-words text-xs text-gray-900">{ticket.created_at ? formatDate(ticket.created_at) : '-'}</p>
+                                                            <p className="break-words text-sm text-gray-900">{ticket.created_at ? formatDate(ticket.created_at) : '-'}</p>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <div className="flex items-center justify-end pt-3 border-t">
+                                                <div className="flex flex-wrap justify-end gap-1 border-t pt-3">
                                                     <div className="flex gap-1">
                                                         <TooltipProvider>
                                                             {auth.user?.permissions?.includes('view-helpdesk-tickets') && (

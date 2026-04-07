@@ -150,7 +150,9 @@ export default function Index() {
             key: 'notes',
             header: t('Notes'),
             sortable: false,
-            render: (value: string) => value || '-'
+            render: (value: string) => value ? (
+                <div className="max-w-md whitespace-pre-wrap break-all">{value}</div>
+            ) : '-'
         },
         ...(auth.user?.permissions?.some((p: string) => ['edit-goal-contributions', 'delete-goal-contributions'].includes(p)) ? [{
             key: 'actions',
@@ -370,7 +372,7 @@ export default function Index() {
                                                     {contribution.notes && (
                                                         <div>
                                                             <p className="text-xs font-medium text-gray-600 mb-1">{t('Notes')}</p>
-                                                            <p className="text-xs text-gray-900">{contribution.notes}</p>
+                                                            <p className="text-xs text-gray-900 whitespace-pre-wrap break-all">{contribution.notes}</p>
                                                         </div>
                                                     )}
                                                 </div>

@@ -76,7 +76,7 @@ export default function Show({ page, landingPageSettings }: ShowProps) {
                     <div className="prose prose-lg dark:prose-invert max-w-none">
                         <div 
                            dangerouslySetInnerHTML={{ __html: normalizedContent }}
-                            className="landing-content text-gray-700 dark:text-gray-300 leading-relaxed [&_.text-gray-900]:text-gray-900 dark:[&_.text-gray-900]:text-white [&_.text-gray-800]:text-gray-800 dark:[&_.text-gray-800]:text-gray-100 [&_.text-gray-700]:text-gray-700 dark:[&_.text-gray-700]:text-gray-300 [&_.text-gray-600]:text-gray-600 dark:[&_.text-gray-600]:text-gray-400"
+                            className="landing-content text-gray-700 dark:text-gray-300 leading-relaxed dark:[&_*]:!text-gray-300 dark:[&_h1]:!text-white dark:[&_h2]:!text-white dark:[&_h3]:!text-white dark:[&_h4]:!text-white dark:[&_strong]:!text-white [&_.text-gray-900]:text-gray-900 dark:[&_.text-gray-900]:text-white [&_.text-gray-800]:text-gray-800 dark:[&_.text-gray-800]:text-gray-100 [&_.text-gray-700]:text-gray-700 dark:[&_.text-gray-700]:text-gray-300 [&_.text-gray-600]:text-gray-600 dark:[&_.text-gray-600]:text-gray-400"
                         />
                     </div>
                 </div>

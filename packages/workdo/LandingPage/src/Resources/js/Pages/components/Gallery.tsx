@@ -86,19 +86,19 @@ export default function Gallery({ settings }: GalleryProps) {
         
         <button 
             onClick={previousImage}
-            className="absolute left-3 sm:left-6 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-2 sm:p-3 rounded-full shadow-xl transition-all hover:scale-110"
+            className="absolute left-3 sm:left-6 top-1/2 transform -translate-y-1/2 bg-black/70 hover:bg-black/80 text-white p-2 sm:p-3 rounded-full shadow-xl transition-all hover:scale-110 border border-white/40"
         >
-            <svg className="w-5 h-5 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+           <svg className="w-5 h-5 sm:w-8 sm:h-8" fill="none" viewBox="0 0 24 24">
+                <path stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
             </svg>
         </button>
         
         <button 
             onClick={nextImage}
-            className="absolute right-3 sm:right-6 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-2 sm:p-3 rounded-full shadow-xl transition-all hover:scale-110"
+            className="absolute right-3 sm:right-6 top-1/2 transform -translate-y-1/2 bg-black/70 hover:bg-black/80 text-white p-2 sm:p-3 rounded-full shadow-xl transition-all hover:scale-110 border border-white/40"
         >
-            <svg className="w-5 h-5 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+           <svg className="w-5 h-5 sm:w-8 sm:h-8" fill="none" viewBox="0 0 24 24">
+                <path stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
             </svg>
         </button>
         
@@ -265,8 +265,8 @@ export default function Gallery({ settings }: GalleryProps) {
                                 }}
                                 className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-4 rounded-full backdrop-blur-md transition-all duration-200 hover:scale-110 shadow-xl border border-white/20 group"
                             >
-                                <svg className="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                                 <svg className="w-6 h-6 text-white drop-shadow-sm group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
                                 </svg>
                             </button>
                             
@@ -277,8 +277,8 @@ export default function Gallery({ settings }: GalleryProps) {
                                 }}
                                 className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-4 rounded-full backdrop-blur-md transition-all duration-200 hover:scale-110 shadow-xl border border-white/20 group"
                             >
-                                <svg className="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                                <svg className="w-6 h-6 text-white drop-shadow-sm group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
                                 </svg>
                             </button>
                             

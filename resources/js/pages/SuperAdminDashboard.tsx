@@ -43,14 +43,14 @@ export default function SuperAdminDashboard({ stats, chartData }: SuperAdminDash
                     </CardContent>
                 </Card>
 
-                <Card className="relative overflow-hidden bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200">
+                <Card className="relative overflow-hidden bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200 dark:from-blue-900/40 dark:to-blue-800/30 dark:border-blue-700/50">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium text-blue-700">{t('Order Payments')}</CardTitle>
-                        <CreditCard className="h-8 w-8 text-blue-700 opacity-80" />
+                         <CardTitle className="text-sm font-medium text-blue-700 dark:text-blue-200">{t('Order Payments')}</CardTitle>
+                        <CreditCard className="h-8 w-8 text-blue-700 opacity-80 dark:text-blue-200" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-blue-700">{formatCurrency(stats.order_payments)}</div>
-                        <p className="text-xs text-blue-700 opacity-80 mt-1">{t('Total payments')}</p>
+                        <div className="text-2xl font-bold text-blue-700 dark:text-blue-200">{formatCurrency(stats.order_payments)}</div>
+                        <p className="text-xs text-blue-700 opacity-80 mt-1 dark:text-blue-200">{t('Total payments')}</p>
                     </CardContent>
                 </Card>
 

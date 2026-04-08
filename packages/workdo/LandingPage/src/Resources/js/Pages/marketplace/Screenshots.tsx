@@ -177,8 +177,8 @@ export default function Screenshots({ settings, title: propTitle, subtitle: prop
                                 }}
                                 className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-4 rounded-full backdrop-blur-md transition-all duration-200 hover:scale-110 shadow-xl border border-white/20"
                             >
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
                                 </svg>
                             </button>
                             <button
@@ -188,8 +188,8 @@ export default function Screenshots({ settings, title: propTitle, subtitle: prop
                                 }}
                                 className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-4 rounded-full backdrop-blur-md transition-all duration-200 hover:scale-110 shadow-xl border border-white/20"
                             >
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
                                 </svg>
                             </button>
                             <button
@@ -331,8 +331,8 @@ export default function Screenshots({ settings, title: propTitle, subtitle: prop
                                 }}
                                 className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-4 rounded-full backdrop-blur-md transition-all duration-200 hover:scale-110 shadow-xl border border-white/20 group"
                             >
-                                <svg className="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                                <svg className="w-6 h-6 text-white drop-shadow-sm group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
                                 </svg>
                             </button>
                             
@@ -343,8 +343,8 @@ export default function Screenshots({ settings, title: propTitle, subtitle: prop
                                 }}
                                 className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-4 rounded-full backdrop-blur-md transition-all duration-200 hover:scale-110 shadow-xl border border-white/20 group"
                             >
-                                <svg className="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                                <svg className="w-6 h-6 text-white drop-shadow-sm group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
                                 </svg>
                             </button>
                             

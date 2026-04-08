@@ -94,7 +94,7 @@ export default function Features({ settings }: FeaturesProps) {
 
         if (config.layout === 'grid') {
             return (
-                <div key={index} className="text-center p-6 hover:bg-gray-50 rounded-lg transition-colors">
+                <div key={index} className="text-center p-6 rounded-lg transition-colors hover:bg-gray-50 dark:hover:bg-white/5">
                     <div className="w-16 h-16 mx-auto mb-4 rounded-lg flex items-center justify-center" style={{ backgroundColor: colors.primary }}>
                         <IconComponent className="h-8 w-8 text-white" />
                     </div>

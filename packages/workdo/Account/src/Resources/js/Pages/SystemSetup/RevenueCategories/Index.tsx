@@ -128,14 +128,14 @@ export default function Index() {
             >
                 <Head title={t('Revenue Categories')} />
 
-                <div className="flex flex-col md:flex-row gap-8">
-                    <div className="md:w-64 flex-shrink-0">
+                <div className="flex flex-col md:flex-row gap-4 md:gap-8">
+                    <div className="w-full md:w-64 flex-shrink-0">
                         <SystemSetupSidebar activeItem="revenue-categories" />
                     </div>
 
                     <div className="flex-1">
                         <Card className="shadow-sm">
-                            <CardContent className="p-6">
+                            <CardContent className="p-4 md:p-6">
                                 <div className="flex justify-between items-center mb-6">
                                     <h3 className="text-lg font-medium">{t('Revenue Categories')}</h3>
                                     {auth.user?.permissions?.includes('create-revenue-categories') && (
@@ -151,8 +151,8 @@ export default function Index() {
                                         </Tooltip>
                                     )}
                                 </div>
-                                <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 max-h-[75vh] rounded-none w-full">
-                                    <div className="min-w-[600px]">
+                                <div className="w-full overflow-x-auto rounded-none">
+                                    <div className="min-w-[640px]">
                                         <DataTable
                                             data={revenuecategories}
                                             columns={tableColumns}

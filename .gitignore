@@ -26,3 +26,8 @@
 /storage/*.key
 /storage/app/*
 /bootstrap/cache/*.php
+
+# OS and generated frontend artifacts
+.DS_Store
+public/.DS_Store
+/public/build

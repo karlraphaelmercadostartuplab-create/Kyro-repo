@@ -73,10 +73,10 @@ function AuthenticatedLayoutContent({
                     {/* Sidebar + Breadcrumb */}
                     <div className={`flex min-w-0 flex-1 items-start gap-2 ${ settings.layoutDirection === "rtl" ? "order-2 flex-row-reverse" : "order-1" } sm:items-center`} >
                         {/* SidebarTrigger */}
-                        <SidebarTrigger className={`-ml-1 ${ settings.layoutDirection === "rtl" ? "order-3" : "order-1" }`} />
+                        <SidebarTrigger className={`-ml-1 rtl:ml-0 rtl:-mr-1 ${ settings.layoutDirection === "rtl" ? "order-3" : "order-1" }`} />
 
                         {/* Separator */}
-                        <Separator orientation="vertical" className="mr-2 h-4 order-2" />
+                        <Separator orientation="vertical" className="mx-2 h-4 order-2" />
 
                         {/* Breadcrumb */}
                         <Breadcrumb className={`min-w-0 flex-1 ${ settings.layoutDirection === "rtl" ? "order-1" : "order-3" }`} >
@@ -139,7 +139,7 @@ function AuthenticatedLayoutContent({
                                 onClick={() => router.post(route('users.leave-impersonation'))}
                                 className="text-orange-600 border-orange-600 hover:bg-orange-50"
                             >
-                                <UserX className="h-4 w-4 mr-2" />
+                                <UserX className="h-4 w-4 mr-2 rtl:mr-0 rtl:ml-2" />
                                 {t('Leave Login As User')}
                             </Button>
                         )}

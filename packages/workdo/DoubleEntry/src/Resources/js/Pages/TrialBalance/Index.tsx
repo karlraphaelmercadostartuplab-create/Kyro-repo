@@ -145,33 +145,85 @@ export default function Index() {
                     <CardContent className="p-4 sm:p-6 lg:p-8">
                         {trialBalance.accounts && trialBalance.accounts.length > 0 ? (
                             <>
-                                <div className="overflow-x-auto">
-                                    <div className="min-w-[640px] space-y-1 pr-1">
-                                        <div className="grid grid-cols-12 gap-4 py-2 border-b-2 border-gray-300 font-bold">
-                                            <div className="col-span-2">{t('Account Code')}</div>
-                                            <div className="col-span-6">{t('Account Name')}</div>
-                                            <div className="col-span-2 text-right">{t('Debit')}</div>
-                                            <div className="col-span-2 text-right">{t('Credit')}</div>
+                                <div className="space-y-3 md:hidden">
+                                    {trialBalance.accounts.map((account) => (
+                                        <div key={account.id} className="rounded-lg border border-gray-200 p-3 bg-white">
+                                            <div className="flex items-start justify-between gap-3">
+                                                <div className="min-w-0">
+                                                    <p className="text-xs text-gray-500">{t('Account Code')}</p>
+                                                    <p className="text-sm font-semibold text-green-600">{account.account_code}</p>
+                                                </div>
+                                                <div className="text-right min-w-0">
+                                                    <p className="text-xs text-gray-500">{t('Account Name')}</p>
+                                                    <p className="text-sm font-medium break-words">{account.account_name}</p>
+                                                </div>
+                                            </div>
+                                            <div className="mt-3 grid grid-cols-2 gap-3">
+                                                <div className="rounded-md bg-gray-50 px-3 py-2">
+                                                    <p className="text-xs text-gray-500">{t('Debit')}</p>
+                                                    <p className="text-sm font-semibold tabular-nums whitespace-nowrap">
+                                                        {account.debit > 0 ? formatCurrency(account.debit) : '-'}
+                                                    </p>
+                                                </div>
+                                                <div className="rounded-md bg-gray-50 px-3 py-2">
+                                                    <p className="text-xs text-gray-500">{t('Credit')}</p>
+                                                    <p className="text-sm font-semibold tabular-nums whitespace-nowrap text-right">
+                                                        {account.credit > 0 ? formatCurrency(account.credit) : '-'}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+
+                                    <div className="pt-3 mt-1 border-t-2 border-gray-400 space-y-2">
+                                        <div className="flex items-center justify-between gap-3">
+                                            <span className="font-bold">{t('Total Debit')}</span>
+                                            <span className="font-bold tabular-nums whitespace-nowrap">{formatCurrency(trialBalance.total_debit)}</span>
+                                        </div>
+                                        <div className="flex items-center justify-between gap-3">
+                                            <span className="font-bold">{t('Total Credit')}</span>
+                                            <span className="font-bold tabular-nums whitespace-nowrap">{formatCurrency(trialBalance.total_credit)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="hidden md:block overflow-x-auto">
+                                    <div className="space-y-1 pr-1" style={{ minWidth: '720px' }}>
+                                        <div
+                                            className="grid gap-4 py-2 border-b-2 border-gray-300 font-bold text-sm"
+                                            style={{ gridTemplateColumns: '100px minmax(220px, 1fr) 140px 140px' }}
+                                        >
+                                            <div className="whitespace-nowrap">{t('Account Code')}</div>
+                                            <div className="whitespace-nowrap">{t('Account Name')}</div>
+                                            <div className="text-right whitespace-nowrap">{t('Debit')}</div>
+                                            <div className="text-right whitespace-nowrap">{t('Credit')}</div>
                                         </div>
                                         {trialBalance.accounts.map((account) => (
-                                            <div key={account.id} className="grid grid-cols-12 gap-4 py-1.5 border-b border-gray-100">
-                                                <div className="col-span-2 text-sm">
+                                            <div
+                                                key={account.id}
+                                                className="grid gap-4 py-1.5 border-b border-gray-100"
+                                                style={{ gridTemplateColumns: '100px minmax(220px, 1fr) 140px 140px' }}
+                                            >
+                                                <div className="text-sm">
                                                     <span className="text-green-600">{account.account_code}</span>
                                                 </div>
-                                                <div className="col-span-6 text-sm font-medium">{account.account_name}</div>
-                                                <div className="col-span-2 text-right text-sm font-semibold tabular-nums">
+                                                <div className="text-sm font-medium break-words">{account.account_name}</div>
+                                                <div className="text-right text-sm font-semibold tabular-nums whitespace-nowrap">
                                                     {account.debit > 0 ? formatCurrency(account.debit) : '-'}
                                                 </div>
-                                                <div className="col-span-2 text-right text-sm font-semibold tabular-nums">
+                                                <div className="text-right text-sm font-semibold tabular-nums whitespace-nowrap">
                                                     {account.credit > 0 ? formatCurrency(account.credit) : '-'}
                                                 </div>
                                             </div>
                                         ))}
 
-                                        <div className="grid grid-cols-12 gap-4 pt-3 mt-3 border-t-2 border-gray-400 font-bold">
-                                            <div className="col-span-8">{t('TOTAL')}</div>
-                                            <div className="col-span-2 text-right tabular-nums whitespace-nowrap">{formatCurrency(trialBalance.total_debit)}</div>
-                                            <div className="col-span-2 text-right tabular-nums whitespace-nowrap">{formatCurrency(trialBalance.total_credit)}</div>
+                                        <div
+                                            className="grid gap-4 pt-3 mt-3 border-t-2 border-gray-400 font-bold"
+                                            style={{ gridTemplateColumns: '100px minmax(220px, 1fr) 140px 140px' }}
+                                        >
+                                            <div style={{ gridColumn: '1 / 3' }}>{t('TOTAL')}</div>
+                                            <div className="text-right tabular-nums whitespace-nowrap">{formatCurrency(trialBalance.total_debit)}</div>
+                                            <div className="text-right tabular-nums whitespace-nowrap">{formatCurrency(trialBalance.total_credit)}</div>
                                         </div>
                                     </div>
                                 </div>

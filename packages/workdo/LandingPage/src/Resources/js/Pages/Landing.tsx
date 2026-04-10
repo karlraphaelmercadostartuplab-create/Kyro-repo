@@ -107,7 +107,7 @@ export default function Landing({ settings }: LandingProps) {
     }, [settings, isSectionVisible]);
 
     return (
-        <div className="landing-theme min-h-screen bg-background text-foreground">
+        <div dir="ltr" className="landing-theme min-h-screen bg-background text-left text-foreground">
             <Head title={`${settings?.company_name || 'AccountGo SaaS'}`}>
                 {faviconUrl && <link rel="icon" type="image/x-icon" href={faviconUrl} />}
             </Head>

@@ -11,7 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { EmojiPicker } from '@/components/ui/emoji-picker';
 import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
-import { MessageCircle, Send, Search, User as UserIcon, Smile, Paperclip, X, Download, Edit, Trash2, Check, CheckCheck, MoreVertical, Pin, PinOff, Star } from "lucide-react";
+import { MessageCircle, Send, Search, User as UserIcon, Smile, Paperclip, X, Download, Edit, Trash2, Check, CheckCheck, MoreVertical, Pin, PinOff, Star, ArrowLeft } from "lucide-react";
 import { getImagePath, getAdminSetting } from '@/utils/helpers';
 
 interface Message {
@@ -856,8 +856,8 @@ export default function MessengerPage() {
         >
             <Head title={t('Messenger')} />
 
-            <div className="flex gap-6 h-[calc(100vh-100px)]">
-                <Card className="w-80 flex flex-col h-full">
+            <div className="flex gap-4 md:gap-6 h-[calc(100vh-110px)] md:h-[calc(100vh-100px)] overflow-hidden">
+                <Card className={`w-full md:w-80 md:min-w-80 flex flex-col h-full ${selectedUser ? 'hidden md:flex' : 'flex'}`}>
                     <CardHeader className="pb-3 flex-shrink-0">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="p-2 bg-primary/10 rounded-lg">
@@ -1014,9 +1014,18 @@ export default function MessengerPage() {
                     </CardContent>
                 </Card>
 
-                <Card className="flex-1 flex flex-col">
+                <Card className={`w-full md:flex-1 flex-col h-full ${selectedUser ? 'flex' : 'hidden md:flex'}`}>
                     <CardHeader className={`pb-3 ${selectedUser ? 'border-b' : 'hidden'}`}>
                         <div className="flex items-center gap-3">
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => setSelectedUser(null)}
+                                className="h-8 w-8 p-0 md:hidden"
+                            >
+                                <ArrowLeft className="h-4 w-4" />
+                            </Button>
                             <Avatar className="h-10 w-10">
                                 <AvatarImage 
                                     src={getImagePath(selectedUser?.avatar || '', pageProps)} 
@@ -1033,9 +1042,9 @@ export default function MessengerPage() {
                         </div>
                     </CardHeader>
                     <CardContent className="flex-1 p-0 flex flex-col">
-                        <div className={selectedUser ? '' : 'hidden'}>
+                        <div className={selectedUser ? 'flex flex-1 min-h-0 flex-col' : 'hidden'}>
                             <div 
-                                className="flex-1 p-6 h-[calc(100vh-300px)] overflow-y-auto"
+                                className="flex-1 min-h-0 p-3 md:p-6 overflow-y-auto"
                                 ref={messagesContainerRef}
                                 onScroll={handleScroll}
                                 style={{
@@ -1183,7 +1192,7 @@ export default function MessengerPage() {
                             
                             <Separator />
                             
-                            <div className="p-6">
+                            <div className="p-3 md:p-6">
                                 <div className="relative">
                                     <EmojiPicker 
                                         onEmojiSelect={handleEmojiSelect}

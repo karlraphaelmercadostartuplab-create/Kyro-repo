@@ -55,8 +55,8 @@ export default function Settings() {
           </div>
         </div>
 
-        <div className="min-w-0 xl:grid xl:grid-cols-[16rem_minmax(0,1fr)] xl:items-start xl:gap-6">
-          <aside className="hidden xl:block">
+        <div className="min-w-0 lg:grid lg:grid-cols-[16rem_minmax(0,1fr)] lg:items-start lg:gap-6">
+          <aside className="hidden lg:block">
             <div className="sticky top-20 z-20">
               <div className="mb-2 px-1">
                 <h1 className="text-base font-semibold">{t('Settings')}</h1>

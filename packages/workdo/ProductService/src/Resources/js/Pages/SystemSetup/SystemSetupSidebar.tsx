@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from '@/lib/utils';
-import { Tag, Package, Users, Settings, Database, Shield, Percent, Ruler } from "lucide-react";
+import { Tag, Percent, Ruler } from "lucide-react";
 
 interface SidebarItem {
     key: string;
@@ -52,9 +52,9 @@ export default function SystemSetupSidebar({ activeItem, onSectionChange }: Syst
     );
 
     return (
-        <div className="sticky top-4">
-            <ScrollArea className="h-[calc(100vh-8rem)]">
-                <div className="pr-4 space-y-1">
+        <div className="md:sticky md:top-4">
+            <ScrollArea className="h-auto md:h-[calc(100vh-8rem)]">
+                <div className="space-y-1 md:pr-4">
                     {filteredItems.map((item) => {
                         const Icon = item.icon;
                         const isActive = activeItem === item.key || currentRoute === item.route;

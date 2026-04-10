@@ -109,7 +109,7 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
   };
 
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden" dir={settings.layoutDirection}>
       <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="order-1 min-w-0 rtl:order-2">
           <CardTitle className="flex items-center gap-2 text-lg">
@@ -121,15 +121,15 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
           </p>
         </div>
         {canEdit && (
-          <Button className="order-2 w-full sm:w-auto rtl:order-1" onClick={saveSettings} disabled={isLoading} size="sm">
+          <Button className="order-2 w-full sm:w-auto sm:self-start rtl:order-1" onClick={saveSettings} disabled={isLoading} size="sm">
             <Save className="h-4 w-4 mr-2" />
             {isLoading ? t('Saving...') : t('Save Changes')}
           </Button>
         )}
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          <div className="min-w-0 lg:col-span-2">
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_340px] xl:items-start">
+          <div className="min-w-0">
             <div className="mb-6 flex flex-col gap-2 sm:flex-row">
               <Button
                 variant={activeSection === 'logos' ? "default" : "outline"}
@@ -507,9 +507,9 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
           </div>
 
           {/* Preview Column */}
-          <div className="min-w-0 lg:col-span-1">
-            <div className="space-y-6 lg:sticky lg:top-20">
-              <div className="border rounded-md p-4">
+          <div className="min-w-0 xl:sticky xl:top-20">
+            <div className="space-y-6">
+              <div className="border rounded-md p-4 max-w-full">
                 <div className="flex items-center gap-2 mb-4">
                   <Palette className="h-4 w-4" />
                   <h3 className="font-medium">{t('Live Preview')}</h3>

@@ -73,18 +73,19 @@ export function ThemePreview({
       className={`border rounded-lg overflow-hidden text-xs transition-all duration-300 ${
         isDark ? 'bg-gray-900 text-white border-gray-700' : 'bg-white text-black border-gray-200'
       } ${isRTL ? 'rtl' : 'ltr'}`}
+      dir={isRTL ? 'rtl' : 'ltr'}
       style={{
         '--primary-color': primaryColor
       } as React.CSSProperties}
     >
       {/* Top Bar */}
-      <div className={`px-3 py-2 border-b flex items-center justify-between ${
+      <div className={`px-3 py-2 border-b flex items-center justify-between gap-2 ${
         isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
       }`}>
-        <div className="flex items-center gap-2 order-1 rtl:order-2">
+        <div className="flex min-w-0 items-center gap-2">
           <span className="font-medium">{t('Dashboard')}</span>
         </div>
-        <div className="flex items-center gap-1 order-2 rtl:order-1">
+        <div className="flex shrink-0 items-center gap-1">
           <div className={`w-4 h-4 rounded ${
             isDark ? 'bg-gray-600' : 'bg-muted-foreground/20'
           }`}></div>
@@ -95,10 +96,10 @@ export function ThemePreview({
       </div>
 
       {/* Main Layout */}
-      <div className={`flex h-48 ${isRTL ? 'flex-row-reverse' : ''}`}>
+      <div className={`flex h-48 w-full overflow-hidden ${isRTL ? 'flex-row-reverse' : ''}`}>
         {/* Sidebar */}
         <div 
-          className={`order-1 rtl:order-2 ${getSidebarStyles()} ${
+          className={`${getSidebarStyles()} shrink-0 ${
             sidebarVariant === 'floating' ? 'm-2 rounded-lg shadow-sm' : ''
           } ${
             sidebarVariant === 'minimal' ? 'w-12' : 'w-16'
@@ -144,7 +145,7 @@ export function ThemePreview({
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 p-3 space-y-2 order-2 rtl:order-1">
+        <div className="min-w-0 flex-1 p-3 space-y-2">
           <div className={`h-2 rounded w-3/4 ${
             isDark ? 'bg-gray-700' : 'bg-gray-200'
           }`}></div>

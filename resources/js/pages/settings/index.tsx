@@ -11,11 +11,6 @@ export default function Settings() {
   const { t } = useTranslation();
   const { auth, globalSettings = {}, emailProviders = {}, cacheSize = '0.00' } = usePage().props as any;
   const [activeSection, setActiveSection] = useState('brand-settings');
-  const desktopSidebarStyle = {
-    left: 'calc(var(--sidebar-width, 16rem) + 1rem)',
-    top: '3.25rem',
-    width: '16rem',
-  } as const;
 
   const sidebarNavItems = allSettingsItems();
 
@@ -60,9 +55,9 @@ export default function Settings() {
           </div>
         </div>
 
-        <div className="min-w-0">
+        <div className="min-w-0 xl:grid xl:grid-cols-[16rem_minmax(0,1fr)] xl:items-start xl:gap-6">
           <aside className="hidden xl:block">
-            <div className="fixed z-20" style={desktopSidebarStyle}>
+            <div className="sticky top-20 z-20">
               <div className="mb-2 px-1">
                 <h1 className="text-base font-semibold">{t('Settings')}</h1>
               </div>
@@ -84,7 +79,7 @@ export default function Settings() {
             </div>
           </aside>
 
-          <div className="min-w-0 space-y-8 xl:pl-[17.5rem]">
+          <div className="min-w-0 space-y-8">
             {sidebarNavItems.map((item) => {
               const sectionId = item.href.replace('#', '');
               const canManage = auth.user?.permissions?.includes(item.permission);

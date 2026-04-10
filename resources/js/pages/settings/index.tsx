@@ -37,7 +37,7 @@ export default function Settings() {
       <Head title={t('Settings')} />
 
       <div className="min-w-0">
-        <div className="sticky top-4 z-20 mb-4 -mx-1 px-1 xl:hidden">
+        <div className="sticky top-4 z-20 mb-4 -mx-1 px-1 lg:hidden">
           <div className="overflow-x-auto pb-2">
             <div className="flex w-max min-w-full gap-2">
               {sidebarNavItems.map((item) => (

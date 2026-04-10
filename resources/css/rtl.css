@@ -32,6 +32,3 @@
   flex-direction: row-reverse;
 }
 
-[dir="rtl"] .justify-between {
-  flex-direction: row-reverse;
-}

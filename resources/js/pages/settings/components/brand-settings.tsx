@@ -357,6 +357,11 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
                           className="absolute inset-1 rounded-sm"
                           style={{ backgroundColor: safeCustomColor }}
                         />
+                         <span className="absolute inset-0 flex items-center justify-center">
+                          <span className="rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
+                            {t('Custom')}
+                          </span>
+                        </span>
                       </Button>
                     </div>
 

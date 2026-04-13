@@ -56,7 +56,7 @@ class SettingController extends Controller
             $request->validate([
                 'settings.logo_dark' => 'nullable|string|max:500',
                 'settings.logo_light' => 'nullable|string|max:500',
-                'settings.favicon' => 'nullable|string|max:500',
+                'settings.favicon' => 'required|string|max:500',
                 'settings.titleText' => 'required|string|max:255',
                 'settings.footerText' => 'required|string|max:500',
                 'settings.sidebarVariant' => 'nullable|string|max:50',
@@ -74,6 +74,7 @@ class SettingController extends Controller
                 'settings.footerText.max' => __('Footer text must not exceed 500 characters.'),
                 'settings.logo_dark.string' => __('Dark logo must be a valid string.'),
                 'settings.logo_light.string' => __('Light logo must be a valid string.'),
+                'settings.favicon.required' => __('Favicon is required. Please select a favicon before saving.'),
                 'settings.favicon.string' => __('Favicon must be a valid string.'),
                 'settings.sidebarVariant.string' => __('Sidebar variant must be a valid string.'),
                 'settings.sidebarStyle.string' => __('Sidebar style must be a valid string.'),

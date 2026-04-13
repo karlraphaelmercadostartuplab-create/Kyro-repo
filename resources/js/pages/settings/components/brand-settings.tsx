@@ -101,6 +101,13 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
 
   const handleMediaSelect = (name: string, url: string | string[]) => {
     const urlString = Array.isArray(url) ? url[0] || '' : url;
+    
+    // Prevent clearing favicon - it's required
+    if (name === 'favicon' && !urlString) {
+      toast.error(t('Favicon is required and cannot be removed'));
+      return;
+    }
+    
     setSettings(prev => ({ ...prev, [name]: urlString }));
   };
 
@@ -250,7 +257,10 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
                   </div>
 
                   <div className="space-y-3">
-                    <Label>{t('Favicon')}</Label>
+                    <Label className="flex items-center gap-1">
+                      {t('Favicon')}
+                      <span className="text-red-500" title={t('This field is required')}>*</span>
+                    </Label>
                     <div className="flex flex-col gap-3">
                       <div className="border rounded-md p-4 flex items-center justify-center bg-muted/30 h-20">
                         {settings.favicon ? (
@@ -275,6 +285,9 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
                         showPreview={false}
                         disabled={!canEdit}
                       />
+                      <p className="text-xs text-muted-foreground">
+                        {t('Favicon is required and cannot be removed once set')}
+                      </p>
                     </div>
                   </div>
                 </div>

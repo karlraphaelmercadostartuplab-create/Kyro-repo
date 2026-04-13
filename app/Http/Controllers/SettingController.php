@@ -620,6 +620,19 @@ class SettingController extends Controller
 
             $settings = $request->input('settings');
 
+            if (isset($settings['allowedFileTypes'])) {
+                $normalizedAllowedTypes = array_values(array_unique(array_filter(array_map(
+                    static fn($extension) => strtolower(trim($extension)),
+                    explode(',', (string) $settings['allowedFileTypes'])
+                ))));
+
+                if (empty($normalizedAllowedTypes)) {
+                    return back()->with('error', __('At least one allowed file type is required.'));
+                }
+
+                $settings['allowedFileTypes'] = implode(',', $normalizedAllowedTypes);
+            }
+
             foreach ($settings as $key => $value) {
                 setSetting($key, $value, null, false);
             }

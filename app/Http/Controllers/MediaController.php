@@ -203,12 +203,15 @@ class MediaController extends Controller
 
             $config = StorageConfigService::getStorageConfig();
             $allowedExtensions = array_filter(array_map('trim', explode(',', strtolower($config['allowed_file_types'] ?? ''))));
+            $allowedExtensions = array_values(array_unique($allowedExtensions));
 
-            if (!in_array('docx', $allowedExtensions, true)) {
-                $allowedExtensions[] = 'docx';
+            if (empty($allowedExtensions)) {
+                return response()->json([
+                    'message' => __('No file types are currently allowed. Please update Storage Settings.'),
+                    'errors' => [__('No allowed file extensions configured')]
+                ], 422);
             }
 
-            $allowedExtensions = array_values(array_unique($allowedExtensions));
             $allowedTypes = implode(',', $allowedExtensions);
             $validationRules = ['max:' . ($config['max_file_size_kb'] ?? 2048), 'extensions:' . $allowedTypes];
 

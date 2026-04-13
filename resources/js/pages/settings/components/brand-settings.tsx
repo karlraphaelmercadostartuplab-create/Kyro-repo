@@ -38,6 +38,7 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
   const [isLoading, setIsLoading] = useState(false);
   const canEdit = auth?.user?.permissions?.includes('edit-brand-settings');
   const [activeSection, setActiveSection] = useState<'logos' | 'text' | 'theme'>('logos');
+  const persistedLayoutDirection = userSettings?.layoutDirection || 'ltr';
   const [settings, setSettings] = useState<BrandSettings>({
     logo_dark: userSettings?.logo_dark || '',
     logo_light: userSettings?.logo_light || '',
@@ -143,7 +144,7 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
   };
 
   return (
-    <Card className="overflow-hidden" dir={settings.layoutDirection}>
+    <Card className="overflow-hidden" dir={persistedLayoutDirection}>
       <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="order-1 min-w-0 rtl:order-2">
           <CardTitle className="flex items-center gap-2 text-lg">

@@ -64,14 +64,35 @@ export function BrandProvider({ children }: { children: ReactNode }) {
     red: '#ef4444'
   };
 
+  const normalizeHexColor = (color?: string, fallback = '#10b77f') => {
+    if (!color) return fallback;
+
+    const trimmed = color.trim();
+    const normalized = trimmed.startsWith('#') ? trimmed : `#${trimmed}`;
+    const hex = normalized.slice(1);
+
+    if (!/^[0-9a-fA-F]{3,8}$/.test(hex)) return fallback;
+
+    if (hex.length === 3) {
+      return `#${hex.split('').map((char) => `${char}${char}`).join('')}`.toLowerCase();
+    }
+
+    if (hex.length === 6 || hex.length === 8) {
+      return `#${hex.slice(0, 6)}`.toLowerCase();
+    }
+
+    return fallback;
+  };
+
+
   const getPrimaryColor = () => {
     return settings.themeColor === 'custom'
-      ? settings.customColor || '#10b77f'
+      ? normalizeHexColor(settings.customColor)
       : themeColors[settings.themeColor as keyof typeof themeColors] || '#10b77f';
   };
 
   useEffect(() => {
-    const primaryColor = getPrimaryColor();
+    const primaryColor = normalizeHexColor(getPrimaryColor());
     const root = document.documentElement;
 
     // Convert hex to HSL for CSS custom properties

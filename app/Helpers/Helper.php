@@ -527,7 +527,10 @@ if (!function_exists('upload_file')) {
 
             $file = $request->$key_name;
             $extension = strtolower($file->getClientOriginalExtension());
-            $allowed_extensions = explode(',', $config['allowed_file_types']);
+            $allowed_extensions = array_values(array_filter(array_map(
+                static fn ($value) => strtolower(trim($value)),
+                explode(',', (string) ($config['allowed_file_types'] ?? ''))
+            )));
             if (empty($extension) || !in_array($extension, $allowed_extensions)) {
                 return [
                     'flag' => 0,
@@ -604,7 +607,10 @@ if (!function_exists('upload_base64_file')) {
                     return ['flag' => 0, 'msg' => 'Unsupported file type'];
                 }
 
-                $allowed_extensions = explode(',', $config['allowed_file_types']);
+                $allowed_extensions = array_values(array_filter(array_map(
+                    static fn ($value) => strtolower(trim($value)),
+                    explode(',', (string) ($config['allowed_file_types'] ?? ''))
+                )));
                 if (!in_array($extension, $allowed_extensions)) {
                     return ['flag' => 0, 'msg' => 'File type not allowed: ' . $extension];
                 }

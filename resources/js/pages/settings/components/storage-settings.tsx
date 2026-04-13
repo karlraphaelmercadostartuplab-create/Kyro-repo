@@ -44,10 +44,23 @@ export default function StorageSettings({ userSettings, auth }: StorageSettingsP
   const [isLoading, setIsLoading] = useState(false);
   const canEdit = auth?.user?.permissions?.includes('edit-storage-settings');
   const [searchTerm, setSearchTerm] = useState('');
+
+  const normalizeExtensions = (value: string): string[] => {
+    if (!value) return [];
+
+    return Array.from(
+      new Set(
+        value
+          .split(',')
+          .map((type) => type.trim().toLowerCase())
+          .filter(Boolean)
+      )
+    );
+  };
   
   const initializeSettings = (userSettings?: Record<string, string>): StorageSettings => ({
     storageType: (userSettings?.storageType as StorageType) || 'local',
-    allowedFileTypes: userSettings?.allowedFileTypes || 'jpg,jpeg,png,webp,gif,pdf,doc,docx,csv,txt,zip,mp4,mp3,xlsx,xls,xlsm,xlsb,ods',
+    allowedFileTypes: normalizeExtensions(userSettings?.allowedFileTypes || 'jpg,jpeg,png,webp,gif,pdf,doc,docx,csv,txt,zip,mp4,mp3,xlsx,xls,xlsm,xlsb,ods').join(','),
     maxUploadSize: userSettings?.maxUploadSize || '2048',
     awsAccessKeyId: userSettings?.awsAccessKeyId || '',
     awsSecretAccessKey: userSettings?.awsSecretAccessKey || '',
@@ -76,16 +89,18 @@ export default function StorageSettings({ userSettings, auth }: StorageSettingsP
   };
 
   const handleFileTypeChange = (extension: string, checked: boolean) => {
-    const currentTypes = settings.allowedFileTypes.split(',').filter(type => type.trim());
-    const newTypes = checked 
-      ? [...currentTypes, extension]
-      : currentTypes.filter(type => type !== extension);
+    const currentTypes = normalizeExtensions(settings.allowedFileTypes);
+    const normalizedExtension = extension.trim().toLowerCase();
+    const newTypes = checked
+      ? Array.from(new Set([...currentTypes, normalizedExtension]))
+      : currentTypes.filter(type => type !== normalizedExtension);
     
     setSettings(prev => ({ ...prev, allowedFileTypes: newTypes.join(',') }));
   };
 
   const handleSelectAll = () => {
-    setSettings(prev => ({ ...prev, allowedFileTypes: FILE_EXTENSIONS.join(',') }));
+    const normalizedTypes = Array.from(new Set(FILE_EXTENSIONS.map((ext) => ext.toLowerCase())));
+    setSettings(prev => ({ ...prev, allowedFileTypes: normalizedTypes.join(',') }));
   };
 
   const handleUnselectAll = () => {
@@ -97,6 +112,10 @@ export default function StorageSettings({ userSettings, auth }: StorageSettingsP
       ext.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [searchTerm]);
+
+  const selectedExtensions = useMemo(() => {
+    return normalizeExtensions(settings.allowedFileTypes);
+  }, [settings.allowedFileTypes]);
 
   const saveSettings = () => {
     if (!settings.allowedFileTypes.trim()) {
@@ -144,6 +163,7 @@ export default function StorageSettings({ userSettings, auth }: StorageSettingsP
             variant="outline"
             size="sm"
             onClick={handleSelectAll}
+            disabled={!canEdit}
           >
             {t("Select All")}
           </Button>
@@ -152,6 +172,7 @@ export default function StorageSettings({ userSettings, auth }: StorageSettingsP
             variant="outline"
             size="sm"
             onClick={handleUnselectAll}
+            disabled={!canEdit}
           >
             {t("Unselect All")}
           </Button>
@@ -161,7 +182,7 @@ export default function StorageSettings({ userSettings, auth }: StorageSettingsP
             <div key={ext} className="flex gap-2 items-center">
               <Checkbox
                 id={ext}
-                checked={settings.allowedFileTypes.split(',').includes(ext)}
+                checked={selectedExtensions.includes(ext.toLowerCase())}
                 onCheckedChange={(checked) => handleFileTypeChange(ext, checked as boolean)}
                 disabled={!canEdit}
               />

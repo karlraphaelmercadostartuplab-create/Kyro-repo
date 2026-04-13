@@ -1,4 +1,5 @@
 import React, { createContext, useContext, ReactNode, useEffect } from 'react';
+import { useTheme } from 'next-themes';
 import { usePage } from '@inertiajs/react';
 import { getImagePath } from '@/utils/helpers';
 
@@ -29,6 +30,7 @@ const BrandContext = createContext<BrandContextType | undefined>(undefined);
 
 export function BrandProvider({ children }: { children: ReactNode }) {
   const { adminAllSetting, companyAllSetting, auth } = usePage().props as any;
+  const { setTheme } = useTheme();
   const isSuperAdmin = auth?.user?.roles?.includes('superadmin');
 
   let globalSettings;
@@ -141,17 +143,38 @@ export function BrandProvider({ children }: { children: ReactNode }) {
     }
 
         // Set theme mode
-    const themeMode = settings.themeMode;
+    const themeMode = settings.themeMode || 'light';
+    setTheme(themeMode);
+
+    const applyBodyTheme = (isDarkMode: boolean) => {
+      if (isDarkMode) {
+        document.body.classList.remove('light');
+        document.body.classList.add('dark');
+      } else {
+        document.body.classList.remove('dark');
+        document.body.classList.add('light');
+      }
+    };
+
+    let removeSystemThemeListener: (() => void) | undefined;
 
     if (themeMode === 'light') {
-      document.body.classList.remove('dark');
-      document.body.classList.add('light');
+      applyBodyTheme(false);
     } else if (themeMode === 'dark') {
-      document.body.classList.remove('light');
-      document.body.classList.add('dark');
+      applyBodyTheme(true);
     } else {
-      // system mode - let next-themes handle it
-      document.body.classList.remove('light', 'dark');
+      // system mode - mirror OS preference for body-level styles
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      applyBodyTheme(mediaQuery.matches);
+
+      const handleSystemThemeChange = (event: MediaQueryListEvent) => {
+        applyBodyTheme(event.matches);
+      };
+
+      mediaQuery.addEventListener('change', handleSystemThemeChange);
+      removeSystemThemeListener = () => {
+        mediaQuery.removeEventListener('change', handleSystemThemeChange);
+      };
     }
 
     // Override sidebar default styles with brand colors
@@ -183,7 +206,11 @@ export function BrandProvider({ children }: { children: ReactNode }) {
       existingStyle.textContent = '';
     }
 
-  }, [settings.themeColor, settings.customColor, settings.layoutDirection, settings.themeMode]);
+  return () => {
+      removeSystemThemeListener?.();
+    };
+
+  }, [settings.themeColor, settings.customColor, settings.layoutDirection, settings.themeMode, setTheme]);
 
   const getSidebarStyles = (): React.CSSProperties => {
     const primaryColor = getPrimaryColor();

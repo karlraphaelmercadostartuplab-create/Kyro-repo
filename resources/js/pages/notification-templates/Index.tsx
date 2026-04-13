@@ -129,7 +129,7 @@ export default function Index() {
         >
             <Head title={t('Notification Templates')} />
 
-            {availableTypes.length > 0 && (
+            {availableTypes.length > 1 && (
                 <div className='mb-4'>
                     <Tabs value={activeType} onValueChange={handleTabChange}>
                         <TabsList>

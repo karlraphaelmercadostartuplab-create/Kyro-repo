@@ -167,14 +167,22 @@ export function BrandProvider({ children }: { children: ReactNode }) {
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
       applyBodyTheme(mediaQuery.matches);
 
-      const handleSystemThemeChange = (event: MediaQueryListEvent) => {
+      const handleSystemThemeChange = (event: MediaQueryListEvent | MediaQueryList) => {
         applyBodyTheme(event.matches);
       };
 
-      mediaQuery.addEventListener('change', handleSystemThemeChange);
-      removeSystemThemeListener = () => {
-        mediaQuery.removeEventListener('change', handleSystemThemeChange);
-      };
+      // Safari compatibility: older Safari versions only support addListener/removeListener.
+      if (typeof mediaQuery.addEventListener === 'function') {
+        mediaQuery.addEventListener('change', handleSystemThemeChange);
+        removeSystemThemeListener = () => {
+          mediaQuery.removeEventListener('change', handleSystemThemeChange);
+        };
+      } else {
+        mediaQuery.addListener(handleSystemThemeChange);
+        removeSystemThemeListener = () => {
+          mediaQuery.removeListener(handleSystemThemeChange);
+        };
+      }
     }
 
     // Override sidebar default styles with brand colors

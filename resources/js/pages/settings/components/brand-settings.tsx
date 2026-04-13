@@ -52,6 +52,28 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
     customColor: userSettings?.customColor || '#10b77f',
   });
 
+  const normalizeHexColor = (color?: string, fallback = '#10b77f') => {
+    if (!color) return fallback;
+
+    const trimmed = color.trim();
+    const normalized = trimmed.startsWith('#') ? trimmed : `#${trimmed}`;
+    const hex = normalized.slice(1);
+
+    if (!/^[0-9a-fA-F]{3,8}$/.test(hex)) return fallback;
+
+    if (hex.length === 3) {
+      return `#${hex.split('').map((char) => `${char}${char}`).join('')}`.toLowerCase();
+    }
+
+    if (hex.length === 6 || hex.length === 8) {
+      return `#${hex.slice(0, 6)}`.toLowerCase();
+    }
+
+    return fallback;
+  };
+
+  const safeCustomColor = normalizeHexColor(settings.customColor);
+
   // Update settings when userSettings prop changes
   useEffect(() => {
     if (userSettings) {
@@ -93,8 +115,13 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
   const saveSettings = () => {
     setIsLoading(true);
 
+    const payloadSettings = {
+      ...settings,
+      customColor: normalizeHexColor(settings.customColor),
+    };
+
     router.post(route('settings.brand.update'), {
-      settings: settings
+      settings: payloadSettings
     }, {
       preserveScroll: true,
       onSuccess: () => {
@@ -323,13 +350,18 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
                         type="button"
                         variant={settings.themeColor === 'custom' ? "default" : "outline"}
                         className="h-8 w-full p-0 relative"
-                        style={{ backgroundColor: settings.themeColor === 'custom' ? settings.customColor : 'transparent' }}
+                        style={{ backgroundColor: settings.themeColor === 'custom' ? safeCustomColor : 'transparent' }}
                         onClick={() => handleSelectChange('themeColor', 'custom')}
                       >
                         <span
                           className="absolute inset-1 rounded-sm"
-                          style={{ backgroundColor: settings.customColor }}
+                          style={{ backgroundColor: safeCustomColor }}
                         />
+                         <span className="absolute inset-0 flex items-center justify-center">
+                          <span className="rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
+                            {t('Custom')}
+                          </span>
+                        </span>
                       </Button>
                     </div>
 
@@ -347,14 +379,14 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
                             />
                             <div
                               className="w-10 h-10 rounded border cursor-pointer"
-                              style={{ backgroundColor: settings.customColor }}
+                              style={{ backgroundColor: safeCustomColor }}
                             />
                           </div>
                           <Input
                             id="customColor"
                             name="customColor"
                             type="text"
-                            value={settings.customColor}
+                            value={safeCustomColor}
                             onChange={(e) => handleSelectChange('customColor', e.target.value)}
                             placeholder="#10b77f"
                           />

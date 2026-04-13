@@ -259,6 +259,16 @@
         display: none;
     }
 
+    html.auth-no-window-scroll,
+    body.auth-no-window-scroll {
+        overflow: hidden !important;
+    }
+
+    html.auth-no-window-scroll::-webkit-scrollbar,
+    body.auth-no-window-scroll::-webkit-scrollbar {
+        display: none;
+    }
+
     .scrollbar-hover-only:hover {
         scrollbar-width: thin;
     }

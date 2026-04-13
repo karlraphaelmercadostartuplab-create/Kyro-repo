@@ -1,4 +1,4 @@
-import { PropsWithChildren, ReactNode, Fragment } from "react";
+import { PropsWithChildren, ReactNode, Fragment, useEffect } from "react";
 import {AppSidebar} from "@/components/app-sidebar";
 import {SidebarInset, SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar";
 import {Separator} from "@/components/ui/separator";
@@ -41,6 +41,17 @@ function AuthenticatedLayoutContent({
     useFavicon();
     useFlashMessages();
 
+    useEffect(() => {
+        // Prevent window-level scrollbar in authenticated pages.
+        document.documentElement.classList.add('auth-no-window-scroll');
+        document.body.classList.add('auth-no-window-scroll');
+
+        return () => {
+            document.documentElement.classList.remove('auth-no-window-scroll');
+            document.body.classList.remove('auth-no-window-scroll');
+        };
+    }, []);
+
     return (
         <>
         <Head>
@@ -63,7 +74,7 @@ function AuthenticatedLayoutContent({
         <SidebarProvider defaultOpen={true} className="min-w-0 overflow-x-clip">
             <AppSidebar />
 
-            <SidebarInset className="min-w-0 overflow-x-clip"
+            <SidebarInset className="min-w-0 h-svh overflow-hidden"
                 style={{ direction: settings.layoutDirection === 'rtl' ? 'rtl' : 'ltr' }}
                 dir={settings.layoutDirection === 'rtl' ? 'rtl' : 'ltr'}
             >
@@ -147,7 +158,7 @@ function AuthenticatedLayoutContent({
                     </div>
                 </header>
 
-                <main className="min-w-0 overflow-x-clip p-4 md:pt-0 h-full">
+                <main className="min-w-0 flex-1 min-h-0 overflow-y-auto overflow-x-clip scrollbar-hover-only [scrollbar-width:none] [&::-webkit-scrollbar]:hidden p-4 md:pt-0">
                     {pageTitle && (
                         <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center" dir={settings.layoutDirection}>
                             <h1 className="min-w-0 flex-1 break-words text-xl font-semibold">{pageTitle}</h1>

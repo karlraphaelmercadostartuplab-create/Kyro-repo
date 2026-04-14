@@ -42,7 +42,7 @@ function AuthenticatedLayoutContent({
     useFlashMessages();
 
     useEffect(() => {
-        // Prevent window-level scrollbar in authenticated pages.
+        // Keep the window scrollbar space reserved so the layout does not shift.
         document.documentElement.classList.add('auth-no-window-scroll');
         document.body.classList.add('auth-no-window-scroll');
 
@@ -158,7 +158,7 @@ function AuthenticatedLayoutContent({
                     </div>
                 </header>
 
-                <main className="min-w-0 flex-1 min-h-0 overflow-y-auto overflow-x-clip scrollbar-hover-only [scrollbar-width:none] [&::-webkit-scrollbar]:hidden p-4 md:pt-0">
+                <main className="min-w-0 flex-1 min-h-0 overflow-y-scroll overflow-x-clip [scrollbar-gutter:stable] p-4 md:pt-0">
                     {pageTitle && (
                         <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center" dir={settings.layoutDirection}>
                             <h1 className="min-w-0 flex-1 break-words text-xl font-semibold">{pageTitle}</h1>

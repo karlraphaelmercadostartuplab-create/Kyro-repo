@@ -863,7 +863,7 @@ export default function MessengerPage() {
                             <div className="p-2 bg-primary/10 rounded-lg">
                                 <MessageCircle className="h-5 w-5 text-primary" />
                             </div>
-                            <h2 className="font-semibold text-gray-900">{t('Conversations')}</h2>
+                            <h2 className="font-semibold text-foreground">{t('Conversations')}</h2>
                         </div>
                         
                         <div className="flex gap-1 mb-4 p-1 bg-gray-100 rounded-lg">
@@ -908,11 +908,11 @@ export default function MessengerPage() {
                                     <div
                                         key={user.id}
                                         onClick={() => handleUserSelect(user)}
-                                        className={`group flex items-center gap-3 p-3 cursor-pointer transition-all duration-150 border-b border-gray-100 ${
+                                        className={`group flex items-center gap-3 p-3 cursor-pointer transition-all duration-150 border-b border-gray-100 dark:border-gray-800 ${
                                             selectedUser?.id === user.id 
-                                                ? 'bg-gray-100 border-r-4 border-primary' 
-                                                : 'hover:bg-gray-50'
-                                        } ${isUserPinned(user.id) ? 'bg-blue-50 border-l-2 border-blue-300' : ''}`}
+                                                ? 'bg-gray-100 dark:bg-gray-800 border-r-4 border-primary' 
+                                                : 'hover:bg-gray-50 dark:hover:bg-gray-800/70'
+                                        } ${isUserPinned(user.id) ? 'bg-blue-50 dark:bg-blue-950/40 border-l-2 border-blue-300 dark:border-blue-800' : ''}`}
                                     >
                                         <div className="relative">
                                             <Avatar className="h-12 w-12">
@@ -936,7 +936,7 @@ export default function MessengerPage() {
                                         <div className="flex-1 min-w-0">
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-center justify-between mb-1">
-                                                    <p className="font-semibold text-sm text-gray-900 truncate">{user.name}</p>
+                                                    <p className="font-semibold text-sm text-foreground truncate">{user.name}</p>
                                                     <div className="flex items-center gap-1">
                                                         {user.last_message && (
                                                             <span className="text-xs text-gray-500">
@@ -1095,8 +1095,8 @@ export default function MessengerPage() {
                                                     <div 
                                                         className={`relative px-3 py-2 rounded-lg shadow-sm ${
                                                             isOwnMessage
-                                                                ? 'bg-primary text-white rounded-br-sm'
-                                                                : 'bg-white text-gray-900 border rounded-bl-sm'
+                                                                ? 'bg-primary text-primary-foreground rounded-br-sm'
+                                                                : 'bg-muted text-foreground border border-border rounded-bl-sm'
                                                         }`}
                                                         onDoubleClick={() => isOwnMessage && handleEditMessage(message)}
                                                     >
@@ -1127,7 +1127,7 @@ export default function MessengerPage() {
                                                             )}
                                                         <div className="flex items-center justify-end gap-1 mt-1">
                                                             <span className={`text-xs ${
-                                                                isOwnMessage ? 'text-primary-100' : 'text-gray-500'
+                                                                isOwnMessage ? 'text-primary-foreground/80' : 'text-muted-foreground'
                                                             }`}>
                                                                 {new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                                             </span>

@@ -19,25 +19,12 @@ export default function Settings() {
     const element = document.getElementById(id);
     if (element) {
       const headerOffset = 96;
-      const scrollContainer = element.closest('main');
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
 
-      if (scrollContainer) {
-        const containerRect = scrollContainer.getBoundingClientRect();
-        const elementRect = element.getBoundingClientRect();
-        const top = elementRect.top - containerRect.top + scrollContainer.scrollTop - headerOffset;
-
-        scrollContainer.scrollTo({
-          top: Math.max(top, 0),
-          behavior: 'smooth',
-        });
-      } else {
-        const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-
-        window.scrollTo({
-          top: Math.max(elementPosition - headerOffset, 0),
-          behavior: 'smooth',
-        });
-      }
+      window.scrollTo({
+        top: Math.max(elementPosition - headerOffset, 0),
+        behavior: 'smooth',
+      });
 
       setActiveSection(id);
     }
@@ -50,7 +37,7 @@ export default function Settings() {
       <Head title={t('Settings')} />
 
       <div className="min-w-0">
-        <div className="sticky top-4 z-20 mb-4 -mx-1 px-1 lg:hidden">
+        <div className="sticky top-4 z-20 mb-4 -mx-1 px-1 xl:hidden">
           <div className="overflow-x-auto pb-2">
             <div className="flex w-max min-w-full gap-2">
               {sidebarNavItems.map((item) => (
@@ -68,9 +55,9 @@ export default function Settings() {
           </div>
         </div>
 
-        <div className="min-w-0 lg:grid lg:grid-cols-[16rem_minmax(0,1fr)] lg:items-start lg:gap-6">
-           <aside className="hidden lg:sticky lg:top-4 lg:z-20 lg:block lg:self-start">
-            <div className="max-h-[calc(100svh-2rem)] overflow-y-auto pr-1 pb-16">
+        <div className="min-w-0 xl:grid xl:grid-cols-[16rem_minmax(0,1fr)] xl:items-start xl:gap-6">
+          <aside className="hidden xl:block">
+            <div className="sticky top-20 z-20">
               <div className="mb-2 px-1">
                 <h1 className="text-base font-semibold">{t('Settings')}</h1>
               </div>

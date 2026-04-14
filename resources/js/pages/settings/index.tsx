@@ -19,12 +19,25 @@ export default function Settings() {
     const element = document.getElementById(id);
     if (element) {
       const headerOffset = 96;
-      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+      const scrollContainer = element.closest('main');
 
-      window.scrollTo({
-        top: Math.max(elementPosition - headerOffset, 0),
-        behavior: 'smooth',
-      });
+      if (scrollContainer) {
+        const containerRect = scrollContainer.getBoundingClientRect();
+        const elementRect = element.getBoundingClientRect();
+        const top = elementRect.top - containerRect.top + scrollContainer.scrollTop - headerOffset;
+
+        scrollContainer.scrollTo({
+          top: Math.max(top, 0),
+          behavior: 'smooth',
+        });
+      } else {
+        const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+
+        window.scrollTo({
+          top: Math.max(elementPosition - headerOffset, 0),
+          behavior: 'smooth',
+        });
+      }
 
       setActiveSection(id);
     }

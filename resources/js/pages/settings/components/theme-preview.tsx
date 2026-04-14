@@ -79,7 +79,7 @@ export function ThemePreview({
       } as React.CSSProperties}
     >
       {/* Top Bar */}
-      <div className={`px-3 py-2 border-b flex items-center justify-between gap-2 ${
+       <div className={`px-2.5 py-1.5 border-b flex items-center justify-between gap-2 ${
         isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
       }`}>
         <div className="flex min-w-0 items-center gap-2">
@@ -96,13 +96,13 @@ export function ThemePreview({
       </div>
 
       {/* Main Layout */}
-      <div className={`flex h-48 w-full overflow-hidden ${isRTL ? 'flex-row-reverse' : ''}`}>
+      <div className={`flex h-40 w-full overflow-hidden ${isRTL ? 'flex-row-reverse' : ''}`}>
         {/* Sidebar */}
         <div 
           className={`${getSidebarStyles()} shrink-0 ${
             sidebarVariant === 'floating' ? 'm-2 rounded-lg shadow-sm' : ''
           } ${
-            sidebarVariant === 'minimal' ? 'w-12' : 'w-16'
+            sidebarVariant === 'minimal' ? 'w-10' : 'w-14'
           } ${
             isDark && sidebarStyle === 'plain' ? 'bg-gray-800 border-gray-700' : 
             !isDark && sidebarStyle === 'plain' ? 'bg-white border-gray-200' :''
@@ -115,11 +115,11 @@ export function ThemePreview({
               <img
                 src={getDisplayUrl(currentLogo)}
                 alt="Logo"
-                className="w-8 h-4 object-contain"
+                className="w-7 h-4 object-contain"
               />
             ) : (
               <div 
-                className="w-8 h-2 rounded"
+                className="w-7 h-2 rounded"
                 style={{ backgroundColor: primaryColor }}
               ></div>
             )}
@@ -145,7 +145,7 @@ export function ThemePreview({
         </div>
 
         {/* Content Area */}
-        <div className="min-w-0 flex-1 p-3 space-y-2">
+        <div className="min-w-0 flex-1 p-2.5 space-y-2">
           <div className={`h-2 rounded w-3/4 ${
             isDark ? 'bg-gray-700' : 'bg-gray-200'
           }`}></div>

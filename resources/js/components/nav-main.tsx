@@ -60,6 +60,15 @@ export function NavMain({ items = [], searchQuery = '' }: { items: NavItem[]; se
         return currentPath === targetPath || currentPath.startsWith(`${targetPath}/`);
     };
 
+    const getMatchSpecificity = (targetUrl?: string): number => {
+        if (!targetUrl || !isPathActive(targetUrl)) {
+            return -1;
+        }
+
+        const targetPath = normalizePath(new URL(targetUrl, window.location.origin).pathname);
+        return targetPath.length;
+    };
+
     const filterItems = (menuItems: NavItem[], query: string): NavItem[] => {
         if (!query) return menuItems;
 
@@ -114,6 +123,11 @@ export function NavMain({ items = [], searchQuery = '' }: { items: NavItem[]; se
                     const hasActiveChild = item.children ? isChildActive(item.children) : false;
                     const shouldBeActive = isActive || hasActiveChild;
                     if (item.children && item.children.length > 0) {
+                        const bestChildMatchSpecificity = item.children.reduce((bestMatch, child) => {
+                            const childMatch = getMatchSpecificity(child.href);
+                            return childMatch > bestMatch ? childMatch : bestMatch;
+                        }, -1);
+
                         return (
                             <SidebarMenuItem key={item.title}>
                                 
@@ -130,8 +144,11 @@ export function NavMain({ items = [], searchQuery = '' }: { items: NavItem[]; se
                                             <SidebarMenuSub>
                                                 {item.children.map((subItem) => {
                                                     const subItemActive = isPathActive(subItem.href);
+                                                    const subItemMatchSpecificity = getMatchSpecificity(subItem.href);
                                                     const hasActiveSubChild = subItem.children ? isChildActive(subItem.children) : false;
-                                                    const subItemShouldBeActive = subItemActive || hasActiveSubChild;
+                                                    const subItemShouldBeActive =
+                                                        (subItemActive && subItemMatchSpecificity === bestChildMatchSpecificity) ||
+                                                        (!subItemActive && hasActiveSubChild);
                                                     
                                                     if (subItem.children && subItem.children.length > 0) {
                                                         return (

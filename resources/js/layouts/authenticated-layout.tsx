@@ -79,7 +79,7 @@ function AuthenticatedLayoutContent({
                 dir={settings.layoutDirection === 'rtl' ? 'rtl' : 'ltr'}
             >
                 <header
-                    className={`bg-background mb-2 flex h-20 min-w-0 shrink-0 flex-wrap items-start justify-between gap-2 overflow-visible border-b px-4 py-3 sm:h-12 sm:flex-nowrap sm:items-center sm:overflow-x-hidden sm:py-1`}
+                    className={`bg-background mb-2 flex h-20 min-w-0 shrink-0 flex-wrap items-start justify-between gap-2 overflow-hidden border-b px-4 py-3 sm:h-auto sm:min-h-12 sm:flex-nowrap sm:items-center sm:py-1`}
                     >
                     {/* Sidebar + Breadcrumb */}
                     <div className={`flex min-w-0 flex-1 items-start gap-2 ${ settings.layoutDirection === "rtl" ? "order-2 flex-row-reverse" : "order-1" } sm:items-center`} >

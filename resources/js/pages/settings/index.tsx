@@ -69,8 +69,8 @@ export default function Settings() {
         </div>
 
         <div className="min-w-0 lg:grid lg:grid-cols-[16rem_minmax(0,1fr)] lg:items-start lg:gap-6">
-          <aside className="hidden lg:block">
-            <div className="sticky top-20 z-20">
+           <aside className="hidden lg:sticky lg:top-4 lg:z-20 lg:block lg:self-start">
+            <div className="max-h-[calc(100svh-2rem)] overflow-y-auto pr-1 pb-6">
               <div className="mb-2 px-1">
                 <h1 className="text-base font-semibold">{t('Settings')}</h1>
               </div>

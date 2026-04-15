@@ -67,7 +67,7 @@ export default function Index() {
             <Head title={t('Trial Balance')} />
 
             <div className="max-w-7xl mx-auto space-y-6">
-                <Card className="shadow-lg border-0 bg-gradient-to-r from-white to-gray-50">
+                <Card className="shadow-lg border-0 bg-gradient-to-r from-white to-gray-50 text-gray-900">
                     <CardHeader className="pb-4">
                         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                             <div className="flex items-center gap-3">
@@ -75,7 +75,7 @@ export default function Index() {
                                     <FileText className="w-5 h-5 text-blue-600" />
                                 </div>
                                 <div>
-                                    <CardTitle className="text-xl">{t('Trial Balance')}</CardTitle>
+                                    <CardTitle className="text-xl text-gray-900">{t('Trial Balance')}</CardTitle>
                                     <p className="text-sm text-gray-600">
                                         {formatDate(trialBalance.from_date)} - {formatDate(trialBalance.to_date)}
                                     </p>
@@ -83,7 +83,7 @@ export default function Index() {
                             </div>
                             <div className="flex w-full flex-wrap items-end gap-2 md:gap-3 lg:w-auto">
                                 <div className="w-full sm:w-auto">
-                                    <Label className="text-xs">{t('From Date')}</Label>
+                                    <Label className="text-xs text-gray-700">{t('From Date')}</Label>
                                     <DatePicker
                                         value={fromDate}
                                         onChange={(value) => setFromDate(value)}
@@ -91,7 +91,7 @@ export default function Index() {
                                     />
                                 </div>
                                 <div className="w-full sm:w-auto">
-                                    <Label className="text-xs">{t('To Date')}</Label>
+                                    <Label className="text-xs text-gray-700">{t('To Date')}</Label>
                                     <DatePicker
                                         value={toDate}
                                         onChange={(value) => setToDate(value)}

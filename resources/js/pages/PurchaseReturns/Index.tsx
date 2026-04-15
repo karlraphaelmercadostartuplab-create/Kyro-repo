@@ -85,13 +85,16 @@ export default function Index() {
     });
 
     const getStatusBadgeClasses = (status: string) => {
+        const normalizedStatus = status?.toLowerCase();
         const colors = {
-            draft: 'bg-gray-100 text-gray-800',
-            approved: 'bg-green-100 text-green-800',
-            completed: 'bg-blue-100 text-blue-800',
-            cancelled: 'bg-red-100 text-red-800'
+            draft: 'bg-slate-200 text-slate-900 dark:bg-slate-700 dark:text-slate-100',
+            approved: 'bg-green-100 text-green-800 dark:bg-green-900/60 dark:text-green-200',
+            completed: 'bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-200',
+            cancelled: 'bg-red-100 text-red-800 dark:bg-red-900/60 dark:text-red-200'
         };
-        return `px-2 py-1 rounded-full text-sm ${colors[status as keyof typeof colors]}`;
+        const badgeClasses = colors[normalizedStatus as keyof typeof colors] || 'bg-slate-200 text-slate-900 dark:bg-slate-700 dark:text-slate-100';
+
+        return `px-2 py-1 rounded-full text-sm ${badgeClasses}`;
     };
 
     const handleFilter = () => {

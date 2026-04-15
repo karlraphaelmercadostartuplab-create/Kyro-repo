@@ -67,7 +67,7 @@ export default function Index() {
             <Head title={t('Trial Balance')} />
 
             <div className="max-w-7xl mx-auto space-y-6">
-                <Card className="shadow-lg border-0 bg-gradient-to-r from-white to-gray-50">
+                <Card className="shadow-lg border-0 bg-gradient-to-r from-white to-gray-50 text-gray-900 dark:from-slate-900 dark:to-slate-800 dark:text-gray-100">
                     <CardHeader className="pb-4">
                         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                             <div className="flex items-center gap-3">
@@ -75,15 +75,15 @@ export default function Index() {
                                     <FileText className="w-5 h-5 text-blue-600" />
                                 </div>
                                 <div>
-                                    <CardTitle className="text-xl">{t('Trial Balance')}</CardTitle>
-                                    <p className="text-sm text-gray-600">
+                                    <CardTitle className="text-xl text-gray-900 dark:text-gray-100">{t('Trial Balance')}</CardTitle>
+                                    <p className="text-sm text-gray-600 dark:text-gray-300">
                                         {formatDate(trialBalance.from_date)} - {formatDate(trialBalance.to_date)}
                                     </p>
                                 </div>
                             </div>
                             <div className="flex w-full flex-wrap items-end gap-2 md:gap-3 lg:w-auto">
                                 <div className="w-full sm:w-auto">
-                                    <Label className="text-xs">{t('From Date')}</Label>
+                                    <Label className="text-xs text-gray-700 dark:text-gray-300">{t('From Date')}</Label>
                                     <DatePicker
                                         value={fromDate}
                                         onChange={(value) => setFromDate(value)}
@@ -91,7 +91,7 @@ export default function Index() {
                                     />
                                 </div>
                                 <div className="w-full sm:w-auto">
-                                    <Label className="text-xs">{t('To Date')}</Label>
+                                    <Label className="text-xs text-gray-700 dark:text-gray-300">{t('To Date')}</Label>
                                     <DatePicker
                                         value={toDate}
                                         onChange={(value) => setToDate(value)}
@@ -147,26 +147,26 @@ export default function Index() {
                             <>
                                 <div className="space-y-3 md:hidden">
                                     {trialBalance.accounts.map((account) => (
-                                        <div key={account.id} className="rounded-lg border border-gray-200 p-3 bg-white">
+                                        <div key={account.id} className="rounded-lg border border-gray-200 p-3 bg-white dark:border-gray-700 dark:bg-slate-900">
                                             <div className="flex items-start justify-between gap-3">
                                                 <div className="min-w-0">
-                                                    <p className="text-xs text-gray-500">{t('Account Code')}</p>
+                                                    <p className="text-xs text-gray-500 dark:text-gray-400">{t('Account Code')}</p>
                                                     <p className="text-sm font-semibold text-green-600">{account.account_code}</p>
                                                 </div>
                                                 <div className="text-right min-w-0">
-                                                    <p className="text-xs text-gray-500">{t('Account Name')}</p>
+                                                    <p className="text-xs text-gray-500 dark:text-gray-400">{t('Account Name')}</p>
                                                     <p className="text-sm font-medium break-words">{account.account_name}</p>
                                                 </div>
                                             </div>
                                             <div className="mt-3 grid grid-cols-2 gap-3">
-                                                <div className="rounded-md bg-gray-50 px-3 py-2">
-                                                    <p className="text-xs text-gray-500">{t('Debit')}</p>
+                                                <div className="rounded-md bg-gray-50 px-3 py-2 dark:bg-slate-800">
+                                                    <p className="text-xs text-gray-500 dark:text-gray-400">{t('Debit')}</p>
                                                     <p className="text-sm font-semibold tabular-nums whitespace-nowrap">
                                                         {account.debit > 0 ? formatCurrency(account.debit) : '-'}
                                                     </p>
                                                 </div>
-                                                <div className="rounded-md bg-gray-50 px-3 py-2">
-                                                    <p className="text-xs text-gray-500">{t('Credit')}</p>
+                                                <div className="rounded-md bg-gray-50 px-3 py-2 dark:bg-slate-800">
+                                                    <p className="text-xs text-gray-500 dark:text-gray-400">{t('Credit')}</p>
                                                     <p className="text-sm font-semibold tabular-nums whitespace-nowrap text-right">
                                                         {account.credit > 0 ? formatCurrency(account.credit) : '-'}
                                                     </p>
@@ -175,7 +175,7 @@ export default function Index() {
                                         </div>
                                     ))}
 
-                                    <div className="pt-3 mt-1 border-t-2 border-gray-400 space-y-2">
+                                     <div className="pt-3 mt-1 border-t-2 border-gray-400 dark:border-gray-600 space-y-2">
                                         <div className="flex items-center justify-between gap-3">
                                             <span className="font-bold">{t('Total Debit')}</span>
                                             <span className="font-bold tabular-nums whitespace-nowrap">{formatCurrency(trialBalance.total_debit)}</span>
@@ -190,7 +190,7 @@ export default function Index() {
                                 <div className="hidden md:block overflow-x-auto">
                                     <div className="space-y-1 pr-1" style={{ minWidth: '720px' }}>
                                         <div
-                                            className="grid gap-4 py-2 border-b-2 border-gray-300 font-bold text-sm"
+                                            className="grid gap-4 py-2 border-b-2 border-gray-300 dark:border-gray-600 font-bold text-sm"
                                             style={{ gridTemplateColumns: '100px minmax(220px, 1fr) 140px 140px' }}
                                         >
                                             <div className="whitespace-nowrap">{t('Account Code')}</div>
@@ -201,7 +201,7 @@ export default function Index() {
                                         {trialBalance.accounts.map((account) => (
                                             <div
                                                 key={account.id}
-                                                className="grid gap-4 py-1.5 border-b border-gray-100"
+                                                className="grid gap-4 py-1.5 border-b border-gray-100 dark:border-gray-700"
                                                 style={{ gridTemplateColumns: '100px minmax(220px, 1fr) 140px 140px' }}
                                             >
                                                 <div className="text-sm">
@@ -218,7 +218,7 @@ export default function Index() {
                                         ))}
 
                                         <div
-                                            className="grid gap-4 pt-3 mt-3 border-t-2 border-gray-400 font-bold"
+                                            className="grid gap-4 pt-3 mt-3 border-t-2 border-gray-400 dark:border-gray-600 font-bold"
                                             style={{ gridTemplateColumns: '100px minmax(220px, 1fr) 140px 140px' }}
                                         >
                                             <div style={{ gridColumn: '1 / 3' }}>{t('TOTAL')}</div>

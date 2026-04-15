@@ -87,11 +87,11 @@ export default function Index() {
 
     const getStatusBadgeClasses = (status: string) => {
         switch (status) {
-            case 'draft': return 'px-2 py-1 rounded-full text-sm bg-gray-100 text-gray-800';
+            case 'draft': return 'px-2 py-1 rounded-full text-sm bg-gray-200 text-gray-900 dark:bg-slate-700 dark:text-slate-100';
             case 'partial': return 'px-2 py-1 rounded-full text-sm bg-yellow-100 text-yellow-800';
             case 'approved': return 'px-2 py-1 rounded-full text-sm bg-green-100 text-green-800';
             case 'applied': return 'px-2 py-1 rounded-full text-sm bg-blue-100 text-blue-800';
-            default: return 'px-2 py-1 rounded-full text-sm bg-gray-100 text-gray-800';
+            default: return 'px-2 py-1 rounded-full text-sm bg-gray-200 text-gray-900 dark:bg-slate-700 dark:text-slate-100';
         }
     };
 

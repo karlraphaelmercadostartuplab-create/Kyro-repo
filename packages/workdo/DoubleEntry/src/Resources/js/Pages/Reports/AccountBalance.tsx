@@ -178,7 +178,7 @@ export default function AccountBalance({ financialYear }: AccountBalanceProps) {
                                                 <td colSpan={6} className="px-4 py-2 text-sm">{t(type)}</td>
                                             </tr>
                                             {group.accounts.map((account, idx) => (
-                                                <tr key={`${type}-${idx}`} className="border-t hover:bg-gray-50">
+                                                <tr key={`${type}-${idx}`} className="border-t hover:bg-gray-100 dark:hover:bg-gray-800/70 transition-colors">
                                                     <td className="px-4 py-2 text-sm">{account.account_code}</td>
                                                     <td className="px-4 py-2 text-sm">{account.account_name}</td>
                                                     <td className="px-4 py-2 text-sm">{t(type)}</td>

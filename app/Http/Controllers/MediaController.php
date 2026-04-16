@@ -191,6 +191,37 @@ class MediaController extends Controller
         // Generic fallback
         return __("Upload failed : :extension", ['extension' => $extension]);
     }
+    private function validateFileIntegrity(\Illuminate\Http\UploadedFile $file, array $allowedExtensions): ?string
+    {
+        $detectedMimeType = strtolower((string) $file->getMimeType());
+        $detectedExtension = strtolower((string) $file->guessExtension());
+        $clientExtension = strtolower((string) $file->getClientOriginalExtension());
+
+        $invalidMimeTypes = [
+            'application/octet-stream',
+            'application/x-empty',
+        ];
+
+        if (in_array($detectedMimeType, $invalidMimeTypes, true)) {
+            return __('The uploaded file appears to be invalid or corrupted: :file', ['file' => $file->getClientOriginalName()]);
+        }
+
+        if (($detectedExtension === '' || $detectedExtension === 'bin')
+            && in_array($clientExtension, $allowedExtensions, true)
+            && !in_array('bin', $allowedExtensions, true)) {
+            return __('The uploaded file appears to be invalid or corrupted: :file', ['file' => $file->getClientOriginalName()]);
+        }
+
+        if (str_starts_with($detectedMimeType, 'image/')) {
+            $imageSize = @getimagesize($file->getRealPath());
+            if ($imageSize === false) {
+                return __('The uploaded image is corrupted and could not be processed: :file', ['file' => $file->getClientOriginalName()]);
+            }
+        }
+
+        return null;
+    }
+
 
     public function batchStore(Request $request)
     {
@@ -238,6 +269,13 @@ class MediaController extends Controller
                     return response()->json([
                         'message' => __('File type not allowed: :type', ['type' => strtoupper($extension)]),
                         'errors' => [__('Only specified file types are allowed')]
+                    ], 422);
+                }
+                $integrityError = $this->validateFileIntegrity($file, $allowedExtensions);
+                if ($integrityError) {
+                    return response()->json([
+                        'message' => __('File validation failed'),
+                        'errors' => [$integrityError],
                     ], 422);
                 }
             }

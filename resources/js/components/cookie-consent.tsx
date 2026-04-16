@@ -67,10 +67,13 @@ export default function CookieConsent({ settings }: CookieConsentProps) {
       return;
     }
 
+    const clientTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
     router.post(route('cookie.consent.log'), {
       consent: consent,
       ip: window.location.hostname,
-      userAgent: navigator.userAgent
+      userAgent: navigator.userAgent,
+      clientTimezone,
     }, {
       preserveState: true,
       preserveScroll: true,

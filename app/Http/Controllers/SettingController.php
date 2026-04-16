@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Carbon;
 
 class SettingController extends Controller
 {
@@ -692,10 +693,15 @@ class SettingController extends Controller
         }
 
         $consent = $request->input('consent');
+        $acceptedAt = $this->resolveConsentTime(
+            is_array($consent) ? ($consent['timestamp'] ?? null) : null,
+            $request->input('clientTimezone')
+        );
+
         $data = [
             $request->ip(),
             $request->input('userAgent'),
-            now()->format('Y-m-d H:i:s'),
+            $acceptedAt->format('Y-m-d H:i:s'),
             $consent['necessary'] ? 'Yes' : 'No',
             $consent['analytics'] ? 'Yes' : 'No',
             $consent['marketing'] ? 'Yes' : 'No'
@@ -728,6 +734,28 @@ class SettingController extends Controller
         }
 
         return false;
+    }
+
+    private function resolveConsentTime(mixed $timestamp, mixed $clientTimezone): Carbon
+    {
+        $timezone = config('app.timezone', 'UTC');
+
+        if (is_string($clientTimezone) && in_array($clientTimezone, timezone_identifiers_list(), true)) {
+            $timezone = $clientTimezone;
+        }
+
+        if (is_numeric($timestamp)) {
+            $timestampValue = (int) $timestamp;
+
+            // JS Date.now() is milliseconds; convert to seconds when needed.
+            if ($timestampValue > 9999999999) {
+                $timestampValue = (int) floor($timestampValue / 1000);
+            }
+
+            return Carbon::createFromTimestampUTC($timestampValue)->setTimezone($timezone);
+        }
+
+        return now()->setTimezone($timezone);
     }
 
     public function updateBankTransferSettings(Request $request)

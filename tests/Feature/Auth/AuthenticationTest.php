@@ -56,6 +56,44 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
+    public function test_login_lockout_escalates_from_fifteen_minutes_to_thirty_minutes(): void
+    {
+        $user = User::factory()->create();
+
+        for ($attempt = 1; $attempt < self::LOCKOUT_ATTEMPTS; $attempt++) {
+            $this->attemptLogin($user, 'wrong-password')
+                ->assertStatus(422)
+                ->assertJsonValidationErrors('email');
+        }
+
+        $firstLockout = $this->attemptLogin($user, 'wrong-password');
+        $firstLockout->assertStatus(422)->assertJsonValidationErrors('email');
+        $this->assertSame(
+            trans('auth.throttle', ['seconds' => 15 * 60, 'minutes' => 15]),
+            $firstLockout->json('errors.email.0')
+        );
+
+        $this->attemptLogin($user, 'password')
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('email');
+
+        $this->travel(15)->minutes();
+        $this->travel(1)->second();
+
+        for ($attempt = 1; $attempt < self::LOCKOUT_ATTEMPTS; $attempt++) {
+            $this->attemptLogin($user, 'wrong-password')
+                ->assertStatus(422)
+                ->assertJsonValidationErrors('email');
+        }
+
+        $secondLockout = $this->attemptLogin($user, 'wrong-password');
+        $secondLockout->assertStatus(422)->assertJsonValidationErrors('email');
+        $this->assertSame(
+            trans('auth.throttle', ['seconds' => 30 * 60, 'minutes' => 30]),
+            $secondLockout->json('errors.email.0')
+        );
+    }
+
     public function test_users_can_logout(): void
     {
         $user = User::factory()->create();
@@ -64,5 +102,15 @@ class AuthenticationTest extends TestCase
 
         $this->assertGuest();
         $response->assertRedirect('/');
+    }
+
+    private const LOCKOUT_ATTEMPTS = 5;
+
+    private function attemptLogin(User $user, string $password)
+    {
+        return $this->withHeader('Accept', 'application/json')->post('/login', [
+            'email' => $user->email,
+            'password' => $password,
+        ]);
     }
 }

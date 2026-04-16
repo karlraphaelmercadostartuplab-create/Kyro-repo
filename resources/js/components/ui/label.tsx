@@ -34,10 +34,11 @@ const Label = React.forwardRef<
       ref={ref}
       className={cn(labelVariants(), className)}
       htmlFor={htmlFor}
+      dir="auto"
       {...props}
     >
       {children}
-      {isRequired && <span className="text-red-500 ml-1">*</span>}
+      {isRequired && <span className="text-red-500 ms-1">*</span>}
     </LabelPrimitive.Root>
   );
 })

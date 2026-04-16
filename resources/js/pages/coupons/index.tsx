@@ -14,7 +14,7 @@ import { Dialog } from "@/components/ui/dialog";
 import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
 import { Plus, Edit, Trash2, Ticket, Eye } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { formatDate } from '@/utils/helpers';
+import { formatDate, formatCurrency } from '@/utils/helpers';
 import { FilterButton } from '@/components/ui/filter-button';
 import { Pagination } from "@/components/ui/pagination";
 import { SearchInput } from "@/components/ui/search-input";
@@ -29,7 +29,6 @@ export default function Index() {
     const { t } = useTranslation();
     const { coupons, auth, ...pageProps } = usePage<CouponsIndexProps>().props;
     const urlParams = new URLSearchParams(window.location.search);
-    const currencySymbol = (pageProps as any)?.companyAllSetting?.currencySymbol || '$';
 
     const [filters, setFilters] = useState<CouponFilters>({
         name: urlParams.get('name') || '',
@@ -117,7 +116,7 @@ export default function Index() {
             header: t('Discount'),
             render: (value: number, coupon: Coupon) => (
                 <span className="font-medium">
-                    {coupon.type === 'percentage' ? `${value}%` : `${currencySymbol}${value}`}
+                    {coupon.type === 'percentage' ? `${value}%` : formatCurrency(value, pageProps)}
                 </span>
             )
         },
@@ -380,7 +379,7 @@ export default function Index() {
                                                         <div className="text-xs">
                                                             <p className="text-gray-500 mb-1">{t('Discount')}</p>
                                                             <p className="font-medium text-gray-900">
-                                                                {coupon.type === 'percentage' ? `${coupon.discount}%` : `${currencySymbol}${coupon.discount}`}
+                                                                {coupon.type === 'percentage' ? `${coupon.discount}%` : formatCurrency(coupon.discount, pageProps)}
                                                             </p>
                                                         </div>
                                                         <div className="text-xs">

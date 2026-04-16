@@ -17,17 +17,14 @@ export default function Settings() {
   const handleNavClick = (href: string) => {
     const id = href.replace('#', '');
     const element = document.getElementById(id);
-    if (element) {
-      const headerOffset = 96;
-      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+    if (!element) return;
 
-      window.scrollTo({
-        top: Math.max(elementPosition - headerOffset, 0),
-        behavior: 'smooth',
-      });
+     element.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
 
       setActiveSection(id);
-    }
   };
 
   return (
@@ -57,11 +54,11 @@ export default function Settings() {
 
         <div className="min-w-0 xl:grid xl:grid-cols-[16rem_minmax(0,1fr)] xl:items-start xl:gap-6">
           <aside className="hidden xl:block">
-            <div className="sticky top-20 z-20">
+            <div className="sticky top-4 z-20 max-h-[calc(100svh-7rem)] overflow-y-auto pr-2">
               <div className="mb-2 px-1">
                 <h1 className="text-base font-semibold">{t('Settings')}</h1>
               </div>
-              <div className="space-y-1 pr-2">
+              <div className="space-y-1">
                 {sidebarNavItems.map((item) => (
                   <Button
                     key={item.href}

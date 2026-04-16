@@ -252,7 +252,7 @@ export default function View() {
                     onOpenChange={setShowYearEndModal}
                 />
                 {/* Header Card */}
-                <Card className="shadow-lg border-0 bg-gradient-to-r from-white to-gray-50">
+                <Card className="shadow-lg border-0 bg-gradient-to-r from-white to-gray-50 dark:from-slate-900 dark:to-slate-800">
                     <CardHeader className="pb-4">
                         <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
                             <div className="flex min-w-0 items-center gap-3">
@@ -260,10 +260,10 @@ export default function View() {
                                     <FileText className="w-5 h-5 text-blue-600" />
                                 </div>
                                 <div className="min-w-0">
-                                    <CardTitle className="text-xl break-words">
+                                    <CardTitle className="text-xl break-words text-gray-900 dark:text-gray-100">
                                         {t('Balance Sheet')}
                                     </CardTitle>
-                                   <p className="text-sm text-gray-600 break-words">
+                                    <p className="text-sm text-gray-600 break-words dark:text-gray-300">
                                         {t('As of')} {formatDate(balanceSheet.balance_sheet_date)} | {t('Financial Year')}: {balanceSheet.financial_year}
                                     </p>
                                 </div>
@@ -370,7 +370,7 @@ export default function View() {
                 <Card className="shadow-lg border-0">
                     <CardContent className="p-8">
                         <div className="mb-8">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
                                 {t('Balance Sheet of')} {formatDate(balanceSheet.balance_sheet_date)}
                             </h2>
                         </div>
@@ -387,12 +387,12 @@ export default function View() {
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                                 {/* Left Side - Liabilities & Equity */}
                                 <div>
-                                    <h3 className="text-xl font-bold text-gray-800 mb-6">{t('Liabilities & Equity')}</h3>
+                                    <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-6">{t('Liabilities & Equity')}</h3>
 
                                     {/* Equity */}
                                     {groupedItems.equity && (
                                         <div className="mb-6">
-                                            <h4 className="font-semibold text-gray-700 mb-3">{t('Equity')}</h4>
+                                            <h4 className="font-semibold text-gray-700 dark:text-gray-300 mb-3">{t('Equity')}</h4>
                                             {Object.entries(groupedItems.equity).map(([subSection, items]) => (
                                                 <div key={subSection} className="mb-4">
                                                     {items.map((item) => (
@@ -413,18 +413,18 @@ export default function View() {
                                     {/* Liabilities */}
                                     {groupedItems.liabilities && (
                                         <div className="mb-6">
-                                            <h4 className="font-semibold text-gray-700 mb-3">{t('Liabilities')}</h4>
+                                            <h4 className="font-semibold text-gray-700 dark:text-gray-300 mb-3">{t('Liabilities')}</h4>
                                             {Object.entries(groupedItems.liabilities).map(([subSection, items]) => {
                                                 const subTotal = items.reduce((sum, item) => sum + parseFloat(item.amount.toString()), 0);
                                                 return (
                                                     <div key={subSection} className="mb-4">
-                                                        <h5 className="font-medium text-gray-600 mb-2 capitalize">{subSection.replace('_', ' ')}</h5>
+                                                        <h5 className="font-medium text-gray-600 dark:text-gray-400 mb-2 capitalize">{subSection.replace('_', ' ')}</h5>
                                                         {items.map((item) => (
                                                             <div key={item.id} className="flex justify-between items-center py-1 text-sm ml-4">
                                                                 <div className="flex justify-between w-full">
                                                                     <span className="text-green-600">{item.account?.account_name}</span>
                                                                     <div className="flex gap-8">
-                                                                        <span className="text-gray-600">{item.account?.account_code}</span>
+                                                                        <span className="text-gray-600 dark:text-gray-400">{item.account?.account_code}</span>
                                                                         <span className="text-green-600 tabular-nums">{formatCurrency(item.amount)}</span>
                                                                     </div>
                                                                 </div>
@@ -449,22 +449,22 @@ export default function View() {
 
                                 {/* Right Side - Assets */}
                                 <div>
-                                    <h3 className="text-xl font-bold text-gray-800 mb-6">{t('Assets')}</h3>
+                                    <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-6">{t('Assets')}</h3>
 
                                     {groupedItems.assets && (
                                         <div>
-                                            <h4 className="font-semibold text-gray-700 mb-3">{t('Assets')}</h4>
+                                            <h4 className="font-semibold text-gray-700 dark:text-gray-300 mb-3">{t('Assets')}</h4>
                                             {Object.entries(groupedItems.assets).map(([subSection, items]) => {
                                                 const subTotal = items.reduce((sum, item) => sum + parseFloat(item.amount.toString()), 0);
                                                 return (
                                                     <div key={subSection} className="mb-6">
-                                                        <h5 className="font-medium text-gray-600 mb-2 capitalize">{subSection.replace('_', ' ')}</h5>
+                                                        <h5 className="font-medium text-gray-600 dark:text-gray-400 mb-2 capitalize">{subSection.replace('_', ' ')}</h5>
                                                         {items.map((item) => (
                                                             <div key={item.id} className="flex justify-between items-center py-1 text-sm ml-4">
                                                                 <div className="flex justify-between w-full">
                                                                     <span className="text-green-600">{item.account?.account_name}</span>
                                                                     <div className="flex gap-8">
-                                                                        <span className="text-gray-600">{item.account?.account_code}</span>
+                                                                         <span className="text-gray-600 dark:text-gray-400">{item.account?.account_code}</span>
                                                                         <span className="text-green-600 tabular-nums">{formatCurrency(item.amount)}</span>
                                                                     </div>
                                                                 </div>

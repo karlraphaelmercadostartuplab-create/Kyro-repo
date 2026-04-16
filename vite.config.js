@@ -7,7 +7,7 @@ import { glob } from 'glob';
 const workdoPackages = glob.sync('packages/workdo/*/src/Resources/js/app.tsx');
 
 export default defineConfig({
-    base: './',
+    
     plugins: [
         laravel({
             input:

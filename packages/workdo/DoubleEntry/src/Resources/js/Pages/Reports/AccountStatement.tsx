@@ -195,7 +195,7 @@ export default function AccountStatement({ financialYear }: AccountStatementProp
                                     )}
                                     {data.transactions.length > 0 ? (
                                         data.transactions.map((transaction) => (
-                                            <tr key={transaction.id} className="border-t hover:bg-gray-50">
+                                            <tr key={transaction.id} className="border-t hover:bg-gray-100 dark:hover:bg-gray-800/70 transition-colors">
                                                 <td className="px-4 py-3 text-sm">{formatDate(transaction.date)}</td>
                                                 <td className="px-4 py-3 text-sm">{transaction.description}</td>
                                                 <td className="px-4 py-3 text-sm">{transaction.reference_type}</td>

@@ -158,7 +158,7 @@ export default function JournalEntry({ financialYear }: JournalEntryProps) {
                                 <tbody>
                                     {data.map((entry) => (
                                         <>
-                                            <tr key={entry.id} className="border-t hover:bg-gray-50 cursor-pointer" onClick={() => toggleRow(entry.id)}>
+                                            <tr key={entry.id} className="border-t hover:bg-gray-100 dark:hover:bg-gray-800/70 transition-colors cursor-pointer" onClick={() => toggleRow(entry.id)}>
                                                 <td className="px-4 py-3 text-sm">
                                                     {expandedRows.has(entry.id) ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
                                                 </td>

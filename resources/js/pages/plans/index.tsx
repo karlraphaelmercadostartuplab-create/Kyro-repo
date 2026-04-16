@@ -278,7 +278,7 @@ export default function PlansIndex({ plans, canCreate, activeModules }: Props) {
                                                 ) : (
                                                     <div className="flex items-baseline justify-center space-x-1">
                                                         <span className="break-all text-4xl font-normal text-gray-900 dark:text-white sm:text-5xl">
-                                                            {formatAdminCurrency(pricingPeriod === 'monthly' ? plan.package_price_monthly : plan.package_price_yearly).replace('.00', '')}
+                                                            {formatAdminCurrency(pricingPeriod === 'monthly' ? plan.package_price_monthly : plan.package_price_yearly)}
                                                         </span>
                                                         <span className="text-xl font-semibold text-gray-500 dark:text-gray-400">
                                                             /{pricingPeriod === 'monthly' ? t('mo') : t('yr')}
@@ -396,7 +396,7 @@ export default function PlansIndex({ plans, canCreate, activeModules }: Props) {
                                             ) : (
                                                 <div className="mb-2 flex items-baseline justify-center space-x-1">
                                                     <span className="text-5xl font-normal text-gray-900 dark:text-white">
-                                                        {formatAdminCurrency(pricingPeriod === 'monthly' ? plan.package_price_monthly : plan.package_price_yearly).replace('.00', '')}
+                                                        {formatAdminCurrency(pricingPeriod === 'monthly' ? plan.package_price_monthly : plan.package_price_yearly)}
                                                     </span>
                                                     <span className="text-xl font-semibold text-gray-500 dark:text-gray-400">
                                                         /{pricingPeriod === 'monthly' ? t('mo') : t('yr')}

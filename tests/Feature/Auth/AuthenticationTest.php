@@ -69,7 +69,7 @@ class AuthenticationTest extends TestCase
         $firstLockout = $this->attemptLogin($user, 'wrong-password');
         $firstLockout->assertStatus(422)->assertJsonValidationErrors('email');
         $this->assertSame(
-            trans('auth.throttle', ['seconds' => 15 * 60, 'minutes' => 15]),
+            __('Too many login attempts. Please try again in :time.', ['time' => '15m 00s']),
             $firstLockout->json('errors.email.0')
         );
 
@@ -89,7 +89,7 @@ class AuthenticationTest extends TestCase
         $secondLockout = $this->attemptLogin($user, 'wrong-password');
         $secondLockout->assertStatus(422)->assertJsonValidationErrors('email');
         $this->assertSame(
-            trans('auth.throttle', ['seconds' => 30 * 60, 'minutes' => 30]),
+            __('Too many login attempts. Please try again in :time.', ['time' => '30m 00s']),
             $secondLockout->json('errors.email.0')
         );
     }

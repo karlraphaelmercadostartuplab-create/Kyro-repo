@@ -23,20 +23,39 @@ interface CookieSettings {
 }
 
 interface CookieSettingsProps {
-  userSettings?: Record<string, string>;
+  userSettings?: Record<string, unknown>;
   auth?: any;
 }
 
-const getInitialSettings = (userSettings?: Record<string, string>): CookieSettings => ({
-  enableCookiePopup: userSettings?.enableCookiePopup === '1' || false,
-  enableLogging: userSettings?.enableLogging === '1' || false,
-  strictlyNecessaryCookies: userSettings?.strictlyNecessaryCookies === '1' || true,
-  cookieTitle: userSettings?.cookieTitle || 'Cookie Consent',
-  strictlyCookieTitle: userSettings?.strictlyCookieTitle || 'Strictly Necessary Cookies',
-  cookieDescription: userSettings?.cookieDescription || 'We use cookies to enhance your browsing experience and provide personalized content.',
-  strictlyCookieDescription: userSettings?.strictlyCookieDescription || 'These cookies are essential for the website to function properly.',
-  contactUsDescription: userSettings?.contactUsDescription || 'If you have any questions about our cookie policy, please contact us.',
-  contactUsUrl: userSettings?.contactUsUrl || '#'
+const toBoolean = (value: unknown, fallback = false): boolean => {
+  if (typeof value === 'boolean') return value;
+  if (typeof value === 'number') return value === 1;
+  if (typeof value === 'string') {
+    const normalized = value.trim().toLowerCase();
+    if (['1', 'true', 'on', 'yes'].includes(normalized)) return true;
+    if (['0', 'false', 'off', 'no', ''].includes(normalized)) return false;
+  }
+
+  return fallback;
+};
+
+const toString = (value: unknown, fallback: string): string => {
+  if (typeof value === 'string') return value;
+  if (typeof value === 'number') return String(value);
+
+  return fallback;
+};
+
+const getInitialSettings = (userSettings?: Record<string, unknown>): CookieSettings => ({
+  enableCookiePopup: toBoolean(userSettings?.enableCookiePopup, false),
+  enableLogging: toBoolean(userSettings?.enableLogging, false),
+  strictlyNecessaryCookies: toBoolean(userSettings?.strictlyNecessaryCookies, true),
+  cookieTitle: toString(userSettings?.cookieTitle, 'Cookie Consent'),
+  strictlyCookieTitle: toString(userSettings?.strictlyCookieTitle, 'Strictly Necessary Cookies'),
+  cookieDescription: toString(userSettings?.cookieDescription, 'We use cookies to enhance your browsing experience and provide personalized content.'),
+  strictlyCookieDescription: toString(userSettings?.strictlyCookieDescription, 'These cookies are essential for the website to function properly.'),
+  contactUsDescription: toString(userSettings?.contactUsDescription, 'If you have any questions about our cookie policy, please contact us.'),
+  contactUsUrl: toString(userSettings?.contactUsUrl, '#')
 });
 
 export default function CookieSettings({ userSettings, auth }: CookieSettingsProps) {

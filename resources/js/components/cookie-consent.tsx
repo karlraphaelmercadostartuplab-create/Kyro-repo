@@ -9,6 +9,7 @@ import { router } from '@inertiajs/react';
 interface CookieConsentProps {
   settings: {
     enableCookiePopup?: boolean;
+    enableLogging?: boolean;
     strictlyNecessaryCookies?: boolean;
     cookieTitle?: string;
     cookieDescription?: string;
@@ -19,8 +20,23 @@ interface CookieConsentProps {
   };
 }
 
+const toBoolean = (value: unknown, fallback = false): boolean => {
+  if (typeof value === 'boolean') return value;
+  if (typeof value === 'number') return value === 1;
+  if (typeof value === 'string') {
+    const normalized = value.trim().toLowerCase();
+    if (['1', 'true', 'on', 'yes'].includes(normalized)) return true;
+    if (['0', 'false', 'off', 'no', ''].includes(normalized)) return false;
+  }
+
+  return fallback;
+};
+
 export default function CookieConsent({ settings }: CookieConsentProps) {
   const { t } = useTranslation();
+  const cookiePopupEnabled = toBoolean(settings.enableCookiePopup, false);
+  const cookieLoggingEnabled = toBoolean(settings.enableLogging, false);
+  const strictlyNecessaryEnabled = toBoolean(settings.strictlyNecessaryCookies, true);
   const [isVisible, setIsVisible] = useState(false);
   const [acceptedCookies, setAcceptedCookies] = useState({
     necessary: true,
@@ -31,22 +47,33 @@ export default function CookieConsent({ settings }: CookieConsentProps) {
   useEffect(() => {
     try {
       const consent = localStorage.getItem('cookie-consent');
-      if (!consent && settings.enableCookiePopup) {
+      if (!consent && cookiePopupEnabled) {
         setIsVisible(true);
+      } else {
+        setIsVisible(false);
       }
     } catch (error) {
       console.error('Failed to read cookie consent:', error);
-      if (settings.enableCookiePopup) {
+      if (cookiePopupEnabled) {
         setIsVisible(true);
+      } else {
+        setIsVisible(false);
       }
     }
-  }, [settings.enableCookiePopup]);
+  }, [cookiePopupEnabled]);
 
   const logCookieConsent = (consent: any) => {
+    if (!cookieLoggingEnabled) {
+      return;
+    }
+
+    const clientTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
     router.post(route('cookie.consent.log'), {
       consent: consent,
       ip: window.location.hostname,
-      userAgent: navigator.userAgent
+      userAgent: navigator.userAgent,
+      clientTimezone,
     }, {
       preserveState: true,
       preserveScroll: true,
@@ -85,7 +112,7 @@ export default function CookieConsent({ settings }: CookieConsentProps) {
     saveConsent(consent);
   };
 
-  if (!isVisible || !settings.enableCookiePopup) {
+  if (!isVisible || !cookiePopupEnabled) {
     return null;
   }
 
@@ -118,7 +145,7 @@ export default function CookieConsent({ settings }: CookieConsentProps) {
                 {settings.cookieDescription}
               </p>
 
-              {settings.strictlyNecessaryCookies && (
+              {strictlyNecessaryEnabled && (
                 <div className="flex items-center justify-between p-2 bg-muted/30 rounded-lg mb-2">
                   <div className="flex-1">
                     <p className="text-sm font-medium">

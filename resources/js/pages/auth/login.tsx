@@ -99,6 +99,7 @@ export default function Login({
                                     href={route('password.request')}
                                     className="text-sm text-primary hover:underline"
                                     tabIndex={5}
+                                    dir="auto"
                                 >
                                     {t('Forgot password?')}
                                 </Link>

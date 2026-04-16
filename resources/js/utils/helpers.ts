@@ -202,7 +202,9 @@ const getImagePath = (path: string, pageProps?: any): string => {
 const formatCurrency = (amount: number | string, pageProps?: any): string => {
   try {
     const num = Number(amount) || 0;
-    const decimalPlaces = parseInt(getCompanySetting('decimalFormat', pageProps) || '2');
+    const companyDecimalFormat = getCompanySetting('decimalFormat', pageProps) || '2';
+    const parsedCompanyDecimalPlaces = Number.parseInt(companyDecimalFormat, 10);
+    const decimalPlaces = Number.isNaN(parsedCompanyDecimalPlaces) ? 2 : parsedCompanyDecimalPlaces;
     const decimalSeparator = getCompanySetting('decimalSeparator', pageProps) || '.';
     const thousandsSeparator = getCompanySetting('thousandsSeparator', pageProps) || ',';
     const floatNumber = getCompanySetting('floatNumber', pageProps) !== '0';
@@ -231,7 +233,9 @@ const formatCurrency = (amount: number | string, pageProps?: any): string => {
 const formatAdminCurrency = (amount: number | string, pageProps?: any): string => {
   try {
     const num = Number(amount) || 0;
-    const decimalPlaces = parseInt(getAdminSetting('decimalFormat', pageProps) || '2');
+    const adminDecimalFormat = getAdminSetting('decimalFormat', pageProps) || '2';
+    const parsedAdminDecimalPlaces = Number.parseInt(adminDecimalFormat, 10);
+    const decimalPlaces = Number.isNaN(parsedAdminDecimalPlaces) ? 2 : parsedAdminDecimalPlaces;
     const decimalSeparator = getAdminSetting('decimalSeparator', pageProps) || '.';
     const thousandsSeparator = getAdminSetting('thousandsSeparator', pageProps) || ',';
     const floatNumber = getAdminSetting('floatNumber', pageProps) !== '0';

@@ -118,8 +118,10 @@ export default function CurrencySettings({ userSettings = {}, auth }: CurrencySe
             let amount = Number(previewAmount) || 0;
 
             // Format the number with the specified decimal places
-            const decimalPlaces = parseInt(currencySettings.decimalFormat) || 2;
+            const parsedDecimalPlaces = Number.parseInt(currencySettings.decimalFormat, 10);
+            const decimalPlaces = Number.isNaN(parsedDecimalPlaces) ? 2 : parsedDecimalPlaces;
 
+            
             // Handle float number setting
             if (!currencySettings.floatNumber) {
                 amount = Math.floor(amount);

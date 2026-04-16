@@ -42,7 +42,7 @@ function AuthenticatedLayoutContent({
     useFlashMessages();
 
     useEffect(() => {
-        // Keep the window scrollbar space reserved so the layout does not shift.
+        // Keep the window scrollbar space reserved so the layout does not shift
         document.documentElement.classList.add('auth-no-window-scroll');
         document.body.classList.add('auth-no-window-scroll');
 

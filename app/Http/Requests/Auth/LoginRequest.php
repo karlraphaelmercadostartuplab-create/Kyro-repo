@@ -5,6 +5,7 @@ namespace App\Http\Requests\Auth;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -13,9 +14,29 @@ use App\Models\User;
 class LoginRequest extends FormRequest
 {
     /**
-     * Maximum login attempts before rate limiting
+     * Maximum login attempts before lockout.
      */
     const MAX_LOGIN_ATTEMPTS = 5;
+
+    /**
+     * First lockout duration in minutes.
+     */
+    const FIRST_LOCKOUT_MINUTES = 15;
+
+    /**
+     * Second and later lockout duration in minutes.
+     */
+    const SECOND_LOCKOUT_MINUTES = 30;
+
+    /**
+     * How long to remember the lockout stage before it resets.
+     */
+    const LOCKOUT_STAGE_TTL_DAYS = 30;
+
+    /**
+     * How long to remember failed attempts before they expire.
+     */
+    const FAILED_ATTEMPTS_TTL_MINUTES = 30;
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -64,7 +85,7 @@ class LoginRequest extends FormRequest
      */
     public function authenticate(): void
     {
-        $this->ensureIsNotRateLimited();
+        $this->ensureIsNotLockedOut();
 
         $inputEmail = Str::lower(trim((string) $this->input('email')));
         $user = User::query()
@@ -77,11 +98,7 @@ class LoginRequest extends FormRequest
         ];
 
         if (! Auth::attempt($credentials, $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
-
-            throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
-            ]);
+            $this->registerFailedAttempt();
         }
 
         $inputEmail = Str::lower((string) $this->input('email'));
@@ -89,47 +106,36 @@ class LoginRequest extends FormRequest
 
         if ($inputEmail !== $authenticatedEmail) {
             Auth::logout();
-            RateLimiter::hit($this->throttleKey());
-
-            throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
-            ]);
+            $this->registerFailedAttempt();
         }
 
         // Check if user account is disabled
         $user = Auth::user();
         if ($user && !$user->is_enable_login) {
             Auth::logout();
-            RateLimiter::hit($this->throttleKey());
-
-            throw ValidationException::withMessages([
-                'email' => __('Your account has been disabled. Please contact the administrator.'),
-            ]);
+            $this->registerFailedAttempt(__('Your account has been disabled. Please contact the administrator.'));
         }
 
-        RateLimiter::clear($this->throttleKey());
+        $this->clearLoginLockoutState();
     }
 
     /**
-     * Ensure the login request is not rate limited.
+     * Ensure the login request is not currently locked.
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function ensureIsNotRateLimited(): void
+    public function ensureIsNotLockedOut(): void
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), self::MAX_LOGIN_ATTEMPTS)) {
+        $seconds = $this->remainingLockoutSeconds();
+
+        if ($seconds === null) {
             return;
         }
 
         event(new Lockout($this));
 
-        $seconds = RateLimiter::availableIn($this->throttleKey());
-
         throw ValidationException::withMessages([
-            'email' => trans('auth.throttle', [
-                'seconds' => $seconds,
-                'minutes' => ceil($seconds / 60),
-            ]),
+            'email' => $this->lockoutMessage($seconds),
         ]);
     }
 
@@ -143,5 +149,107 @@ class LoginRequest extends FormRequest
             $email = 'unknown';
         }
         return Str::transliterate(Str::lower($email).'|'.$this->ip());
+    }
+
+    private function registerFailedAttempt(?string $message = null): void
+    {
+        $attempts = $this->failedAttemptCount() + 1;
+
+        Cache::put($this->failedAttemptKey(), $attempts, now()->addMinutes(self::FAILED_ATTEMPTS_TTL_MINUTES));
+
+        if ($attempts < self::MAX_LOGIN_ATTEMPTS) {
+            throw ValidationException::withMessages([
+                'email' => $message ?? trans('auth.failed'),
+            ]);
+        }
+
+        $lockoutMinutes = $this->startLockoutCycle();
+        $seconds = $lockoutMinutes * 60;
+
+        event(new Lockout($this));
+
+        throw ValidationException::withMessages([
+            'email' => $this->lockoutMessage($seconds),
+        ]);
+    }
+
+    private function startLockoutCycle(): int
+    {
+        $cycle = $this->lockoutCycle() + 1;
+        $minutes = $cycle === 1 ? self::FIRST_LOCKOUT_MINUTES : self::SECOND_LOCKOUT_MINUTES;
+        $expiresAt = now()->addMinutes($minutes);
+
+        Cache::put($this->lockoutCycleKey(), $cycle, now()->addDays(self::LOCKOUT_STAGE_TTL_DAYS));
+        Cache::put($this->lockoutUntilKey(), $expiresAt->timestamp, $expiresAt);
+        Cache::forget($this->failedAttemptKey());
+
+        return $minutes;
+    }
+
+    private function remainingLockoutSeconds(): ?int
+    {
+        $expiresAt = Cache::get($this->lockoutUntilKey());
+
+        if (! is_numeric($expiresAt)) {
+            return null;
+        }
+
+        $seconds = (int) $expiresAt - now()->timestamp;
+
+        if ($seconds > 0) {
+            return $seconds;
+        }
+
+        Cache::forget($this->lockoutUntilKey());
+
+        return null;
+    }
+
+    private function failedAttemptCount(): int
+    {
+        return (int) Cache::get($this->failedAttemptKey(), 0);
+    }
+
+    private function lockoutCycle(): int
+    {
+        return (int) Cache::get($this->lockoutCycleKey(), 0);
+    }
+
+    private function clearLoginLockoutState(): void
+    {
+        Cache::forget($this->failedAttemptKey());
+        Cache::forget($this->lockoutUntilKey());
+        Cache::forget($this->lockoutCycleKey());
+        RateLimiter::clear($this->throttleKey());
+    }
+
+    private function failedAttemptKey(): string
+    {
+        return 'login.failed-attempts.'.$this->throttleKey();
+    }
+
+    private function lockoutCycleKey(): string
+    {
+        return 'login.lockout-cycle.'.$this->throttleKey();
+    }
+
+    private function lockoutUntilKey(): string
+    {
+        return 'login.lockout-until.'.$this->throttleKey();
+    }
+
+    private function lockoutMessage(int $seconds): string
+    {
+        return __('Too many login attempts. Please try again in :time.', [
+            'time' => $this->formatDuration($seconds),
+        ]);
+    }
+
+    private function formatDuration(int $totalSeconds): string
+    {
+        $minutes = intdiv(max($totalSeconds, 0), 60);
+        $seconds = max($totalSeconds, 0) % 60;
+
+        return sprintf('%02dm %02ds', $minutes, $seconds);
     }
 }

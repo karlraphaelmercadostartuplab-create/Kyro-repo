@@ -135,10 +135,7 @@ class LoginRequest extends FormRequest
         event(new Lockout($this));
 
         throw ValidationException::withMessages([
-            'email' => trans('auth.throttle', [
-                'seconds' => $seconds,
-                'minutes' => ceil($seconds / 60),
-            ]),
+            'email' => $this->lockoutMessage($seconds),
         ]);
     }
 
@@ -172,10 +169,7 @@ class LoginRequest extends FormRequest
         event(new Lockout($this));
 
         throw ValidationException::withMessages([
-            'email' => trans('auth.throttle', [
-                'seconds' => $seconds,
-                'minutes' => $lockoutMinutes,
-            ]),
+            'email' => $this->lockoutMessage($seconds),
         ]);
     }
 
@@ -242,5 +236,20 @@ class LoginRequest extends FormRequest
     private function lockoutUntilKey(): string
     {
         return 'login.lockout-until.'.$this->throttleKey();
+    }
+
+    private function lockoutMessage(int $seconds): string
+    {
+        return __('Too many login attempts. Please try again in :time.', [
+            'time' => $this->formatDuration($seconds),
+        ]);
+    }
+
+    private function formatDuration(int $totalSeconds): string
+    {
+        $minutes = intdiv(max($totalSeconds, 0), 60);
+        $seconds = max($totalSeconds, 0) % 60;
+
+        return sprintf('%02dm %02ds', $minutes, $seconds);
     }
 }

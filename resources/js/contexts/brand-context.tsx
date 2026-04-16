@@ -209,6 +209,14 @@ export function BrandProvider({ children }: { children: ReactNode }) {
         [data-sidebar] [data-sidebar="menu-button"][data-active="true"] {
           background: rgba(255,255,255,0.2);
         }
+          [data-sidebar] [data-sidebar="menu-sub-button"]:hover {
+          background: rgba(255,255,255,0.12);
+          color: inherit;
+        }
+        [data-sidebar] [data-sidebar="menu-sub-button"][data-active="true"] {
+          background: rgba(255,255,255,0.2);
+          color: inherit;
+        }
       `;
     } else {
       existingStyle.textContent = '';

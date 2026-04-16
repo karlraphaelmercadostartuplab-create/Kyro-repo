@@ -177,14 +177,27 @@ export default function Index() {
         router.get(route('account.revenues.index'), {per_page: perPage, view: viewMode});
     };
 
+    const getStatusBadgeClasses = (status: string) => {
+        switch (status) {
+            case 'posted':
+                return 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300';
+            case 'approved':
+                return 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300';
+            case 'draft':
+            default:
+                return 'bg-gray-200 text-gray-900 dark:bg-slate-700 dark:text-slate-100';
+        }
+    };
+
+
     const getStatusBadge = (status: string) => {
         const statusConfig = {
-            draft: { color: 'bg-gray-100 text-gray-800', label: t('Draft') },
-            approved: { color: 'bg-blue-100 text-blue-800', label: t('Approved') },
-            posted: { color: 'bg-green-100 text-green-800', label: t('Posted') }
+            draft: { label: t('Draft') },
+            approved: { label: t('Approved') },
+            posted: { label: t('Posted') }
         };
-        const config = statusConfig[status as keyof typeof statusConfig];
-        return <Badge className={config.color}>{config.label}</Badge>;
+        const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.draft;
+        return <Badge className={getStatusBadgeClasses(status)}>{config.label}</Badge>;
     };
 
     const tableColumns = [
@@ -233,11 +246,7 @@ export default function Index() {
             header: t('Status'),
             sortable: true,
             render: (value: string) => (
-                <span className={`px-2 py-1 rounded-full text-sm ${
-                    value === 'posted' ? 'bg-green-100 text-green-800' :
-                    value === 'approved' ? 'bg-blue-100 text-blue-800' :
-                    'bg-gray-100 text-gray-800'
-                }`}>
+                <span className={`px-2 py-1 rounded-full text-sm ${getStatusBadgeClasses(value)}`}>
                     {value === 'posted' ? t('Posted') :
                      value === 'approved' ? t('Approved') :
                      t('Draft')}
@@ -538,11 +547,7 @@ export default function Index() {
                                                 </div>
                                             </div>
                                             <div className="flex items-center justify-between p-3 border-t bg-gray-50/50">
-                                                <span className={`px-2 py-1 rounded-full text-sm ${
-                                                    revenue.status === 'posted' ? 'bg-green-100 text-green-800' :
-                                                    revenue.status === 'approved' ? 'bg-blue-100 text-blue-800' :
-                                                    'bg-gray-100 text-gray-800'
-                                                }`}>
+                                                <span className={`px-2 py-1 rounded-full text-sm ${getStatusBadgeClasses(revenue.status)}`}>
                                                     {revenue.status === 'posted' ? t('Posted') :
                                                      revenue.status === 'approved' ? t('Approved') :
                                                      t('Draft')}

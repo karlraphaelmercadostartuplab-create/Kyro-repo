@@ -66,7 +66,7 @@ export default function Index() {
             <Head title={t('Profit & Loss')} />
 
             <div className="max-w-7xl mx-auto space-y-6">
-                <Card className="shadow-lg border-0 bg-gradient-to-r from-white to-gray-50">
+                <Card className="shadow-lg border-0 bg-gradient-to-r from-white to-gray-50 dark:from-slate-900 dark:to-slate-800">
                     <CardHeader className="pb-4">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
@@ -74,8 +74,8 @@ export default function Index() {
                                     <FileText className="w-5 h-5 text-blue-600" />
                                 </div>
                                 <div>
-                                    <CardTitle className="text-xl">{t('Profit & Loss Statement')}</CardTitle>
-                                    <p className="text-sm text-gray-600">
+                                    <CardTitle className="text-xl text-gray-900 dark:text-gray-100">{t('Profit & Loss Statement')}</CardTitle>
+                                    <p className="text-sm text-gray-600 dark:text-gray-300">
                                         {formatDate(profitLoss.from_date)} - {formatDate(profitLoss.to_date)}
                                     </p>
                                 </div>
@@ -148,11 +148,11 @@ export default function Index() {
                     <CardContent className="p-8">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                             <div>
-                                <h3 className="text-lg font-bold text-gray-800 mb-3">{t('Revenue')}</h3>
+                                <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-3">{t('Revenue')}</h3>
                                 <div className="space-y-1">
                                     {profitLoss.revenue.length > 0 ? (
                                         profitLoss.revenue.map((account) => (
-                                            <div key={account.id} className="flex justify-between items-center py-1.5 border-b border-gray-100">
+                                            <div key={account.id} className="flex justify-between items-center py-1.5 border-b border-gray-100 dark:border-gray-700">
                                                 <p className="font-medium text-sm">
                                                     <span className="text-green-600">{account.account_code}</span> - {account.account_name}
                                                 </p>
@@ -166,11 +166,11 @@ export default function Index() {
                             </div>
 
                             <div>
-                                <h3 className="text-lg font-bold text-gray-800 mb-3">{t('Expenses')}</h3>
+                                <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-3">{t('Expenses')}</h3>
                                 <div className="space-y-1">
                                     {profitLoss.expenses.length > 0 ? (
                                         profitLoss.expenses.map((account) => (
-                                            <div key={account.id} className="flex justify-between items-center py-1.5 border-b border-gray-100">
+                                            <div key={account.id} className="flex justify-between items-center py-1.5 border-b border-gray-100 dark:border-gray-700">
                                                 <p className="font-medium text-sm">
                                                     <span className="text-green-600">{account.account_code}</span> - {account.account_name}
                                                 </p>
@@ -185,19 +185,19 @@ export default function Index() {
                         </div>
 
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-3">
-                            <div className="flex justify-between items-center pt-3 border-t-2 border-gray-300">
+                            <div className="flex justify-between items-center pt-3 border-t-2 border-gray-300 dark:border-gray-600">
                                 <p className="font-bold">{t('Total Revenue')}</p>
                                 <p className="font-bold tabular-nums">{formatCurrency(profitLoss.total_revenue)}</p>
                             </div>
-                            <div className="flex justify-between items-center pt-3 border-t-2 border-gray-300">
+                            <div className="flex justify-between items-center pt-3 border-t-2 border-gray-300 dark:border-gray-600">
                                 <p className="font-bold">{t('Total Expenses')}</p>
                                 <p className="font-bold tabular-nums">{formatCurrency(profitLoss.total_expenses)}</p>
                             </div>
                         </div>
 
-                        <div className="mt-8 pt-6 border-t-2 border-gray-400">
+                        <div className="mt-8 pt-6 border-t-2 border-gray-400 dark:border-gray-600">
                             <div className="flex justify-between items-center">
-                                <h3 className="text-base font-bold text-gray-900">
+                                 <h3 className="text-base font-bold text-gray-900 dark:text-gray-100">
                                     {profitLoss.net_profit >= 0 ? t('Net Profit') : t('Net Loss')}
                                 </h3>
                                 <p className={`text-base font-bold tabular-nums ${profitLoss.net_profit >= 0 ? 'text-green-600' : 'text-red-600'}`}>

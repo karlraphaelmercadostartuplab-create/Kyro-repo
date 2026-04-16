@@ -133,7 +133,7 @@ export default function ExpenseReport({ financialYear }: ExpenseReportProps) {
                                     </thead>
                                     <tbody>
                                         {data.expenses.map((expense, idx) => (
-                                            <tr key={idx} className={`border-t hover:bg-gray-50 ${idx < 5 ? 'bg-blue-50/30' : ''}`}>
+                                            <tr key={idx} className={`border-t hover:bg-gray-100 dark:hover:bg-gray-800/70 transition-colors ${idx < 5 ? 'bg-blue-50/30 dark:bg-blue-900/20' : ''}`}>
                                                 <td className="px-4 py-3 text-sm font-medium">{idx + 1}</td>
                                                 <td className="px-4 py-3 text-sm">{expense.account_code}</td>
                                                 <td className="px-4 py-3 text-sm">{expense.account_name}</td>

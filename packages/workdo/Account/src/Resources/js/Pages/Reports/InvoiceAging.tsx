@@ -106,7 +106,7 @@ export default function InvoiceAging({ financialYear }: any) {
                                             <td className="px-4 py-3 text-right font-semibold">{formatCurrency(customer.total)}</td>
                                         </tr>
                                     ))}
-                                    <tr className="bg-gray-200 font-bold border-t-4">
+                                    <tr className="bg-gray-200 text-gray-900 font-bold border-t-4 dark:bg-gray-700 dark:text-gray-100">
                                         <td className="px-4 py-4">{t('Total')}</td>
                                         <td className="px-4 py-4 text-right">{formatCurrency(data.aging_summary.current)}</td>
                                         <td className="px-4 py-4 text-right">{formatCurrency(data.aging_summary['1_30_days'])}</td>

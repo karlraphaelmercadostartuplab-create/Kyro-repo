@@ -366,6 +366,7 @@ class SettingController extends Controller
         if(Auth::user()->can('edit-cookie-settings'))
         {
             $request->validate([
+                'settings.enableCookiePopup' => 'required|boolean',
                 'settings.enableLogging' => 'required|boolean',
                 'settings.strictlyNecessaryCookies' => 'required|boolean',
                 'settings.cookieTitle' => 'required|string|max:255',
@@ -375,6 +376,8 @@ class SettingController extends Controller
                 'settings.contactUsDescription' => 'required|string|max:1000',
                 'settings.contactUsUrl' => 'required|url|max:500',
             ], [
+                'settings.enableCookiePopup.required' => __('Enable cookie popup setting is required.'),
+                'settings.enableCookiePopup.boolean' => __('Enable cookie popup must be true or false.'),
                 'settings.enableLogging.required' => __('Enable logging setting is required.'),
                 'settings.enableLogging.boolean' => __('Enable logging must be true or false.'),
                 'settings.strictlyNecessaryCookies.required' => __('Strictly necessary cookies setting is required.'),
@@ -400,6 +403,10 @@ class SettingController extends Controller
             ]);
 
             $settings = $request->input('settings');
+
+            $settings['enableCookiePopup'] = $this->toBooleanSettingValue($settings['enableCookiePopup'] ?? false);
+            $settings['enableLogging'] = $this->toBooleanSettingValue($settings['enableLogging'] ?? false);
+            $settings['strictlyNecessaryCookies'] = $this->toBooleanSettingValue($settings['strictlyNecessaryCookies'] ?? true);
 
             foreach ($settings as $key => $value) {
                 setSetting($key, $value);
@@ -671,6 +678,10 @@ class SettingController extends Controller
 
     public function logCookieConsent(Request $request)
     {
+        if (!$this->isBooleanSettingEnabled(admin_setting('enableLogging'))) {
+            return response()->json(['message' => 'Cookie logging is disabled.']);
+        }
+
         $cookieDataPath = storage_path('app/cookie_data.csv');
 
         if (!file_exists($cookieDataPath)) {
@@ -695,6 +706,28 @@ class SettingController extends Controller
         fclose($file);
 
         return back();
+    }
+
+    private function toBooleanSettingValue(mixed $value): string
+    {
+        return $this->isBooleanSettingEnabled($value) ? '1' : '0';
+    }
+
+    private function isBooleanSettingEnabled(mixed $value): bool
+    {
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        if (is_numeric($value)) {
+            return (int) $value === 1;
+        }
+
+        if (is_string($value)) {
+            return in_array(strtolower(trim($value)), ['1', 'true', 'on', 'yes'], true);
+        }
+
+        return false;
     }
 
     public function updateBankTransferSettings(Request $request)

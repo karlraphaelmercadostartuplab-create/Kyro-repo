@@ -161,31 +161,31 @@ export default function View({ assignment }: ViewProps) {
                     </CardHeader>
                     <CardContent className="pt-0">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <div className="bg-blue-50 p-4 rounded-lg">
+                            <div className="rounded-lg bg-blue-50 p-4 dark:bg-blue-950/40">
                                 <div className="flex items-center gap-2 mb-2">
                                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                                    <span className="text-sm font-medium text-blue-700">{t('Assigned Date')}</span>
+                                    <span className="text-sm font-medium text-blue-700 dark:text-blue-300">{t('Assigned Date')}</span>
                                 </div>
-                                <p className="text-sm font-semibold text-blue-900">{formatDate(assignment.assigned_date)}</p>
+                                <p className="text-sm font-semibold text-blue-900 dark:text-blue-100">{formatDate(assignment.assigned_date)}</p>
                             </div>
 
                             {assignment.expected_return_date && (
-                                <div className="bg-yellow-50 p-4 rounded-lg">
+                                <div className="rounded-lg bg-yellow-50 p-4 dark:bg-yellow-950/35">
                                     <div className="flex items-center gap-2 mb-2">
                                         <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                                        <span className="text-sm font-medium text-yellow-700">{t('Expected Return')}</span>
+                                        <span className="text-sm font-medium text-yellow-700 dark:text-yellow-300">{t('Expected Return')}</span>
                                     </div>
-                                    <p className="text-sm font-semibold text-yellow-900">{formatDate(assignment.expected_return_date)}</p>
+                                    <p className="text-sm font-semibold text-yellow-900 dark:text-yellow-100">{formatDate(assignment.expected_return_date)}</p>
                                 </div>
                             )}
 
                             {assignment.returned_date && (
-                                <div className="bg-green-50 p-4 rounded-lg">
+                                <div className="rounded-lg bg-green-50 p-4 dark:bg-green-950/35">
                                     <div className="flex items-center gap-2 mb-2">
                                         <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                                        <span className="text-sm font-medium text-green-700">{t('Returned Date')}</span>
+                                        <span className="text-sm font-medium text-green-700 dark:text-green-300">{t('Returned Date')}</span>
                                     </div>
-                                    <p className="text-sm font-semibold text-green-900">{formatDate(assignment.returned_date)}</p>
+                                    <p className="text-sm font-semibold text-green-900 dark:text-green-100">{formatDate(assignment.returned_date)}</p>
                                 </div>
                             )}
                         </div>

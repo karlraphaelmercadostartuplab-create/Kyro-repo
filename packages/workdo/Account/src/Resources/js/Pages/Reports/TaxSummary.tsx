@@ -79,7 +79,7 @@ export default function TaxSummary({ financialYear }: any) {
                                         <td className="px-4 py-3 text-right"></td>
                                     </tr>
                                     {data.tax_collected.items.map((item: any, idx: number) => (
-                                        <tr key={idx} className="border-t hover:bg-gray-50">
+                                        <tr key={idx} className="border-t hover:bg-gray-50 dark:hover:bg-gray-800/60">
                                             <td className="px-8 py-2">{item.tax_name}</td>
                                             <td className="px-4 py-2 text-right">{formatCurrency(item.amount)}</td>
                                         </tr>
@@ -94,7 +94,7 @@ export default function TaxSummary({ financialYear }: any) {
                                         <td className="px-4 py-3 text-right"></td>
                                     </tr>
                                     {data.tax_paid.items.map((item: any, idx: number) => (
-                                        <tr key={idx} className="border-t hover:bg-gray-50">
+                                        <tr key={idx} className="border-t hover:bg-gray-50 dark:hover:bg-gray-800/60">
                                             <td className="px-8 py-2">{item.tax_name}</td>
                                             <td className="px-4 py-2 text-right">{formatCurrency(item.amount)}</td>
                                         </tr>

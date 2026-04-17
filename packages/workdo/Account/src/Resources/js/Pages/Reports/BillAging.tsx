@@ -79,7 +79,7 @@ export default function BillAging({ financialYear }: any) {
                                 </thead>
                                 <tbody>
                                     {data.vendors.map((vendor: any, idx: number) => (
-                                        <tr key={idx} className="border-t hover:bg-gray-50">
+                                         <tr key={idx} className="border-t hover:bg-gray-50 dark:hover:bg-gray-800/60">
                                             <td className="px-4 py-3">{vendor.vendor_name}</td>
                                             <td className="px-4 py-3 text-right">{formatCurrency(vendor.current)}</td>
                                             <td className="px-4 py-3 text-right">{formatCurrency(vendor['1_30_days'])}</td>

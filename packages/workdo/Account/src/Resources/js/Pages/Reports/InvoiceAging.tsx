@@ -96,7 +96,7 @@ export default function InvoiceAging({ financialYear }: any) {
                                 </thead>
                                 <tbody>
                                     {data.customers.map((customer, idx) => (
-                                        <tr key={idx} className="border-t hover:bg-gray-50">
+                                        <tr key={idx} className="border-t hover:bg-gray-50 dark:hover:bg-gray-800/60">
                                             <td className="px-4 py-3">{customer.customer_name}</td>
                                             <td className="px-4 py-3 text-right">{formatCurrency(customer.current)}</td>
                                             <td className="px-4 py-3 text-right">{formatCurrency(customer['1_30_days'])}</td>

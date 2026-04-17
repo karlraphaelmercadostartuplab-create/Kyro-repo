@@ -87,7 +87,7 @@ export default function VendorBalance({ financialYear }: any) {
                                 </thead>
                                 <tbody>
                                     {data.vendors.map((vendor: any, idx: number) => (
-                                        <tr key={idx} className="border-t hover:bg-gray-50">
+                                        <tr key={idx} className="border-t hover:bg-gray-50 dark:hover:bg-gray-800/60">
                                             <td className="px-4 py-3">
                                                 {auth.user?.permissions?.includes('view-vendor-detail-report') ? (
                                                     <Link href={route('account.reports.vendor-detail', vendor.vendor_id)} className="text-blue-600 hover:text-blue-700">

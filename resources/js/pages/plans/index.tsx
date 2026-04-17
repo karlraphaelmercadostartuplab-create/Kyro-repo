@@ -253,7 +253,7 @@ export default function PlansIndex({ plans, canCreate, activeModules }: Props) {
                                     >
                                         {plan.id === mostPopularPlanId && activePlans.length > 1 && (
                                             <div className="absolute left-1/2 top-0 z-30 -translate-x-1/2 -translate-y-[55%]">
-                                                <div className="rounded-md bg-primary px-3 py-2 text-center text-sm font-bold text-white shadow-lg sm:px-4" style={{ minWidth: '140px', maxWidth: 'calc(100vw - 64px)' }}>
+                                                <div className="rounded-md bg-primary px-3 py-2 text-center text-sm font-bold text-white shadow-lg dark:bg-blue-200 dark:text-blue-950 sm:px-4" style={{ minWidth: '140px', maxWidth: 'calc(100vw - 64px)' }}>
                                                     {t('Most Popular')}
                                                 </div>
                                             </div>
@@ -374,7 +374,7 @@ export default function PlansIndex({ plans, canCreate, activeModules }: Props) {
                                     >
                                         {plan.id === mostPopularPlanId && activePlans.length > 1 && (
                                             <div className="absolute left-1/2 top-0 z-30 -translate-x-1/2 -translate-y-[55%]">
-                                                <div className="rounded-md bg-primary px-3 py-2 text-center text-sm font-bold text-white shadow-lg sm:px-4" style={{ minWidth: '140px', maxWidth: 'calc(100vw - 64px)' }}>
+                                                <div className="rounded-md bg-primary px-3 py-2 text-center text-sm font-bold text-white shadow-lg dark:bg-blue-200 dark:text-blue-950 sm:px-4" style={{ minWidth: '140px', maxWidth: 'calc(100vw - 64px)' }}>
                                                     {t('Most Popular')}
                                                 </div>
                                             </div>

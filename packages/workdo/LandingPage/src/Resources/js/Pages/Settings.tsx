@@ -204,7 +204,8 @@ export default function Settings({ settings, customPages }: SettingsProps) {
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                     <div className="lg:col-span-3 space-y-6">
                         {/* Tab Navigation */}
-                        <div className="flex border-b border-border mb-8">
+                        <div className="mb-8 overflow-x-auto border-b border-border">
+                            <div className="flex min-w-max">
                             {[
                                 { key: 'setup', label: t('Setup'), sections: ['general', 'order', 'colors'] },
                                 { key: 'layout', label: t('Layout'), sections: ['header', 'hero', 'footer'] },
@@ -219,7 +220,7 @@ export default function Settings({ settings, customPages }: SettingsProps) {
                                         setActiveTab(tab.key as any);
                                         setActiveSection(tab.sections[0] as any);
                                     }}
-                                    className={`px-6 py-3 font-medium text-sm border-b-2 transition-colors ${
+                                    className={`shrink-0 whitespace-nowrap px-4 sm:px-6 py-3 font-medium text-sm border-b-2 transition-colors ${
                                         activeTab === tab.key
                                             ? 'rounded-t-lg border-primary bg-primary text-primary-foreground'
                                             : 'border-transparent text-muted-foreground hover:text-foreground hover:bg-accent/40'
@@ -229,6 +230,7 @@ export default function Settings({ settings, customPages }: SettingsProps) {
                                     {tab.label}
                                 </button>
                             ))}
+                            </div>
                         </div>
 
                         {/* Section Navigation within Tab */}

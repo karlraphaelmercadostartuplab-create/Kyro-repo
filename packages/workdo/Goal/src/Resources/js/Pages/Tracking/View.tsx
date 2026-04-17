@@ -67,17 +67,17 @@ export default function View() {
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div className="text-center p-4 bg-blue-50 rounded-lg">
                                 <DollarSign className="h-8 w-8 text-blue-600 mx-auto mb-2" />
-                                <p className="text-sm text-gray-600">{t('Target Amount')}</p>
+                                <p className="text-sm font-medium text-gray-800">{t('Target Amount')}</p>
                                 <p className="text-2xl font-bold text-blue-600">{formatCurrency(tracking.goal?.target_amount || 0)}</p>
                             </div>
                             <div className="text-center p-4 bg-green-50 rounded-lg">
                                 <Target className="h-8 w-8 text-green-600 mx-auto mb-2" />
-                                <p className="text-sm text-gray-600">{t('Current Amount')}</p>
+                                <p className="text-sm font-medium text-gray-800">{t('Current Amount')}</p>
                                 <p className="text-2xl font-bold text-green-600">{formatCurrency(tracking.current_amount)}</p>
                             </div>
                             <div className="text-center p-4 bg-purple-50 rounded-lg">
                                 <TrendingUp className="h-8 w-8 text-purple-600 mx-auto mb-2" />
-                                <p className="text-sm text-gray-600">{t('Progress')}</p>
+                                <p className="text-sm font-medium text-gray-800">{t('Progress')}</p>
                                 <p className="text-2xl font-bold text-purple-600">{tracking.progress_percentage}%</p>
                             </div>
                         </div>

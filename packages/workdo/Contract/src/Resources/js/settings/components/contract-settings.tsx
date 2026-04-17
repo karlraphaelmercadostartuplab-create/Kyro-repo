@@ -60,8 +60,8 @@ export default function ContractSettings({ userSettings, auth }: ContractSetting
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div>
+      <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
           <CardTitle className="flex items-center gap-2 text-lg">
             <FileSignature className="h-5 w-5" />
             {t('Contract Settings')}
@@ -71,7 +71,7 @@ export default function ContractSettings({ userSettings, auth }: ContractSetting
           </p>
         </div>
         {canEdit && (
-          <Button onClick={saveSettings} disabled={isLoading} size="sm">
+          <Button className="w-full sm:w-auto" onClick={saveSettings} disabled={isLoading} size="sm">
             <Save className="h-4 w-4 mr-2" />
             {isLoading ? t('Saving...') : t('Save Changes')}
           </Button>

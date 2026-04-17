@@ -75,7 +75,7 @@ export default function Show() {
             open: 'bg-blue-100 text-blue-800',
             in_progress: 'bg-yellow-100 text-yellow-800',
             resolved: 'bg-green-100 text-green-800',
-            closed: 'bg-gray-100 text-gray-800'
+            closed: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100'
         };
         return (
             <span className={`px-2 py-1 rounded-full text-sm ${colors[status as keyof typeof colors]}`}>

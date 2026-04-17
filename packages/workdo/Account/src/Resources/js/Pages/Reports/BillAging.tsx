@@ -36,10 +36,10 @@ export default function BillAging({ financialYear }: any) {
 
     return (
         <Card className="shadow-sm">
-            <CardContent className="p-6 border-b bg-gray-50/50">
+            <CardContent className="p-6 border-b bg-gray-50/50 dark:bg-gray-900/40 dark:border-gray-700">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">{t('As Of Date')}</label>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('As Of Date')}</label>
                         <DatePicker value={asOfDate} onChange={setAsOfDate} placeholder={t('Select date')} />
                     </div>
                     <div className="flex items-end gap-2">
@@ -59,14 +59,14 @@ export default function BillAging({ financialYear }: any) {
             <CardContent className="p-0">
                 {data && data.vendors.length > 0 ? (
                     <>
-                        <div className="p-4 bg-gray-50 border-b">
+                        <div className="p-4 bg-gray-50 dark:bg-gray-900/40 border-b dark:border-gray-700">
                             <h3 className="font-semibold text-lg">{t('Bill Aging Report')}</h3>
-                            <p className="text-sm text-gray-600">{t('As of')} {formatDate(data.as_of_date)}</p>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">{t('As of')} {formatDate(data.as_of_date)}</p>
                         </div>
 
                         <div className="overflow-y-auto max-h-[60vh]">
                             <table className="w-full">
-                                <thead className="bg-gray-100 sticky top-0">
+                                <thead className="bg-gray-100 dark:bg-gray-800 sticky top-0">
                                     <tr>
                                         <th className="px-4 py-3 text-left text-sm font-semibold">{t('Vendor')}</th>
                                         <th className="px-4 py-3 text-right text-sm font-semibold">{t('Current')}</th>
@@ -79,7 +79,7 @@ export default function BillAging({ financialYear }: any) {
                                 </thead>
                                 <tbody>
                                     {data.vendors.map((vendor: any, idx: number) => (
-                                        <tr key={idx} className="border-t hover:bg-gray-50">
+                                         <tr key={idx} className="border-t hover:bg-gray-50 dark:hover:bg-gray-800/60">
                                             <td className="px-4 py-3">{vendor.vendor_name}</td>
                                             <td className="px-4 py-3 text-right">{formatCurrency(vendor.current)}</td>
                                             <td className="px-4 py-3 text-right">{formatCurrency(vendor['1_30_days'])}</td>
@@ -89,7 +89,7 @@ export default function BillAging({ financialYear }: any) {
                                             <td className="px-4 py-3 text-right font-semibold">{formatCurrency(vendor.total)}</td>
                                         </tr>
                                     ))}
-                                    <tr className="bg-gray-200 font-bold border-t-4">
+                                    <tr className="bg-gray-200 dark:bg-gray-800 font-bold border-t-4 dark:border-gray-700">
                                         <td className="px-4 py-4">{t('Total')}</td>
                                         <td className="px-4 py-4 text-right">{formatCurrency(data.aging_summary.current)}</td>
                                         <td className="px-4 py-4 text-right">{formatCurrency(data.aging_summary['1_30_days'])}</td>

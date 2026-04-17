@@ -64,15 +64,19 @@ export default function View({ assignment }: ViewProps) {
     };
 
     return (
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
-            <DialogHeader className="pb-4 border-b bg-gradient-to-r from-primary/5 to-transparent">
-                <div className="flex items-center justify-between">
+        <DialogContent className="max-h-[90vh] max-w-4xl overflow-hidden border p-0">
+            <DialogHeader className="relative overflow-hidden border-b px-6 py-5">
+                <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 bg-gradient-to-r from-primary/15 via-primary/10 to-transparent dark:from-primary/25 dark:via-primary/15 dark:to-transparent"
+                />
+                <div className="relative z-10 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <div className="p-2 bg-primary/10 rounded-lg">
                             <Package className="h-5 w-5 text-primary" />
                         </div>
                         <div>
-                            <DialogTitle className="text-xl font-bold text-gray-900">{t('Assignment Details')}</DialogTitle>
+                            <DialogTitle className="text-xl font-bold text-gray-900 dark:text-gray-100">{t('Assignment Details')}</DialogTitle>
                             <p className="text-sm text-muted-foreground mt-1">
                                 {assignment.asset.name} → {assignment.user.name}
                             </p>
@@ -87,7 +91,7 @@ export default function View({ assignment }: ViewProps) {
                 </div>
             </DialogHeader>
 
-            <div className="overflow-y-auto flex-1 p-6 space-y-6">
+            <div className="flex-1 space-y-6 overflow-y-auto p-6">
                 {/* Asset and User Info */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <Card className="shadow-sm">

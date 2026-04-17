@@ -37,14 +37,14 @@ export default function TaxSummary({ financialYear }: any) {
 
     return (
         <Card className="shadow-sm">
-            <CardContent className="p-6 border-b bg-gray-50/50">
+             <CardContent className="p-6 border-b bg-gray-50/50 dark:bg-gray-900/40 dark:border-gray-700">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">{t('From Date')}</label>
+                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('From Date')}</label>
                         <DatePicker value={fromDate} onChange={setFromDate} placeholder={t('Select from date')} />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">{t('To Date')}</label>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('To Date')}</label>
                         <DatePicker value={toDate} onChange={setToDate} placeholder={t('Select to date')} />
                     </div>
                     <div className="flex items-end gap-2">
@@ -64,9 +64,9 @@ export default function TaxSummary({ financialYear }: any) {
             <CardContent className="p-0">
                 {data ? (
                     <>
-                        <div className="p-4 bg-gray-50 border-b">
+                        <div className="p-4 bg-gray-50 dark:bg-gray-900/40 border-b dark:border-gray-700">
                             <h3 className="font-semibold text-lg">{t('Tax Summary Report')}</h3>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
                                 {formatDate(data.from_date)} {t('to')} {formatDate(data.to_date)}
                             </p>
                         </div>
@@ -74,7 +74,7 @@ export default function TaxSummary({ financialYear }: any) {
                         <div className="overflow-y-auto max-h-[60vh]">
                             <table className="w-full">
                                 <tbody>
-                                    <tr className="bg-green-50">
+                                    <tr className="bg-green-50 dark:bg-green-900/20">
                                         <td className="px-4 py-3 font-semibold">{t('Tax Collected (Sales)')}</td>
                                         <td className="px-4 py-3 text-right"></td>
                                     </tr>
@@ -84,12 +84,12 @@ export default function TaxSummary({ financialYear }: any) {
                                             <td className="px-4 py-2 text-right">{formatCurrency(item.amount)}</td>
                                         </tr>
                                     ))}
-                                    <tr className="bg-gray-100 font-semibold border-t-2">
+                                    <tr className="bg-gray-100 dark:bg-gray-800 font-semibold border-t-2 dark:border-gray-700">
                                         <td className="px-4 py-3">{t('Total Tax Collected')}</td>
                                         <td className="px-4 py-3 text-right">{formatCurrency(data.tax_collected.total)}</td>
                                     </tr>
 
-                                    <tr className="bg-red-50">
+                                    <tr className="bg-red-50 dark:bg-red-900/20">
                                         <td className="px-4 py-3 font-semibold">{t('Tax Paid (Purchases)')}</td>
                                         <td className="px-4 py-3 text-right"></td>
                                     </tr>
@@ -99,12 +99,12 @@ export default function TaxSummary({ financialYear }: any) {
                                             <td className="px-4 py-2 text-right">{formatCurrency(item.amount)}</td>
                                         </tr>
                                     ))}
-                                    <tr className="bg-gray-100 font-semibold border-t-2">
+                                    <tr className="bg-gray-100 dark:bg-gray-800 font-semibold border-t-2 dark:border-gray-700">
                                         <td className="px-4 py-3">{t('Total Tax Paid')}</td>
                                         <td className="px-4 py-3 text-right">{formatCurrency(data.tax_paid.total)}</td>
                                     </tr>
 
-                                    <tr className={`font-bold border-t-4 ${data.net_tax_liability >= 0 ? 'bg-blue-50' : 'bg-yellow-50'}`}>
+                                    <tr className={`font-bold border-t-4 dark:border-gray-700 ${data.net_tax_liability >= 0 ? 'bg-blue-50 dark:bg-blue-900/20' : 'bg-yellow-50 dark:bg-yellow-900/20'}`}>
                                         <td className="px-4 py-4 text-lg">{t('Net Tax Liability')}</td>
                                         <td className="px-4 py-4 text-lg text-right">{formatCurrency(data.net_tax_liability)}</td>
                                     </tr>

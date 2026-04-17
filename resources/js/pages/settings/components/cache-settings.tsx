@@ -64,7 +64,7 @@ export default function CacheSettings({ cacheSize = '0.00', auth }: CacheSetting
             </p>
           </div>
           
-          <div className="flex items-center justify-between p-4 border rounded-lg">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-4 border rounded-lg">
             <div className="flex items-center space-x-3 order-1 rtl:order-2">
               <HardDrive className="h-5 w-5 text-muted-foreground" />
               <div>
@@ -75,12 +75,13 @@ export default function CacheSettings({ cacheSize = '0.00', auth }: CacheSetting
               </div>
             </div>
             {canEdit && (
-              <div className="flex gap-2 order-2 rtl:order-1">
+              <div className="flex flex-col sm:flex-row gap-2 order-2 rtl:order-1 w-full sm:w-auto">
                 <Button
                   onClick={handleClearCache}
                   disabled={isClearing}
                   variant="destructive"
                   size="sm"
+                  className="w-full sm:w-auto"
                 >
                   <Trash2 className="h-4 w-4 mr-2" />
                   {isClearing ? t("Clearing...") : t("Clear Cache")}
@@ -90,6 +91,7 @@ export default function CacheSettings({ cacheSize = '0.00', auth }: CacheSetting
                   disabled={isOptimizing}
                   variant="default"
                   size="sm"
+                  className="w-full sm:w-auto"
                 >
                   <Zap className="h-4 w-4 mr-2" />
                   {isOptimizing ? t("Optimizing...") : t("Optimize Site")}

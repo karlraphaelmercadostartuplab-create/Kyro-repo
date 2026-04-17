@@ -121,7 +121,7 @@ export default function Index() {
                                 <Badge
                                     key={contract.id}
                                     variant="outline"
-                                    className="text-xs bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100"
+                                     className="text-xs bg-slate-100 border-slate-300 !text-slate-900 hover:bg-slate-200"
                                 >
                                     {contract.contract_number}
                                 </Badge>
@@ -129,7 +129,7 @@ export default function Index() {
                             {remainingCount > 0 && (
                                 <Badge
                                     variant="secondary"
-                                    className="text-xs bg-gray-100 text-gray-600 hover:bg-gray-200"
+                                    className="text-xs bg-slate-200 !text-slate-900 hover:bg-slate-300"
                                 >
                                     +{remainingCount} {t('more')}
                                 </Badge>

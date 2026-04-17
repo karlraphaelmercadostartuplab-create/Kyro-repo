@@ -23,7 +23,7 @@ export default function Order({ data, setData, updateSectionVisibility }: OrderP
                         </div>
                         <div>
                             <CardTitle>{t('Section Order')}</CardTitle>
-                            <p className="text-sm text-gray-500">{t('Drag and drop to reorder sections on your landing page')}</p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">{t('Drag and drop to reorder sections on your landing page')}</p>
                         </div>
                     </div>
                 </CardHeader>
@@ -67,24 +67,26 @@ export default function Order({ data, setData, updateSectionVisibility }: OrderP
                                         });
                                     }}
                                     className={`flex items-center gap-3 p-4 border rounded-lg transition-all cursor-move ${
-                                        isEnabled ? 'bg-white border-gray-200 hover:shadow-md' : 'bg-gray-50 border-gray-300 opacity-60'
+                                        isEnabled
+                                            ? 'bg-white border-gray-200 hover:shadow-md dark:bg-gray-900 dark:border-gray-700'
+                                            : 'bg-gray-50 border-gray-300 opacity-60 dark:bg-gray-800 dark:border-gray-700'
                                     }`}
                                 >
-                                    <GripVertical className="h-5 w-5 text-gray-400" />
+                                    <GripVertical className="h-5 w-5 text-gray-400 dark:text-gray-500" />
                                     <div className="flex-1 flex items-center justify-between">
                                         <div className="flex items-center gap-3">
-                                            <span className="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-bold">
+                                            <span className="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-bold dark:bg-blue-900/40 dark:text-blue-300">
                                                 {index + 1}
                                             </span>
                                             <div>
-                                                <h4 className="font-medium text-gray-900">{sectionNames[sectionKey] || sectionKey}</h4>
-                                                <p className="text-sm text-gray-500">
+                                                <h4 className="font-medium text-gray-900 dark:text-gray-100">{sectionNames[sectionKey] || sectionKey}</h4>
+                                                <p className="text-sm text-gray-500 dark:text-gray-400">
                                                     {isEnabled ? t('Enabled') : t('Disabled')}
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-2">
-                                            <Label className="text-sm">{t('Enable')}</Label>
+                                            <Label className="text-sm text-gray-700 dark:text-gray-300">{t('Enable')}</Label>
                                             <Switch
                                                 checked={isEnabled}
                                                 onCheckedChange={(checked) => updateSectionVisibility(sectionKey, checked)}

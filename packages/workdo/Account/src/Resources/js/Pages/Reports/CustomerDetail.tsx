@@ -148,7 +148,7 @@ export default function CustomerDetail() {
                                     </thead>
                                     <tbody>
                                         {customerData.invoices.map((invoice: any, idx: number) => (
-                                            <tr key={idx} className="border-t hover:bg-gray-50">
+                                            <tr key={idx} className="border-t hover:bg-gray-50 dark:hover:bg-gray-800/60">
                                                 <td className="px-4 py-3 font-medium">{invoice.invoice_number}</td>
                                                 <td className="px-4 py-3">{formatDate(invoice.date)}</td>
                                                 <td className="px-4 py-3">{formatDate(invoice.due_date)}</td>
@@ -192,7 +192,7 @@ export default function CustomerDetail() {
                                     </thead>
                                     <tbody>
                                         {customerData.returns.map((ret: any, idx: number) => (
-                                            <tr key={idx} className="border-t hover:bg-gray-50">
+                                            <tr key={idx} className="border-t hover:bg-gray-50 dark:hover:bg-gray-800/60">
                                                 <td className="px-4 py-3 font-medium">{ret.return_number}</td>
                                                 <td className="px-4 py-3">{formatDate(ret.date)}</td>
                                                 <td className="px-4 py-3">
@@ -234,7 +234,7 @@ export default function CustomerDetail() {
                                     </thead>
                                     <tbody>
                                         {customerData.credit_notes.map((note: any, idx: number) => (
-                                            <tr key={idx} className="border-t hover:bg-gray-50">
+                                            <tr key={idx} className="border-t hover:bg-gray-50 dark:hover:bg-gray-800/60">
                                                 <td className="px-4 py-3 font-medium">{note.credit_note_number}</td>
                                                 <td className="px-4 py-3">{formatDate(note.date)}</td>
                                                 <td className="px-4 py-3">
@@ -276,7 +276,7 @@ export default function CustomerDetail() {
                                     </thead>
                                     <tbody>
                                         {customerData.payments.map((payment: any, idx: number) => (
-                                            <tr key={idx} className="border-t hover:bg-gray-50">
+                                            <tr key={idx} className="border-t hover:bg-gray-50 dark:hover:bg-gray-800/60">
                                                 <td className="px-4 py-3 font-medium">{payment.payment_number}</td>
                                                 <td className="px-4 py-3">{formatDate(payment.date)}</td>
                                                 <td className="px-4 py-3 text-sm text-gray-600">{payment.bank_account || '-'}</td>

@@ -200,7 +200,7 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-3">
-                    <Label>{t('Logo (Dark Mode)')}</Label>
+                    <Label>{t('Logo (Light Mode)')}</Label>
                     <div className="flex flex-col gap-3">
                       <div className="border rounded-md p-4 flex items-center justify-center bg-muted/30 h-32">
                         {settings.logo_dark ? (
@@ -229,7 +229,7 @@ export default function BrandSettings({ userSettings, auth }: BrandSettingsProps
                   </div>
 
                   <div className="space-y-3">
-                    <Label>{t('Logo (Light Mode)')}</Label>
+                    <Label>{t('Logo (Dark Mode)')}</Label>
                     <div className="flex flex-col gap-3">
                       <div className="border rounded-md p-4 flex items-center justify-center bg-gray-800 h-32">
                         {settings.logo_light ? (

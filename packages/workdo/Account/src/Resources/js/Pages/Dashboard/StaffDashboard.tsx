@@ -32,47 +32,47 @@ export default function StaffDashboard({ stats, recentActivities }: StaffProps) 
             <Head title={t('Dashboard')} />
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-                <Card className="bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200">
+                 <Card className="bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200 dark:from-blue-900/40 dark:to-blue-800/30 dark:border-blue-700/50">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium text-blue-700">{t('Total Clients')}</CardTitle>
-                        <Users className="h-8 w-8 text-blue-700 opacity-80" />
+                        <CardTitle className="text-sm font-medium text-blue-700 dark:text-blue-100">{t('Total Clients')}</CardTitle>
+                        <Users className="h-8 w-8 text-blue-700 opacity-80 dark:text-blue-100" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-blue-700">{stats.total_clients}</div>
-                        <p className="text-xs text-blue-700 opacity-80 mt-1">{t('Active clients')}</p>
+                        <div className="text-2xl font-bold text-blue-700 dark:text-blue-50">{stats.total_clients}</div>
+                        <p className="text-xs text-blue-700 opacity-80 mt-1 dark:text-blue-100">{t('Active clients')}</p>
                     </CardContent>
                 </Card>
 
-                <Card className="bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200">
+                <Card className="bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200 dark:from-purple-900/40 dark:to-purple-800/30 dark:border-purple-700/50">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium text-purple-700">{t('Total Vendors')}</CardTitle>
-                        <Building className="h-8 w-8 text-purple-700 opacity-80" />
+                        <CardTitle className="text-sm font-medium text-purple-700 dark:text-purple-100">{t('Total Vendors')}</CardTitle>
+                        <Building className="h-8 w-8 text-purple-700 opacity-80 dark:text-purple-100" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-purple-700">{stats.total_vendors}</div>
-                        <p className="text-xs text-purple-700 opacity-80 mt-1">{t('Active vendors')}</p>
+                        <div className="text-2xl font-bold text-purple-700 dark:text-purple-50">{stats.total_vendors}</div>
+                        <p className="text-xs text-purple-700 opacity-80 mt-1 dark:text-purple-100">{t('Active vendors')}</p>
                     </CardContent>
                 </Card>
 
-                <Card className="bg-gradient-to-r from-green-50 to-green-100 border-green-200">
+                <Card className="bg-gradient-to-r from-green-50 to-green-100 border-green-200 dark:from-green-900/35 dark:to-green-800/25 dark:border-green-700/50">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium text-green-700">{t('Monthly Revenue')}</CardTitle>
-                        <TrendingUp className="h-8 w-8 text-green-700 opacity-80" />
+                         <CardTitle className="text-sm font-medium text-green-700 dark:text-green-100">{t('Monthly Revenue')}</CardTitle>
+                        <TrendingUp className="h-8 w-8 text-green-700 opacity-80 dark:text-green-100" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-green-700">{formatCurrency(stats.monthly_revenue)}</div>
-                        <p className="text-xs text-green-700 opacity-80 mt-1">{t('Current month')}</p>
+                        <div className="text-2xl font-bold text-green-700 dark:text-green-50">{formatCurrency(stats.monthly_revenue)}</div>
+                        <p className="text-xs text-green-700 opacity-80 mt-1 dark:text-green-100">{t('Current month')}</p>
                     </CardContent>
                 </Card>
 
-                <Card className="bg-gradient-to-r from-red-50 to-red-100 border-red-200">
+                <Card className="bg-gradient-to-r from-red-50 to-red-100 border-red-200 dark:from-red-900/35 dark:to-red-800/25 dark:border-red-700/50">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium text-red-700">{t('Monthly Expense')}</CardTitle>
-                        <TrendingDown className="h-8 w-8 text-red-700 opacity-80" />
+                        <CardTitle className="text-sm font-medium text-red-700 dark:text-red-100">{t('Monthly Expense')}</CardTitle>
+                        <TrendingDown className="h-8 w-8 text-red-700 opacity-80 dark:text-red-100" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-red-700">{formatCurrency(stats.monthly_expense)}</div>
-                        <p className="text-xs text-red-700 opacity-80 mt-1">{t('Current month')}</p>
+                        <div className="text-2xl font-bold text-red-700 dark:text-red-50">{formatCurrency(stats.monthly_expense)}</div>
+                        <p className="text-xs text-red-700 opacity-80 mt-1 dark:text-red-100">{t('Current month')}</p>
                     </CardContent>
                 </Card>
             </div>
@@ -84,13 +84,13 @@ export default function StaffDashboard({ stats, recentActivities }: StaffProps) 
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-4">
-                            <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg">
+                            <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg dark:bg-green-900/25">
                                 <div className="flex items-center space-x-3">
-                                    <div className="p-2 bg-green-100 rounded-full">
+                                    <div className="p-2 bg-green-100 rounded-full dark:bg-green-800/70">
                                         <TrendingUp className="h-4 w-4 text-green-600" />
                                     </div>
                                     <div>
-                                        <p className="font-medium">{t('Revenue')}</p>
+                                        <p className="font-medium dark:text-green-100">{t('Revenue')}</p>
                                         <p className="text-sm text-muted-foreground">{t('Current month')}</p>
                                     </div>
                                 </div>
@@ -99,13 +99,13 @@ export default function StaffDashboard({ stats, recentActivities }: StaffProps) 
                                 </div>
                             </div>
 
-                            <div className="flex items-center justify-between p-4 bg-red-50 rounded-lg">
+                            <div className="flex items-center justify-between p-4 bg-red-50 rounded-lg dark:bg-red-900/25">
                                 <div className="flex items-center space-x-3">
-                                    <div className="p-2 bg-red-100 rounded-full">
+                                    <div className="p-2 bg-red-100 rounded-full dark:bg-red-800/70">
                                         <TrendingDown className="h-4 w-4 text-red-600" />
                                     </div>
                                     <div>
-                                        <p className="font-medium">{t('Expense')}</p>
+                                        <p className="font-medium dark:text-red-100">{t('Expense')}</p>
                                         <p className="text-sm text-muted-foreground">{t('Current month')}</p>
                                     </div>
                                 </div>
@@ -114,13 +114,13 @@ export default function StaffDashboard({ stats, recentActivities }: StaffProps) 
                                 </div>
                             </div>
 
-                            <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
+                            <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg dark:bg-blue-900/25">
                                 <div className="flex items-center space-x-3">
-                                    <div className="p-2 bg-blue-100 rounded-full">
+                                    <div className="p-2 bg-blue-100 rounded-full dark:bg-blue-800/70">
                                         <DollarSign className="h-4 w-4 text-blue-600" />
                                     </div>
                                     <div>
-                                        <p className="font-medium">{t('Net Profit')}</p>
+                                        <p className="font-medium dark:text-blue-100">{t('Net Profit')}</p>
                                         <p className="text-sm text-muted-foreground">{t('Current month')}</p>
                                     </div>
                                 </div>

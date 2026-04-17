@@ -93,7 +93,7 @@ export default function IncomeStatement({ financialYear }: any) {
                                         <td className="px-4 py-3 text-right"></td>
                                     </tr>
                                     {data.revenue.map((item, idx) => (
-                                        <tr key={idx} className="border-t hover:bg-gray-50">
+                                        <tr key={idx} className="border-t hover:bg-gray-50 dark:hover:bg-gray-800/60">
                                             <td className="px-8 py-2">{item.category}</td>
                                             <td className="px-4 py-2 text-right">{formatCurrency(item.amount)}</td>
                                         </tr>
@@ -108,7 +108,7 @@ export default function IncomeStatement({ financialYear }: any) {
                                         <td className="px-4 py-3 text-right"></td>
                                     </tr>
                                     {data.expenses.map((item, idx) => (
-                                        <tr key={idx} className="border-t hover:bg-gray-50">
+                                        <tr key={idx} className="border-t hover:bg-gray-50 dark:hover:bg-gray-800/60">
                                             <td className="px-8 py-2">{item.category}</td>
                                             <td className="px-4 py-2 text-right">{formatCurrency(item.amount)}</td>
                                         </tr>

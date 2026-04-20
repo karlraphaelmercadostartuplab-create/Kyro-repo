@@ -117,11 +117,14 @@ createInertiaApp({
         // Make props globally available
         (window as any).page = props;
         const root = createRoot(el);
+        const authenticatedUserId = (props as any)?.initialPage?.props?.auth?.user?.id;
+        const themeStorageKey = authenticatedUserId ? `theme-${authenticatedUserId}` : "theme";
 
         root.render(
             <ThemeProvider
                 attribute="class"
                 defaultTheme="light"
+                storageKey={themeStorageKey}
                 enableSystem
                 disableTransitionOnChange
             >

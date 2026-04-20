@@ -60,7 +60,7 @@ export default function ReplyForm({ ticketId, onReplyAdded, disabled }: ReplyFor
 
 
     return (
-        <div className="overflow-hidden border-t bg-gray-50/50 p-3">
+         <div className="overflow-hidden border-t bg-gray-50/50 p-3 dark:bg-gray-900/40">
             <div className="space-y-2">
                 <div className="relative">
                     <RichTextEditor

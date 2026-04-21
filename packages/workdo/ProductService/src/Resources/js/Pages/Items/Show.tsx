@@ -95,7 +95,7 @@ export default function Show() {
                                     </div>
                                     <div className="bg-gray-50 dark:bg-slate-800/80 p-4 rounded-lg">
                                         <label className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-3">{t('Type')}</label>
-                                        <p className="text-gray-700 dark:text-gray-200 leading-relaxed">{item.type || '-'}</p>
+                                        <p className="text-gray-700 dark:text-gray-200 leading-relaxed">{item.type || '-'}</p>  
                                     </div>
 
                                 </div>

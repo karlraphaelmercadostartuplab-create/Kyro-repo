@@ -120,9 +120,9 @@ export default function View() {
                                         </div>
                                     )}
                                 </div>
-                                <div className="mt-4 p-3 bg-blue-50 rounded">
-                                    <div className="flex justify-between items-center">
-                                        <div className="flex gap-2">
+                                <div className="mt-4 rounded-lg border border-blue-100 bg-blue-50 p-3 dark:border-blue-900/40 dark:bg-slate-800/80">
+                                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+                                        <div className="flex flex-wrap gap-2">
                                             {auth.user?.permissions?.includes('print-purchase-invoices') && (
                                                 <Button
                                                     variant="outline"
@@ -156,9 +156,9 @@ export default function View() {
                                                 </TooltipProvider>
                                             )}
                                         </div>
-                                        <div className="text-right">
-                                            <div className="text-xl font-bold text-blue-600">{formatCurrency(invoice.balance_amount)}</div>
-                                            <div className="text-sm text-muted-foreground">{t('Balance Due')}</div>
+                                         <div className="text-right sm:text-right">
+                                            <div className="text-lg sm:text-xl font-bold text-blue-600 dark:text-blue-300">{formatCurrency(invoice.balance_amount)}</div>
+                                            <div className="text-xs sm:text-sm text-blue-700/80 dark:text-blue-200/90">{t('Balance Due')}</div>
                                         </div>
                                     </div>
                                 </div>

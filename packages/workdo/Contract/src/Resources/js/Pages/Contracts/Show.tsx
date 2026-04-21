@@ -194,7 +194,7 @@ export default function Show() {
             <Head title={`${t('Details Contract')} - ${contract.subject}`} />
 
             <div className="space-y-6">
-                <Card className="border-0 shadow-lg bg-gradient-to-r from-white to-gray-50">
+                <Card className="border-0 shadow-lg bg-gradient-to-r from-white to-gray-50 dark:from-slate-900 dark:to-slate-800">
                     <CardHeader className="pb-8">
                         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                             <div className="flex-1 space-y-4">
@@ -203,7 +203,7 @@ export default function Show() {
                                         <FileText className="h-6 w-6 text-primary" />
                                     </div>
                                     <div className="flex flex-col">
-                                        <span className="font-bold text-gray-900">{contract.subject}</span>
+                                         <span className="font-bold text-gray-900 dark:text-gray-100">{contract.subject}</span>
                                         <span className="text-sm font-normal text-muted-foreground mt-1">
                                             {contract.contract_number}
                                         </span>
@@ -214,7 +214,7 @@ export default function Show() {
                                     {auth.user?.permissions?.includes('edit-contracts') ? (
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
-                                                <Button variant="outline" size="sm" className="flex items-center gap-2 text-sm font-medium hover:bg-gray-50 border-gray-200">
+                                                <Button variant="outline" size="sm" className="flex items-center gap-2 text-sm font-medium hover:bg-gray-50 dark:hover:bg-slate-800 border-gray-200 dark:border-slate-700">
                                                     <div className={`w-2.5 h-2.5 rounded-full ${contract.status === 'pending' ? 'bg-yellow-500' :
                                                         contract.status === 'accepted' ? 'bg-green-500' :
                                                             contract.status === 'declined' ? 'bg-red-500' :
@@ -282,7 +282,7 @@ export default function Show() {
                             <div className="flex flex-col items-end space-y-3">
                                 <div className="text-right">
                                     <p className="text-sm text-muted-foreground mb-1">{t('Contract Value')}</p>
-                                    <p className="text-2xl font-bold text-gray-900">
+                                    <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                                         {contract.value ? formatCurrency(contract.value) : (
                                             <span className="text-lg text-muted-foreground font-normal">{t('Not Set')}</span>
                                         )}

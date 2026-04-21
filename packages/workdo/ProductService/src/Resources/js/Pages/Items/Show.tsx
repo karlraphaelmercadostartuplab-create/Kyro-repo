@@ -80,22 +80,22 @@ export default function Show() {
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <div className="lg:col-span-2 space-y-6">
                             <div>
-                                <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('Basic Information')}</h3>
+                                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">{t('Basic Information')}</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
                                     {item.sku && (
-                                        <div className="bg-gray-50 p-4 rounded-lg">
-                                            <label className="text-lg font-semibold text-gray-800 mb-3">{t('SKU')}</label>
-                                            <p className="text-gray-700 leading-relaxed">{item.sku}</p>
+                                        <div className="bg-gray-50 dark:bg-slate-800/80 p-4 rounded-lg">
+                                            <label className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-3">{t('SKU')}</label>
+                                            <p className="text-gray-700 dark:text-gray-200 leading-relaxed">{item.sku}</p>
                                         </div>
                                     )}
-                                     <div className="bg-gray-50 p-4 rounded-lg">
-                                        <label className="text-lg font-semibold text-gray-800 mb-3">{t('Category')}</label>
-                                        <p className="text-gray-700 leading-relaxed">{item.category?.name || '-'}</p>
+                                     <div className="bg-gray-50 dark:bg-slate-800/80 p-4 rounded-lg">
+                                        <label className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-3">{t('Category')}</label>
+                                        <p className="text-gray-700 dark:text-gray-200 leading-relaxed">{item.category?.name || '-'}</p>
                                     </div>
-                                    <div className="bg-gray-50 p-4 rounded-lg">
-                                        <label className="text-lg font-semibold text-gray-800 mb-3">{t('Type')}</label>
-                                        <p className="text-gray-700 leading-relaxed">{item.type || '-'}</p>
+                                    <div className="bg-gray-50 dark:bg-slate-800/80 p-4 rounded-lg">
+                                        <label className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-3">{t('Type')}</label>
+                                        <p className="text-gray-700 dark:text-gray-200 leading-relaxed">{item.type || '-'}</p>
                                     </div>
 
                                 </div>

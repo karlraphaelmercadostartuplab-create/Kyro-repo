@@ -131,9 +131,9 @@ export default function Show() {
                                 </div>
                             </div>
                             {chartofaccount.description && (
-                                <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-                                    <p className="font-semibold text-blue-900 mb-1">{t('Description')}</p>
-                                    <p className="text-sm text-blue-800">{chartofaccount.description}</p>
+                                <div className="mt-4 p-3 bg-blue-50 dark:bg-slate-800/80 rounded-lg">
+                                    <p className="font-semibold text-blue-900 dark:text-blue-200 mb-1">{t('Description')}</p>
+                                    <p className="text-sm text-blue-800 dark:text-blue-100">{chartofaccount.description}</p>
                                 </div>
                             )}
                         </CardContent>

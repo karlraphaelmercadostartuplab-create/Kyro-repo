@@ -102,23 +102,23 @@ export default function Show() {
                             </div>
 
                             <div>
-                                <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('Pricing & Inventory')}</h3>
+                                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">{t('Pricing & Inventory')}</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                     {item.sale_price && (
-                                        <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-                                            <label className="text-sm font-medium text-green-700">{t('Sale Price')}</label>
-                                            <p className="text-xl font-bold text-green-800 mt-1">{formatCurrency(item.sale_price)}</p>
+                                        <div className="bg-green-50 p-4 rounded-lg border border-green-200 dark:bg-green-950/40 dark:border-green-800/60">
+                                            <label className="text-sm font-medium text-green-700 dark:text-green-300">{t('Sale Price')}</label>
+                                            <p className="text-xl font-bold text-green-800 dark:text-green-200 mt-1">{formatCurrency(item.sale_price)}</p>
                                         </div>
                                     )}
                                     {item.purchase_price && (
-                                        <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                                            <label className="text-sm font-medium text-blue-700">{t('Purchase Price')}</label>
-                                            <p className="text-xl font-bold text-blue-800 mt-1">{formatCurrency(item.purchase_price)}</p>
+                                         <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 dark:bg-blue-950/40 dark:border-blue-800/60">
+                                            <label className="text-sm font-medium text-blue-700 dark:text-blue-300">{t('Purchase Price')}</label>
+                                            <p className="text-xl font-bold text-blue-800 dark:text-blue-200 mt-1">{formatCurrency(item.purchase_price)}</p>
                                         </div>
                                     )}
-                                    <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
-                                        <label className="text-sm font-medium text-orange-700">{t('Total Quantity')}</label>
-                                        <p className="text-xl font-bold text-orange-800 mt-1">{Math.floor(item.total_quantity) || 0}</p>
+                                    <div className="bg-orange-50 p-4 rounded-lg border border-orange-200 dark:bg-orange-950/40 dark:border-orange-800/60">
+                                        <label className="text-sm font-medium text-orange-700 dark:text-orange-300">{t('Total Quantity')}</label>
+                                        <p className="text-xl font-bold text-orange-800 dark:text-orange-200 mt-1">{Math.floor(item.total_quantity) || 0}</p>
                                     </div>
                                 </div>
                             </div>
@@ -140,25 +140,25 @@ export default function Show() {
                             )}
 
                             <div>
-                                <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('Additional Details')}</h3>
+                                 <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">{t('Additional Details')}</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div className="bg-gray-50 p-4 rounded-lg">
-                                        <label className="text-lg font-semibold text-gray-800 mb-3">{t('Unit')}</label>
-                                        <p className="text-gray-700 leading-relaxed">{item.unit_relation?.unit_name || '-'}</p>
+                                    <div className="bg-gray-50 p-4 rounded-lg dark:bg-slate-800/80">
+                                        <label className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-3">{t('Unit')}</label>
+                                        <p className="text-gray-700 dark:text-gray-200 leading-relaxed">{item.unit_relation?.unit_name || '-'}</p>
                                     </div>
-                                    <div className="bg-gray-50 p-4 rounded-lg">
-                                        <label className="text-lg font-semibold text-gray-800 mb-3">{t('Taxes')}</label>
+                                    <div className="bg-gray-50 p-4 rounded-lg dark:bg-slate-800/80">
+                                        <label className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-3">{t('Taxes')}</label>
                                         <div className="mt-2">
                                             {item.taxes && item.taxes.length > 0 ? (
                                                 <div className="flex flex-wrap gap-2">
                                                     {item.taxes.map((tax) => (
-                                                        <Badge key={tax.id} variant="outline" className="text-sm">
+                                                        <Badge key={tax.id} variant="outline" className="text-sm dark:border-slate-600 dark:text-gray-100">
                                                             {tax.tax_name} ({tax.rate}%)
                                                         </Badge>
                                                     ))}
                                                 </div>
                                             ) : (
-                                                <p className="text-lg text-gray-900">-</p>
+                                               <p className="text-lg text-gray-900 dark:text-gray-100">-</p>
                                             )}
                                         </div>
                                     </div>

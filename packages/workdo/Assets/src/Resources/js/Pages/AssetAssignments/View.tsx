@@ -64,15 +64,19 @@ export default function View({ assignment }: ViewProps) {
     };
 
     return (
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
-            <DialogHeader className="pb-4 border-b bg-gradient-to-r from-primary/5 to-transparent">
-                <div className="flex items-center justify-between">
+        <DialogContent className="max-h-[90vh] max-w-4xl overflow-hidden border p-0">
+            <DialogHeader className="relative overflow-hidden border-b px-6 py-5">
+                <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 bg-gradient-to-r from-primary/15 via-primary/10 to-transparent dark:from-primary/25 dark:via-primary/15 dark:to-transparent"
+                />
+                <div className="relative z-10 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <div className="p-2 bg-primary/10 rounded-lg">
                             <Package className="h-5 w-5 text-primary" />
                         </div>
                         <div>
-                            <DialogTitle className="text-xl font-bold text-gray-900">{t('Assignment Details')}</DialogTitle>
+                            <DialogTitle className="text-xl font-bold text-gray-900 dark:text-gray-100">{t('Assignment Details')}</DialogTitle>
                             <p className="text-sm text-muted-foreground mt-1">
                                 {assignment.asset.name} → {assignment.user.name}
                             </p>
@@ -87,7 +91,7 @@ export default function View({ assignment }: ViewProps) {
                 </div>
             </DialogHeader>
 
-            <div className="overflow-y-auto flex-1 p-6 space-y-6">
+            <div className="flex-1 space-y-6 overflow-y-auto p-6">
                 {/* Asset and User Info */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <Card className="shadow-sm">
@@ -157,31 +161,31 @@ export default function View({ assignment }: ViewProps) {
                     </CardHeader>
                     <CardContent className="pt-0">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <div className="bg-blue-50 p-4 rounded-lg">
+                            <div className="rounded-lg bg-blue-50 p-4 dark:bg-blue-950/40">
                                 <div className="flex items-center gap-2 mb-2">
                                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                                    <span className="text-sm font-medium text-blue-700">{t('Assigned Date')}</span>
+                                    <span className="text-sm font-medium text-blue-700 dark:text-blue-300">{t('Assigned Date')}</span>
                                 </div>
-                                <p className="text-sm font-semibold text-blue-900">{formatDate(assignment.assigned_date)}</p>
+                                <p className="text-sm font-semibold text-blue-900 dark:text-blue-100">{formatDate(assignment.assigned_date)}</p>
                             </div>
 
                             {assignment.expected_return_date && (
-                                <div className="bg-yellow-50 p-4 rounded-lg">
+                                <div className="rounded-lg bg-yellow-50 p-4 dark:bg-yellow-950/35">
                                     <div className="flex items-center gap-2 mb-2">
                                         <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                                        <span className="text-sm font-medium text-yellow-700">{t('Expected Return')}</span>
+                                        <span className="text-sm font-medium text-yellow-700 dark:text-yellow-300">{t('Expected Return')}</span>
                                     </div>
-                                    <p className="text-sm font-semibold text-yellow-900">{formatDate(assignment.expected_return_date)}</p>
+                                    <p className="text-sm font-semibold text-yellow-900 dark:text-yellow-100">{formatDate(assignment.expected_return_date)}</p>
                                 </div>
                             )}
 
                             {assignment.returned_date && (
-                                <div className="bg-green-50 p-4 rounded-lg">
+                                <div className="rounded-lg bg-green-50 p-4 dark:bg-green-950/35">
                                     <div className="flex items-center gap-2 mb-2">
                                         <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                                        <span className="text-sm font-medium text-green-700">{t('Returned Date')}</span>
+                                        <span className="text-sm font-medium text-green-700 dark:text-green-300">{t('Returned Date')}</span>
                                     </div>
-                                    <p className="text-sm font-semibold text-green-900">{formatDate(assignment.returned_date)}</p>
+                                    <p className="text-sm font-semibold text-green-900 dark:text-green-100">{formatDate(assignment.returned_date)}</p>
                                 </div>
                             )}
                         </div>

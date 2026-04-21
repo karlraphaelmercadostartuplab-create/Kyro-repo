@@ -119,13 +119,14 @@ export default function View() {
                                         </div>
                                     )}
                                 </div>
-                                <div className="mt-4 p-3 bg-blue-50 rounded">
+                                <div className="mt-4 rounded-lg border border-blue-100 bg-blue-50 p-3 dark:border-blue-900/40 dark:bg-slate-800/80">
                                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
                                         <div className="flex flex-wrap gap-2">
                                             {auth.user?.permissions?.includes('print-sales-invoices') && (
                                                 <Button
                                                     variant="outline"
                                                     size="sm"
+                                                    className="border-blue-200 bg-white/90 text-blue-700 hover:bg-white dark:border-blue-700/50 dark:bg-slate-900 dark:text-blue-200 dark:hover:bg-slate-800"
                                                     onClick={downloadPDF}
                                                 >
                                                     <Download className="h-4 w-4 mr-2" />
@@ -156,8 +157,8 @@ export default function View() {
                                             )}
                                         </div>
                                         <div className="text-right sm:text-right">
-                                            <div className="text-lg sm:text-xl font-bold text-blue-600">{formatCurrency(invoice.balance_amount)}</div>
-                                            <div className="text-xs sm:text-sm text-muted-foreground">{t('Balance Due')}</div>
+                                            <div className="text-lg sm:text-xl font-bold text-blue-600 dark:text-blue-300">{formatCurrency(invoice.balance_amount)}</div>
+                                            <div className="text-xs sm:text-sm text-blue-700/80 dark:text-blue-200/90">{t('Balance Due')}</div>
                                         </div>
                                     </div>
                                 </div>

@@ -6,6 +6,7 @@ import { LineChart } from '@/components/charts';
 import { CreditCard, DollarSign, TrendingUp, Receipt } from 'lucide-react';
 import { formatDate, formatCurrency } from '@/utils/helpers';
 
+
 interface ClientProps {
     stats: {
         total_payments: number;
@@ -45,36 +46,36 @@ export default function ClientDashboard({ stats, monthlyPayments, recentReturnIn
             <Head title={t('Dashboard')} />
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                <Card className="bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200">
+                <Card className="bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200 dark:from-blue-900/40 dark:to-blue-800/30 dark:border-blue-700/50">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium text-blue-700">{t('Total Payments Made')}</CardTitle>
-                        <DollarSign className="h-8 w-8 text-blue-700 opacity-80" />
+                        <CardTitle className="text-sm font-medium text-blue-700 dark:text-blue-100">{t('Total Payments Made')}</CardTitle>
+                        <DollarSign className="h-8 w-8 text-blue-700 opacity-80 dark:text-blue-100" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-blue-700">{formatCurrency(stats.total_payments)}</div>
-                        <p className="text-xs text-blue-700 opacity-80 mt-1">{t('Total amount paid')}</p>
+                        <div className="text-2xl font-bold text-blue-700 dark:text-blue-50">{formatCurrency(stats.total_payments)}</div>
+                        <p className="text-xs text-blue-700 opacity-80 mt-1 dark:text-blue-100">{t('Total amount paid')}</p>
                     </CardContent>
                 </Card>
 
-                <Card className="bg-gradient-to-r from-green-50 to-green-100 border-green-200">
+                <Card className="bg-gradient-to-r from-green-50 to-green-100 border-green-200 dark:from-green-900/35 dark:to-green-800/25 dark:border-green-700/50">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium text-green-700">{t('Total Revenue')}</CardTitle>
-                        <TrendingUp className="h-8 w-8 text-green-700 opacity-80" />
+                        <CardTitle className="text-sm font-medium text-green-700 dark:text-green-100">{t('Total Revenue')}</CardTitle>
+                        <TrendingUp className="h-8 w-8 text-green-700 opacity-80 dark:text-green-100" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-green-700">{formatCurrency(stats.total_revenues)}</div>
-                        <p className="text-xs text-green-700 opacity-80 mt-1">{t('Revenue generated')}</p>
+                        <div className="text-2xl font-bold text-green-700 dark:text-green-50">{formatCurrency(stats.total_revenues)}</div>
+                        <p className="text-xs text-green-700 opacity-80 mt-1 dark:text-green-100">{t('Revenue generated')}</p>
                     </CardContent>
                 </Card>
 
-                <Card className="bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200">
+                <Card className="bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200 dark:from-purple-900/40 dark:to-purple-800/30 dark:border-purple-700/50">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium text-purple-700">{t('Payment Count')}</CardTitle>
-                        <CreditCard className="h-8 w-8 text-purple-700 opacity-80" />
+                        <CardTitle className="text-sm font-medium text-purple-700 dark:text-purple-100">{t('Payment Count')}</CardTitle>
+                        <CreditCard className="h-8 w-8 text-purple-700 opacity-80 dark:text-purple-100" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-purple-700">{stats.payment_count}</div>
-                        <p className="text-xs text-purple-700 opacity-80 mt-1">{t('Total transactions')}</p>
+                        <div className="text-2xl font-bold text-purple-700 dark:text-purple-50">{stats.payment_count}</div>
+                        <p className="text-xs text-purple-700 opacity-80 mt-1 dark:text-purple-100">{t('Total transactions')}</p>
                     </CardContent>
                 </Card>
             </div>

@@ -72,8 +72,8 @@
     if (!editor) return null
 
     return (
-      <div className={cn('border rounded-md', className)}>
-        <div className="border-b p-2 flex flex-wrap gap-1">
+      <div className={cn('border rounded-md bg-background', className)}>
+        <div className="border-b p-2 flex flex-wrap gap-1 bg-muted/30 dark:bg-gray-900/60">
           <Button
             type="button"
             variant="ghost"
@@ -272,7 +272,7 @@
             <Redo className="h-4 w-4" />
           </Button>
         </div>
-        <div className="prose prose-sm max-w-none [&_ul]:list-disc [&_ul]:ml-6 [&_ol]:list-decimal [&_ol]:ml-6 [&_li]:my-1 [&_a]:text-blue-600 [&_a]:underline [&_a]:cursor-pointer hover:[&_a]:text-blue-800">
+        <div className="prose prose-sm dark:prose-invert max-w-none [&_ul]:list-disc [&_ul]:ml-6 [&_ol]:list-decimal [&_ol]:ml-6 [&_li]:my-1 [&_a]:text-blue-600 [&_a]:underline [&_a]:cursor-pointer hover:[&_a]:text-blue-800">
           <EditorContent 
             editor={editor} 
             placeholder={placeholder || t('Start typing...')}

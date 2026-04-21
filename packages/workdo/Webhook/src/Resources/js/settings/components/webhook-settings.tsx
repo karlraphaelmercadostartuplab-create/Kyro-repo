@@ -170,8 +170,8 @@ const WebhookSettings: React.FC<WebhookSettingsProps> = ({
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div className="order-1 rtl:order-2">
+      <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="order-1 min-w-0 rtl:order-2">
           <CardTitle className="flex items-center gap-2 text-lg">
             <WebhookIcon className="h-5 w-5" />
             {t('Webhook Settings')}
@@ -180,7 +180,7 @@ const WebhookSettings: React.FC<WebhookSettingsProps> = ({
             {t('Configure webhooks to receive real-time notifications when events occur in your system')}
           </p>
         </div>
-        <Button className="order-2 rtl:order-1" onClick={handleAddWebhook} size="sm">
+        <Button className="order-2 w-full sm:w-auto rtl:order-1" onClick={handleAddWebhook} size="sm">
           <Plus className="h-4 w-4 mr-2" />
           {t('Add Webhook')}
         </Button>

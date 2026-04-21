@@ -151,7 +151,7 @@ export default function Show() {
 
             {/* Full Page Conversation */}
             <Card className="flex min-h-[60vh] flex-col overflow-hidden lg:h-[calc(100vh-50px)]">
-                <CardHeader className="border-b bg-gray-50/50 py-4">
+                <CardHeader className="border-b bg-gray-50/50 py-4 dark:bg-gray-900/50">
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                         <CardTitle className="text-lg font-semibold">{t('Conversation')}</CardTitle>
                         <div className="text-sm text-gray-500">
@@ -196,7 +196,7 @@ export default function Show() {
 
                         {/* Reply Form - Fixed at Bottom */}
                         {auth.user?.permissions?.includes('create-helpdesk-replies') && (
-                            <div className="border-t bg-white">
+                            <div className="border-t bg-white dark:bg-gray-950">
                                 <ReplyForm
                                     ticketId={ticket.id}
                                     onReplyAdded={handleReplyAdded}

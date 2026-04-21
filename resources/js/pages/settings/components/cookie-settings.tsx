@@ -97,7 +97,7 @@ export default function CookieSettings({ userSettings, auth }: CookieSettingsPro
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
+      <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="order-1 rtl:order-2">
           <CardTitle className="flex items-center gap-2 text-lg">
             <Cookie className="h-5 w-5" />
@@ -107,13 +107,13 @@ export default function CookieSettings({ userSettings, auth }: CookieSettingsPro
             {t('Configure cookie consent and privacy settings for your application')}
           </p>
         </div>
-        <div className="flex gap-2 order-2 rtl:order-1">
-          <Button onClick={downloadCookieData} variant="outline" size="sm">
+        <div className="flex flex-col sm:flex-row gap-2 order-2 rtl:order-1 w-full sm:w-auto">
+          <Button onClick={downloadCookieData} variant="outline" size="sm" className="w-full sm:w-auto">
             <Download className="h-4 w-4 mr-2" />
             {t('Download Cookie Data')}
           </Button>
           {canEdit && (
-            <Button onClick={saveSettings} disabled={isLoading} size="sm">
+            <Button onClick={saveSettings} disabled={isLoading} size="sm" className="w-full sm:w-auto">
               <Save className="h-4 w-4 mr-2" />
               {isLoading ? t('Saving...') : t('Save Changes')}
             </Button>

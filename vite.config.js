@@ -2,9 +2,15 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'node:path';
-import { glob } from 'glob';
+import { readdirSync, existsSync } from 'node:fs';
 
-const workdoPackages = glob.sync('packages/workdo/*/src/Resources/js/app.tsx');
+const workdoBasePath = 'packages/workdo';
+const workdoPackages = existsSync(workdoBasePath)
+    ? readdirSync(workdoBasePath, { withFileTypes: true })
+          .filter((entry) => entry.isDirectory())
+          .map((entry) => `${workdoBasePath}/${entry.name}/src/Resources/js/app.tsx`)
+          .filter((entryPath) => existsSync(entryPath))
+    : [];
 
 export default defineConfig({
     

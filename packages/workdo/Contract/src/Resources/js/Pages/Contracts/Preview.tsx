@@ -134,10 +134,10 @@ export default function Preview() {
             <Head title={`${t('Contract Preview')} - ${contract.subject}`} />
             
             <div className="space-y-6">
-                <Card ref={printRef} className="max-w-4xl mx-auto bg-white">
+                <Card ref={printRef} className="max-w-4xl mx-auto bg-white text-slate-900 border-slate-200">
                     <CardHeader className="text-center border-b print:border-b-2">
                         <CardTitle className="text-3xl font-bold">{contract.subject}</CardTitle>
-                        <p className="text-lg text-muted-foreground">Contract #{contract.contract_number || 'Not Generated'}</p>
+                        <p className="text-lg text-slate-500">Contract #{contract.contract_number || 'Not Generated'}</p>
                     </CardHeader>
                     
                     <CardContent className="p-8 space-y-8">
@@ -198,7 +198,7 @@ export default function Preview() {
                         {contract.description && (
                             <div>
                                 <h3 className="text-lg font-semibold mb-4">{t('Description')}</h3>
-                                <div className="prose max-w-none">
+                                 <div className="prose max-w-none text-slate-800 [&_*]:text-inherit">
                                     <div dangerouslySetInnerHTML={{ __html: contract.description }} />
                                 </div>
                             </div>
@@ -218,7 +218,7 @@ export default function Preview() {
                                                     className="max-h-16 max-w-full object-contain border-b-2 border-gray-400"
                                                 />
                                             </div>
-                                            <p className="text-sm text-muted-foreground">
+                                            <p className="text-sm text-slate-500">
                                                 {t('Signed on')} {formatDate(signature.signed_at)}
                                             </p>
                                         </div>
@@ -227,7 +227,7 @@ export default function Preview() {
                             </div>
                         )}
 
-                        <div className="text-center text-sm text-muted-foreground border-t pt-4">
+                        <div className="text-center text-sm text-slate-500 border-t pt-4">
                             <p>{t('Generated on')} {new Date().toLocaleDateString()}</p>
                         </div>
                     </CardContent>

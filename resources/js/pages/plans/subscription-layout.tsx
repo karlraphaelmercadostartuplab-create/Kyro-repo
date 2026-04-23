@@ -258,7 +258,7 @@ function SubscriptionLayout({ plan, allModules, pricingPeriod, onSubscribe, bank
                             onChange={setModuleSearch}
                             onSearch={() => {}}
                             placeholder={t('Search features...')}
-                            className="w-48"
+                            className="w-full"
                         />
                     </div>
                     <div className="max-h-40 overflow-y-auto">

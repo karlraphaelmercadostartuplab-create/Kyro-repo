@@ -209,24 +209,24 @@ export default function PlansIndex({ plans, canCreate, activeModules }: Props) {
 
             <div className="min-w-0 space-y-6 overflow-x-hidden">
                 <div className="flex w-full justify-center px-0 sm:px-4">
-                    <div className="w-full max-w-xs overflow-hidden rounded-lg bg-gray-100 p-1 dark:bg-gray-800">
-                        <div className="grid grid-cols-2 gap-1">
+                    <div className="w-full max-w-sm overflow-hidden rounded-2xl border border-gray-300 bg-gray-50 p-2 shadow-sm dark:border-gray-700 dark:bg-gray-900">
+                        <div className="grid grid-cols-2 gap-2">
                             <button
                                 onClick={() => setPricingPeriod('monthly')}
-                                className={`rounded-md px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                                className={`rounded-xl border-2 px-4 py-2.5 text-sm font-semibold transition-all duration-200 hover:-translate-y-px hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 dark:hover:bg-gray-700 ${
                                     pricingPeriod === 'monthly'
-                                        ? 'bg-white text-gray-900 shadow-sm dark:bg-gray-700 dark:text-white'
-                                        : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
+                                        ? 'border-primary bg-white text-gray-900 shadow-md ring-2 ring-primary/25 ring-offset-1 ring-offset-gray-50 dark:border-primary dark:bg-gray-600 dark:text-white dark:shadow-lg dark:ring-2 dark:ring-primary/40 dark:ring-offset-1 dark:ring-offset-gray-800'
+                                        : 'border-gray-300 bg-gray-100 text-gray-700 shadow-sm hover:border-gray-400 hover:text-gray-900 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-100 dark:shadow-md dark:hover:border-gray-400 dark:hover:text-white'
                                 }`}
                             >
                                 {t('Monthly')}
                             </button>
                             <button
                                 onClick={() => setPricingPeriod('yearly')}
-                                className={`rounded-md px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                                className={`rounded-xl border-2 px-4 py-2.5 text-sm font-semibold transition-all duration-200 hover:-translate-y-px hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 dark:hover:bg-gray-700 ${
                                     pricingPeriod === 'yearly'
-                                        ? 'bg-white text-gray-900 shadow-sm dark:bg-gray-700 dark:text-white'
-                                        : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
+                                        ? 'border-primary bg-white text-gray-900 shadow-md ring-2 ring-primary/25 ring-offset-1 ring-offset-gray-50 dark:border-primary dark:bg-gray-600 dark:text-white dark:shadow-lg dark:ring-2 dark:ring-primary/40 dark:ring-offset-1 dark:ring-offset-gray-800'
+                                        : 'border-gray-300 bg-gray-100 text-gray-700 shadow-sm hover:border-gray-400 hover:text-gray-900 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-100 dark:shadow-md dark:hover:border-gray-400 dark:hover:text-white'
                                 }`}
                             >
                                 {t('Yearly')}

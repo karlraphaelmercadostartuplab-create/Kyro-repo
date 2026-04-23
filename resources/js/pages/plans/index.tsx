@@ -33,13 +33,14 @@ interface Props {
     canCreate: boolean;
     activeModules: { module: string; alias: string; image: string; monthly_price: number; yearly_price: number }[];
     bankTransferEnabled: string;
+    currentBillingPeriod?: 'monthly' | 'yearly' | null;
     userTrialInfo?: {
         is_trial_done: number;
         trial_expire_date: string | null;
     };
 }
 
-export default function PlansIndex({ plans, canCreate, activeModules }: Props) {
+export default function PlansIndex({ plans, canCreate, activeModules, currentBillingPeriod = null }: Props) {
     const { t } = useTranslation();
     const { auth } = usePage().props as any;
     const isCompanyUser = !auth.user?.roles?.includes('superadmin');
@@ -96,7 +97,9 @@ export default function PlansIndex({ plans, canCreate, activeModules }: Props) {
 
     const isCurrentlySubscribed = (plan: Plan) => {
         if (!isCompanyUser || !auth.user?.active_plan) return false;
+        const isSameBillingPeriod = currentBillingPeriod ? pricingPeriod === currentBillingPeriod : true;
         return Number(auth.user.active_plan) === Number(plan.id) &&
+            isSameBillingPeriod &&
             auth.user.plan_expire_date &&
             new Date(auth.user.plan_expire_date) > new Date();
     };

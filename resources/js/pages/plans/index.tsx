@@ -97,9 +97,14 @@ export default function PlansIndex({ plans, canCreate, activeModules, currentBil
 
     const isCurrentlySubscribed = (plan: Plan) => {
         if (!isCompanyUser || !auth.user?.active_plan) return false;
+        if (Number(auth.user.active_plan) !== Number(plan.id)) return false;
+
+        if (plan.free_plan) {
+            return true;
+        }
+
         const isSameBillingPeriod = currentBillingPeriod ? pricingPeriod === currentBillingPeriod : true;
-        return Number(auth.user.active_plan) === Number(plan.id) &&
-            isSameBillingPeriod &&
+        return isSameBillingPeriod &&
             auth.user.plan_expire_date &&
             new Date(auth.user.plan_expire_date) > new Date();
     };

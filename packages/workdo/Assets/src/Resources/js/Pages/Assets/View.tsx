@@ -31,7 +31,7 @@ export default function View({ asset }: ViewProps) {
                             <Package className="h-5 w-5 text-primary" />
                         </div>
                         <div>
-                            <DialogTitle className="text-xl font-bold text-gray-900">{asset.name}</DialogTitle>
+                            <DialogTitle className="text-xl font-bold text-gray-900 dark:text-gray-100">{asset.name}</DialogTitle>
                             <p className="text-sm text-muted-foreground mt-1">{t('Asset Details')}</p>
                         </div>
                     </div>
@@ -52,7 +52,7 @@ export default function View({ asset }: ViewProps) {
                         <CardHeader className="pb-3">
                             <div className="flex items-center gap-2">
                                 <FileImage className="h-4 w-4 text-primary" />
-                                <h3 className="font-semibold text-gray-900">{t('Asset Image')}</h3>
+                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">{t('Asset Image')}</h3>
                             </div>
                         </CardHeader>
                         <CardContent className="pt-0 h-full">
@@ -65,8 +65,8 @@ export default function View({ asset }: ViewProps) {
                                         onClick={() => window.open(getImagePath(asset.image), '_blank')} 
                                     />
                                 ) : (
-                                    <div className="w-full h-40 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center">
-                                        <FileImage className="w-12 h-12 text-gray-400" />
+                                    <div className="w-full h-40 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-slate-800 dark:to-slate-700 rounded-lg flex items-center justify-center">
+                                        <FileImage className="w-12 h-12 text-gray-400 dark:text-gray-500" />
                                     </div>
                                 )}
                             </div>
@@ -78,31 +78,31 @@ export default function View({ asset }: ViewProps) {
                         <CardHeader className="pb-3">
                             <div className="flex items-center gap-2">
                                 <Info className="h-4 w-4 text-primary" />
-                                <h3 className="font-semibold text-gray-900">{t('Basic Information')}</h3>
+                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">{t('Basic Information')}</h3>
                             </div>
                         </CardHeader>
                         <CardContent className="pt-0">
                             <div className="space-y-4">
                                 <div className="flex justify-between items-start">
-                                    <span className="text-sm text-gray-600 font-medium">{t('Asset Name')}</span>
-                                    <span className="text-sm font-semibold text-gray-900 text-right max-w-[60%]">{asset.name}</span>
+                                    <span className="text-sm text-gray-600 dark:text-gray-300 font-medium">{t('Asset Name')}</span>
+                                    <span className="text-sm font-semibold text-gray-900 dark:text-gray-100 text-right max-w-[60%]">{asset.name}</span>
                                 </div>
                                 <div className="flex justify-between items-start">
-                                    <span className="text-sm text-gray-600 font-medium flex items-center gap-1">
+                                     <span className="text-sm text-gray-600 dark:text-gray-300 font-medium flex items-center gap-1">
                                         <Tag className="w-3 h-3" />
                                         {t('Category')}
                                     </span>
-                                    <span className="text-sm text-gray-900 text-right">{asset.category?.name || '-'}</span>
+                                    <span className="text-sm text-gray-900 dark:text-gray-100 text-right">{asset.category?.name || '-'}</span>
                                 </div>
                                 <div className="flex justify-between items-start">
-                                    <span className="text-sm text-gray-600 font-medium flex items-center gap-1">
+                                    <span className="text-sm text-gray-600 dark:text-gray-300 font-medium flex items-center gap-1">
                                         <MapPin className="w-3 h-3" />
                                         {t('Location')}
                                     </span>
-                                    <span className="text-sm text-gray-900 text-right">{asset.location?.name || '-'}</span>
+                                    <span className="text-sm text-gray-900 dark:text-gray-100 text-right">{asset.location?.name || '-'}</span>
                                 </div>
                                 <div className="flex justify-between items-start">
-                                    <span className="text-sm text-gray-600 font-medium">{t('Quantity')}</span>
+                                    <span className="text-sm text-gray-600 dark:text-gray-300 font-medium">{t('Quantity')}</span>
                                     <Badge variant="secondary">{asset.quantity || 0}</Badge>
                                 </div>
                             </div>
@@ -114,31 +114,31 @@ export default function View({ asset }: ViewProps) {
                         <CardHeader className="pb-3">
                             <div className="flex items-center gap-2">
                                 <DollarSign className="h-4 w-4 text-primary" />
-                                <h3 className="font-semibold text-gray-900">{t('Financial Information')}</h3>
+                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">{t('Financial Information')}</h3>    
                             </div>
                         </CardHeader>
                         <CardContent className="pt-0">
                             <div className="space-y-4">
-                                <div className="bg-green-50 p-3 rounded-lg">
+                                <div className="bg-green-50 dark:bg-green-950/30 p-3 rounded-lg">
                                     <div className="flex justify-between items-center">
-                                        <span className="text-sm text-green-700 font-medium">{t('Unit Price')}</span>
-                                        <span className="text-lg font-bold text-green-800">
+                                        <span className="text-sm text-green-700 dark:text-green-300 font-medium">{t('Unit Price')}</span>
+                                        <span className="text-lg font-bold text-green-800 dark:text-green-200">
                                             {asset.unit_price ? formatCurrency(asset.unit_price) : '-'}
                                         </span>
                                     </div>
                                 </div>
-                                <div className="bg-blue-50 p-3 rounded-lg">
+                                <div className="bg-blue-50 dark:bg-blue-950/30 p-3 rounded-lg">
                                     <div className="flex justify-between items-center">
-                                        <span className="text-sm text-blue-700 font-medium">{t('Purchase Cost')}</span>
-                                        <span className="text-lg font-bold text-blue-800">
+                                        <span className="text-sm text-blue-700 dark:text-blue-300 font-medium">{t('Purchase Cost')}</span>
+                                        <span className="text-lg font-bold text-blue-800 dark:text-blue-200">
                                             {asset.purchase_cost ? formatCurrency(asset.purchase_cost) : '-'}
                                         </span>
                                     </div>
                                 </div>
                                 <div className="border rounded-lg p-3">
                                     <div className="flex justify-between items-center">
-                                        <span className="text-sm text-gray-600 font-medium">{t('Warranty Period')}</span>
-                                        <span className="text-sm font-semibold text-gray-900">{asset.warranty_period || '-'}</span>
+                                        <span className="text-sm text-gray-600 dark:text-gray-300 font-medium">{t('Warranty Period')}</span>
+                                        <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">{asset.warranty_period || '-'}</span>
                                     </div>
                                 </div>
                             </div>
@@ -151,28 +151,28 @@ export default function View({ asset }: ViewProps) {
                     <CardHeader className="pb-3">
                         <div className="flex items-center gap-2">
                             <Calendar className="h-4 w-4 text-primary" />
-                            <h3 className="font-semibold text-gray-900">{t('Timeline')}</h3>
+                            <h3 className="font-semibold text-gray-900 dark:text-gray-100">{t('Timeline')}</h3>
                         </div>
                     </CardHeader>
                     <CardContent className="pt-0">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {asset.purchase_date && (
-                                <div className="bg-blue-50 p-4 rounded-lg">
+                                <div className="bg-blue-50 dark:bg-blue-950/30 p-4 rounded-lg">
                                     <div className="flex items-center gap-2 mb-2">
                                         <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                                        <span className="text-sm font-medium text-blue-700">{t('Purchase Date')}</span>
+                                        <span className="text-sm font-medium text-blue-700 dark:text-blue-300">{t('Purchase Date')}</span>
                                     </div>
-                                    <p className="text-sm font-semibold text-blue-900">{formatDate(asset.purchase_date)}</p>
+                                    <p className="text-sm font-semibold text-blue-900 dark:text-blue-100">{formatDate(asset.purchase_date)}</p>
                                 </div>
                             )}
                             
                             {asset.supported_date && (
-                                <div className="bg-green-50 p-4 rounded-lg">
+                                <div className="bg-green-50 dark:bg-green-950/30 p-4 rounded-lg">
                                     <div className="flex items-center gap-2 mb-2">
                                         <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                                        <span className="text-sm font-medium text-green-700">{t('Supported Date')}</span>
+                                        <span className="text-sm font-medium text-green-700 dark:text-green-300">{t('Supported Date')}</span>
                                     </div>
-                                    <p className="text-sm font-semibold text-green-900">{formatDate(asset.supported_date)}</p>
+                                   <p className="text-sm font-semibold text-green-900 dark:text-green-100">{formatDate(asset.supported_date)}</p>
                                 </div>
                             )}
                         </div>
@@ -185,12 +185,12 @@ export default function View({ asset }: ViewProps) {
                         <CardHeader className="pb-3">
                             <div className="flex items-center gap-2">
                                 <FileImage className="h-4 w-4 text-primary" />
-                                <h3 className="font-semibold text-gray-900">{t('Description')}</h3>
+                                <h3 className="font-semibold text-gray-900 dark:text-gray-100">{t('Description')}</h3>
                             </div>
                         </CardHeader>
                         <CardContent className="pt-0">
-                            <div className="bg-gray-50 p-4 rounded-lg">
-                                <p className="text-sm text-gray-700 leading-relaxed">{asset.description}</p>
+                            <div className="bg-gray-50 dark:bg-slate-800/80 p-4 rounded-lg">
+                                <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed">{asset.description}</p>
                             </div>
                         </CardContent>
                     </Card>

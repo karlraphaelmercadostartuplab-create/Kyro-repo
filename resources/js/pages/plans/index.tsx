@@ -33,13 +33,14 @@ interface Props {
     canCreate: boolean;
     activeModules: { module: string; alias: string; image: string; monthly_price: number; yearly_price: number }[];
     bankTransferEnabled: string;
+    currentBillingPeriod?: 'monthly' | 'yearly' | null;
     userTrialInfo?: {
         is_trial_done: number;
         trial_expire_date: string | null;
     };
 }
 
-export default function PlansIndex({ plans, canCreate, activeModules }: Props) {
+export default function PlansIndex({ plans, canCreate, activeModules, currentBillingPeriod = null }: Props) {
     const { t } = useTranslation();
     const { auth } = usePage().props as any;
     const isCompanyUser = !auth.user?.roles?.includes('superadmin');
@@ -96,9 +97,22 @@ export default function PlansIndex({ plans, canCreate, activeModules }: Props) {
 
     const isCurrentlySubscribed = (plan: Plan) => {
         if (!isCompanyUser || !auth.user?.active_plan) return false;
-        return auth.user.active_plan === plan.id &&
+        if (Number(auth.user.active_plan) !== Number(plan.id)) return false;
+
+        if (plan.free_plan) {
+            return true;
+        }
+
+        const isSameBillingPeriod = currentBillingPeriod ? pricingPeriod === currentBillingPeriod : true;
+        return isSameBillingPeriod &&
             auth.user.plan_expire_date &&
             new Date(auth.user.plan_expire_date) > new Date();
+    };
+
+     const isCurrentTrialPlan = (plan: Plan) => {
+        if (!isCompanyUser || !auth.user?.trial_expire_date) return false;
+        return Number(auth.user.active_plan) === Number(plan.id) &&
+            new Date(auth.user.trial_expire_date) > new Date();
     };
 
     const renderPlanMenu = (plan: Plan) => {
@@ -142,6 +156,9 @@ export default function PlansIndex({ plans, canCreate, activeModules }: Props) {
         if (isCurrentlySubscribed(plan)) {
             return (
                 <div className="rounded-lg border border-green-200 bg-green-50 p-2 text-center dark:border-green-800 dark:bg-green-900/20">
+                    <p className="text-sm font-semibold text-green-700 dark:text-green-200">
+                        {t('Your Current Plan')}
+                    </p>
                     <p className="text-xs text-green-600 dark:text-green-300">
                         {t('Expires on')} {formatDate(auth.user.plan_expire_date)}
                     </p>
@@ -149,9 +166,12 @@ export default function PlansIndex({ plans, canCreate, activeModules }: Props) {
             );
         }
 
-        if (auth.user?.trial_expire_date && auth.user.active_plan === plan.id) {
+        if (isCurrentTrialPlan(plan)) {
             return (
                 <div className="rounded-lg border border-blue-200 bg-blue-50 p-2 text-center dark:border-blue-800 dark:bg-blue-900/20">
+                     <p className="text-sm font-semibold text-blue-700 dark:text-blue-200">
+                        {t('Your Current Plan')}
+                    </p>
                     <p className="text-xs text-blue-600 dark:text-blue-300">
                         {t('Trial expires on')} {formatDate(auth.user.trial_expire_date)}
                     </p>
@@ -209,24 +229,24 @@ export default function PlansIndex({ plans, canCreate, activeModules }: Props) {
 
             <div className="min-w-0 space-y-6 overflow-x-hidden">
                 <div className="flex w-full justify-center px-0 sm:px-4">
-                    <div className="w-full max-w-xs overflow-hidden rounded-lg bg-gray-100 p-1 dark:bg-gray-800">
-                        <div className="grid grid-cols-2 gap-1">
+                    <div className="w-full max-w-sm overflow-hidden rounded-2xl border border-gray-300 bg-gray-50 p-2 shadow-sm dark:border-gray-700 dark:bg-gray-900">
+                        <div className="grid grid-cols-2 gap-2">
                             <button
                                 onClick={() => setPricingPeriod('monthly')}
-                                className={`rounded-md px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                                className={`rounded-xl border-2 px-4 py-2.5 text-sm font-semibold transition-all duration-200 hover:-translate-y-px hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 dark:hover:bg-gray-700 ${
                                     pricingPeriod === 'monthly'
-                                        ? 'bg-white text-gray-900 shadow-sm dark:bg-gray-700 dark:text-white'
-                                        : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
+                                        ? 'border-primary bg-white text-gray-900 shadow-md ring-2 ring-primary/25 ring-offset-1 ring-offset-gray-50 dark:border-primary dark:bg-gray-600 dark:text-white dark:shadow-lg dark:ring-2 dark:ring-primary/40 dark:ring-offset-1 dark:ring-offset-gray-800'
+                                        : 'border-gray-300 bg-gray-100 text-gray-700 shadow-sm hover:border-gray-400 hover:text-gray-900 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-100 dark:shadow-md dark:hover:border-gray-400 dark:hover:text-white'
                                 }`}
                             >
                                 {t('Monthly')}
                             </button>
                             <button
                                 onClick={() => setPricingPeriod('yearly')}
-                                className={`rounded-md px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                                className={`rounded-xl border-2 px-4 py-2.5 text-sm font-semibold transition-all duration-200 hover:-translate-y-px hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 dark:hover:bg-gray-700 ${
                                     pricingPeriod === 'yearly'
-                                        ? 'bg-white text-gray-900 shadow-sm dark:bg-gray-700 dark:text-white'
-                                        : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
+                                        ? 'border-primary bg-white text-gray-900 shadow-md ring-2 ring-primary/25 ring-offset-1 ring-offset-gray-50 dark:border-primary dark:bg-gray-600 dark:text-white dark:shadow-lg dark:ring-2 dark:ring-primary/40 dark:ring-offset-1 dark:ring-offset-gray-800'
+                                        : 'border-gray-300 bg-gray-100 text-gray-700 shadow-sm hover:border-gray-400 hover:text-gray-900 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-100 dark:shadow-md dark:hover:border-gray-400 dark:hover:text-white'
                                 }`}
                             >
                                 {t('Yearly')}

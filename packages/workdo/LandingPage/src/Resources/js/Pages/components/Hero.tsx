@@ -13,7 +13,7 @@ const HERO_VARIANTS = {
         title: 'text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight',
         subtitle: 'text-xl text-gray-600 mb-8 leading-relaxed',
         buttons: 'flex flex-col sm:flex-row gap-4',
-        primaryBtn: 'text-white px-8 py-3 rounded-lg text-lg font-medium flex items-center transition-all duration-300 shadow-lg hover:shadow-xl',
+        primaryBtn: 'w-full sm:w-auto text-white px-8 py-3 rounded-lg text-lg font-medium flex items-center justify-center sm:justify-start transition-all duration-300 shadow-lg hover:shadow-xl',
         secondaryBtn: 'appearance-none bg-transparent border-2 border-gray-300 text-gray-700 px-8 py-3 rounded-lg text-lg font-medium hover:bg-gray-50 hover:text-gray-900 dark:border-white/40 dark:text-white dark:hover:bg-white/10 dark:hover:text-white transition-all duration-300',
         layout: 'right-split',
         showImage: true

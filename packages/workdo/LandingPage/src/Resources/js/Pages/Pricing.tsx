@@ -124,24 +124,26 @@ export default function Pricing(props: PricingProps) {
 
                     {pricingSettings.show_monthly_yearly_toggle === true && (
                         <div className="mb-8 flex justify-center px-4">
-                            <div className="w-full max-w-xs rounded-lg bg-gray-100 p-1">
-                                <div className="grid grid-cols-2 gap-1">
+                            <div className="w-full max-w-sm rounded-2xl border border-gray-200 bg-gray-100 p-2 shadow-sm">
+                                <div className="grid grid-cols-2 gap-2">
                                     <button
                                         onClick={() => setPriceType('monthly')}
-                                        className={`rounded-md px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                                        aria-pressed={priceType === 'monthly'}
+                                        className={`rounded-xl border px-5 py-2.5 text-sm font-semibold transition-all duration-200 hover:-translate-y-px hover:bg-gray-200/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 ${
                                             priceType === 'monthly'
-                                                ? 'bg-white text-gray-900 shadow-sm'
-                                                : 'text-gray-600 hover:text-gray-900'
+                                                ? 'border-2 border-primary bg-primary text-primary-foreground shadow-md ring-2 ring-primary/30 ring-offset-1 ring-offset-gray-100'
+                                                : 'border-2 border-gray-300 bg-white text-gray-600 shadow-sm hover:border-gray-400 hover:text-gray-900'
                                         }`}
                                     >
                                         {t('Monthly')}
                                     </button>
                                     <button
                                         onClick={() => setPriceType('yearly')}
-                                        className={`rounded-md px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                                        aria-pressed={priceType === 'yearly'}
+                                        className={`rounded-xl border px-5 py-2.5 text-sm font-semibold transition-all duration-200 hover:-translate-y-px hover:bg-gray-200/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 ${
                                             priceType === 'yearly'
-                                                ? 'bg-white text-gray-900 shadow-sm'
-                                                : 'text-gray-600 hover:text-gray-900'
+                                                ? 'border-2 border-primary bg-primary text-primary-foreground shadow-md ring-2 ring-primary/30 ring-offset-1 ring-offset-gray-100'
+                                                : 'border-2 border-gray-300 bg-white text-gray-600 shadow-sm hover:border-gray-400 hover:text-gray-900'
                                         }`}
                                     >
                                         {t('Yearly')}

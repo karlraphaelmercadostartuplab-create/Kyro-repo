@@ -69,17 +69,21 @@ export default function Header({ settings }: HeaderProps) {
     const colors = settings?.config_sections?.colors || { primary: '#10b77f', secondary: '#059669', accent: '#f59e0b' };
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-    const savedThemeMode = getAdminSetting('theme_mode') || getAdminSetting('themeMode');
-    const isDarkDocument = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
+    const savedThemeMode = settings?.themeMode || settings?.theme_mode || getAdminSetting('theme_mode') || getAdminSetting('themeMode');
+    const isDarkDocument = typeof document !== 'undefined' && (
+        document.documentElement.classList.contains('dark') ||
+        document.body.classList.contains('dark')
+    );
+    const isSystemTheme = savedThemeMode === 'system';
     const themeMode = savedThemeMode || (isDarkDocument ? 'dark' : 'light');
 
-    const useLightLogo = themeMode === 'dark' || variant === 'header4' || variant === 'header5';
+    const useLightLogo = (themeMode === 'dark' || (isSystemTheme && isDarkDocument) || variant === 'header4' || variant === 'header5');
     const preferredLogo = useLightLogo
-        ? (getAdminSetting('logo_light') || getAdminSetting('logoLight'))
-        : (getAdminSetting('logo_dark') || getAdminSetting('logoDark'));
+        ? (settings?.logo_light || getAdminSetting('logo_light') || getAdminSetting('logoLight'))
+        : (settings?.logo_dark || getAdminSetting('logo_dark') || getAdminSetting('logoDark'));
     const fallbackLogo = useLightLogo
-        ? (getAdminSetting('logo_dark') || getAdminSetting('logoDark'))
-        : (getAdminSetting('logo_light') || getAdminSetting('logoLight'));
+        ? (settings?.logo_dark || getAdminSetting('logo_dark') || getAdminSetting('logoDark'))
+        : (settings?.logo_light || getAdminSetting('logo_light') || getAdminSetting('logoLight'));
 
     const logoPath = preferredLogo || fallbackLogo;
     const logoUrl = logoPath ? getImagePath(logoPath) : null;

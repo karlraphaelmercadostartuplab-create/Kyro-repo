@@ -14,7 +14,6 @@ use App\Models\User;
 use App\Models\UserActiveModule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -52,30 +51,11 @@ class PlanController extends Controller
                 ->toArray();
 
             $userTrialInfo = null;
-            $currentBillingPeriod = null;
             if (!$user->can('manage-any-plans')) {
                 $userTrialInfo = [
                     'is_trial_done' => $user->is_trial_done ?? 0,
                     'trial_expire_date' => $user->trial_expire_date,
                 ];
-                if (!empty($user->active_plan) && !empty($user->plan_expire_date)) {
-                    $latestOrder = Order::where('created_by', $user->id)
-                        ->where('plan_id', $user->active_plan)
-                        ->where('payment_status', 'succeeded')
-                        ->latest()
-                        ->first();
-
-                    if ($latestOrder) {
-                        $orderDate = Carbon::parse($latestOrder->created_at);
-                        $expireDate = Carbon::parse($user->plan_expire_date);
-                        $totalDurationDays = $orderDate->diffInDays($expireDate, false);
-
-                        $currentBillingPeriod = $totalDurationDays >= 300 ? 'yearly' : 'monthly';
-                    } else {
-                        $remainingDays = Carbon::now()->diffInDays(Carbon::parse($user->plan_expire_date), false);
-                        $currentBillingPeriod = $remainingDays > 40 ? 'yearly' : 'monthly';
-                    }
-                }
             }
 
             return Inertia::render('plans/index', [
@@ -84,7 +64,6 @@ class PlanController extends Controller
                 'activeModules' => $activeModules,
                 'bankTransferEnabled' => getAdminAllSetting()['bankTransferEnabled'] ?? false,
                 'userTrialInfo' => $userTrialInfo,
-                'currentBillingPeriod' => $currentBillingPeriod,
             ]);
         } else {
             return back()->with('error', __('Permission denied'));

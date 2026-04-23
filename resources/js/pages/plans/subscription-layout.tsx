@@ -135,8 +135,19 @@ function SubscriptionLayout({ plan, allModules, pricingPeriod, onSubscribe, bank
         const discountAmount = couponDiscount ? Number(couponDiscount.amount || 0) : 0;
         return Math.max(0, subtotal - discountAmount);
     }, [subtotal, couponDiscount]);
+    const isZeroAmountSubscription = dynamicTotal <= 0;
 
     const handleSubscribe = () => {
+        if (isZeroAmountSubscription) {
+            const subscriptionData = {
+                planId: plan.id,
+                totalPrice: dynamicTotal
+            };
+
+            onSubscribe(subscriptionData);
+            return;
+        }
+
         if (selectedPaymentMethod === 'bank_transfer' && !receiptFile) {
             setFileError(t('Please upload payment receipt'));
             return;
@@ -346,7 +357,7 @@ function SubscriptionLayout({ plan, allModules, pricingPeriod, onSubscribe, bank
                     </div>
 
                     {/* Payment Methods */}
-                    {(bankTransferEnabled || paymentButtons.length > 0) && (
+                    {(bankTransferEnabled || paymentButtons.length > 0) && !isZeroAmountSubscription && (
                         <div className="space-y-4">
                             <h4 className="font-medium text-gray-900 dark:text-white">{t('Payment Method')}</h4>
                             <RadioGroup value={selectedPaymentMethod || ''} onValueChange={(value) => {
@@ -411,7 +422,7 @@ function SubscriptionLayout({ plan, allModules, pricingPeriod, onSubscribe, bank
                         className="w-full" 
                         size="lg" 
                         onClick={handleSubscribe}
-                        disabled={!selectedPaymentMethod || isSubmitting}
+                        disabled={(!isZeroAmountSubscription && !selectedPaymentMethod) || isSubmitting}
                     >
                         {isSubmitting ? t('Submitting...') : `${t('Subscribe to Plan')} - ${formatAdminCurrency(dynamicTotal)}`}
                     </Button>

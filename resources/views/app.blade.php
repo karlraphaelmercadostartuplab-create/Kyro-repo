@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', $page['props']['auth']['lang'] ?? substr(app()->getLocale(), 0, 2)) }}" class="{{ ($page['props']['adminAllSetting']['themeMode'] ?? $page['props']['companyAllSetting']['themeMode'] ?? 'light') === 'dark' ? 'dark' : 'light' }}">
+<html lang="{{ str_replace('_', '-', $page['props']['auth']['lang'] ?? substr(app()->getLocale(), 0, 2)) }}" class="{{ ($page['props']['companyAllSetting']['themeMode'] ?? $page['props']['adminAllSetting']['themeMode'] ?? 'light') === 'dark' ? 'dark' : 'light' }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,14 +18,27 @@
             window.auth = @json($page['props']['auth'] ?? null);
             // Set theme immediately to prevent flash
             (function() {
-                const themeMode = @json($page['props']['adminAllSetting']['themeMode'] ?? $page['props']['companyAllSetting']['themeMode'] ?? 'light');
+                const configuredThemeMode = @json($page['props']['companyAllSetting']['themeMode'] ?? $page['props']['adminAllSetting']['themeMode'] ?? 'light');
+                const storedThemeMode = localStorage.getItem('theme');
+                const themeMode = storedThemeMode || configuredThemeMode;
                 const root = document.documentElement;
-                if (themeMode === 'dark') {
+                const body = document.body;
+                const isDark = themeMode === 'dark' || (themeMode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+                if (isDark) {
                     root.classList.add('dark');
                     root.classList.remove('light');
+                    if (body) {
+                        body.classList.add('dark');
+                        body.classList.remove('light');
+                    }
                 } else {
                     root.classList.add('light');
                     root.classList.remove('dark');
+                    if (body) {
+                        body.classList.add('light');
+                        body.classList.remove('dark');
+                    }
                 }
             })();
         </script>
@@ -61,7 +74,7 @@
             }
         </style>
     </head>
-    <body class="font-sans antialiased {{ ($page['props']['adminAllSetting']['themeMode'] ?? $page['props']['companyAllSetting']['themeMode'] ?? 'light') === 'dark' ? 'dark' : 'light' }}">
+    <body class="font-sans antialiased {{ ($page['props']['companyAllSetting']['themeMode'] ?? $page['props']['adminAllSetting']['themeMode'] ?? 'light') === 'dark' ? 'dark' : 'light' }}">
         @inertia
         <script src="https://helpdesk.startuplab.cc/livechat-loader.js"></script>
         <script>

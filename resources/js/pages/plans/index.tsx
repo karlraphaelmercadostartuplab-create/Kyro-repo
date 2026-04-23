@@ -96,9 +96,15 @@ export default function PlansIndex({ plans, canCreate, activeModules }: Props) {
 
     const isCurrentlySubscribed = (plan: Plan) => {
         if (!isCompanyUser || !auth.user?.active_plan) return false;
-        return auth.user.active_plan === plan.id &&
+        return Number(auth.user.active_plan) === Number(plan.id) &&
             auth.user.plan_expire_date &&
             new Date(auth.user.plan_expire_date) > new Date();
+    };
+
+     const isCurrentTrialPlan = (plan: Plan) => {
+        if (!isCompanyUser || !auth.user?.trial_expire_date) return false;
+        return Number(auth.user.active_plan) === Number(plan.id) &&
+            new Date(auth.user.trial_expire_date) > new Date();
     };
 
     const renderPlanMenu = (plan: Plan) => {
@@ -142,6 +148,9 @@ export default function PlansIndex({ plans, canCreate, activeModules }: Props) {
         if (isCurrentlySubscribed(plan)) {
             return (
                 <div className="rounded-lg border border-green-200 bg-green-50 p-2 text-center dark:border-green-800 dark:bg-green-900/20">
+                    <p className="text-sm font-semibold text-green-700 dark:text-green-200">
+                        {t('Your Current Plan')}
+                    </p>
                     <p className="text-xs text-green-600 dark:text-green-300">
                         {t('Expires on')} {formatDate(auth.user.plan_expire_date)}
                     </p>
@@ -149,9 +158,12 @@ export default function PlansIndex({ plans, canCreate, activeModules }: Props) {
             );
         }
 
-        if (auth.user?.trial_expire_date && auth.user.active_plan === plan.id) {
+        if (isCurrentTrialPlan(plan)) {
             return (
                 <div className="rounded-lg border border-blue-200 bg-blue-50 p-2 text-center dark:border-blue-800 dark:bg-blue-900/20">
+                     <p className="text-sm font-semibold text-blue-700 dark:text-blue-200">
+                        {t('Your Current Plan')}
+                    </p>
                     <p className="text-xs text-blue-600 dark:text-blue-300">
                         {t('Trial expires on')} {formatDate(auth.user.trial_expire_date)}
                     </p>

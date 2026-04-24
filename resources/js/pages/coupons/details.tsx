@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Head, usePage, router } from '@inertiajs/react';
+import { Head, usePage, router, Link } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
 import { Input } from '@/components/ui/input';
 import { PerPageSelector } from '@/components/ui/per-page-selector';
@@ -7,7 +7,7 @@ import AuthenticatedLayout from "@/layouts/authenticated-layout";
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from "@/components/ui/card";
 import { DataTable } from "@/components/ui/data-table";
-import { Users } from "lucide-react";
+import { Users, ArrowLeft } from "lucide-react";
 import { FilterButton } from '@/components/ui/filter-button';
 import { Pagination } from "@/components/ui/pagination";
 import { SearchInput } from "@/components/ui/search-input";
@@ -120,6 +120,14 @@ export default function Details() {
                 {label: coupon.name}
             ]}
             pageTitle={t('Coupon Details')}
+            pageActions={
+                <Button asChild variant="outline" size="sm">
+                    <Link href={route('coupons.index')}>
+                        <ArrowLeft className="h-4 w-4" />
+                        {t('Back to Coupons')}
+                    </Link>
+                </Button>
+            }
 
         >
             <Head title={`${t('Coupon Details')} - ${coupon.name}`} />

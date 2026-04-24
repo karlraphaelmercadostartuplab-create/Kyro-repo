@@ -92,7 +92,7 @@ export default function Edit() {
             <Head title={t('Edit Notification Template')} />
 
             <div className="grid grid-cols-12 gap-6">
-                <div className="col-span-4 space-y-6">
+                <div className="col-span-12 space-y-6 lg:col-span-4">
                     <Card>
                         <CardHeader className="p-3">
                             <CardTitle className="text-lg">{t('Variables')}</CardTitle>
@@ -111,16 +111,16 @@ export default function Edit() {
 
                 </div>
 
-                <div className="col-span-8 space-y-6">
+                <div className="col-span-12 space-y-6 lg:col-span-8">
                     <Card>
-                        <CardHeader className="p-3 flex flex-row items-center justify-between">
-                            <CardTitle className="text-lg flex items-center gap-2">
+                        <CardHeader className="flex flex-col gap-3 p-3 sm:flex-row sm:items-center sm:justify-between">
+                            <CardTitle className="flex items-center gap-2 text-lg leading-tight">
                                 <span className="text-lg">{availableLanguages.find(l => l.code === activeLanguage)?.flag}</span>
                                 {t('Content for')} {availableLanguages.find(l => l.code === activeLanguage)?.name}
                             </CardTitle>
-                            <div className="flex items-center gap-2">
+                            <div className="w-full sm:w-auto">
                                 <Select value={activeLanguage} onValueChange={handleLanguageChange}>
-                                    <SelectTrigger className="w-48">
+                                    <SelectTrigger className="w-full sm:w-48">
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>

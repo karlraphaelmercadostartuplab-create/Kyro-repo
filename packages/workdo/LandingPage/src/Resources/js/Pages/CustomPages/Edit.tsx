@@ -75,8 +75,7 @@ export default function Edit({ page }: EditProps) {
                     type="submit"
                     form={formId}
                     disabled={processing}
-                    className="text-white"
-                    style={{ backgroundColor: 'hsl(var(--primary))' }}
+                    
                 >
                     <Save className="h-4 w-4 mr-2" />
                     {processing ? t('Saving...') : t('Update Page')}

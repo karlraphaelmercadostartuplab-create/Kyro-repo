@@ -309,6 +309,8 @@ class PlanController extends Controller
     {
         if (Auth::user()->can('view-plans')) {
             $user = Auth::user();
+            $requestedPeriod = request()->query('period');
+            $initialPricingPeriod = in_array($requestedPeriod, ['monthly', 'yearly']) ? $requestedPeriod : 'monthly';
 
             // Get enabled addons with details
             $activeModules = AddOn::where('is_enable', 1)->where('for_admin',false)
@@ -337,6 +339,7 @@ class PlanController extends Controller
                 'bankTransferEnabled' => getAdminAllSetting()['bankTransferEnabled'] ?? false,
                 'bankTransferInstructions' => getAdminAllSetting()['instructions'] ?? '',
                 'planExpireDate' => $user->plan_expire_date,
+                'initialPricingPeriod' => $initialPricingPeriod,
             ]);
         } else {
             return back()->with('error', __('Permission denied'));

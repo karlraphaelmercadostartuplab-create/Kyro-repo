@@ -34,11 +34,12 @@ interface Props {
     bankTransferEnabled: string;
     bankTransferInstructions: string;
     planExpireDate?: string;
+    initialPricingPeriod?: 'monthly' | 'yearly';
 }
 
-export default function Subscribe({ plan, activeModules, userActiveModules, bankTransferEnabled, bankTransferInstructions, planExpireDate }: Props) {
+export default function Subscribe({ plan, activeModules, userActiveModules, bankTransferEnabled, bankTransferInstructions, planExpireDate, initialPricingPeriod = 'monthly' }: Props) {
     const { t } = useTranslation();
-    const [pricingPeriod, setPricingPeriod] = useState<'monthly' | 'yearly'>('monthly');
+    const [pricingPeriod, setPricingPeriod] = useState<'monthly' | 'yearly'>(initialPricingPeriod);
     
 
     const handleSubscribe = (subscriptionData: any) => {

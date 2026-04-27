@@ -316,6 +316,11 @@ export default function LanguageManage({
     };
 
     const currentLang = availableLanguages.find(lang => lang.code === selectedLanguage);
+    const normalizedSourceSearch = sourceSearchTerm.trim().toLowerCase();
+    const shouldShowGeneralSource =
+        normalizedSourceSearch === '' ||
+        t('General').toLowerCase().includes(normalizedSourceSearch) ||
+        'general'.includes(normalizedSourceSearch);
 
     return (
         <AuthenticatedLayout
@@ -395,18 +400,21 @@ export default function LanguageManage({
                                 />
                             </div>
                             <div className="max-h-[85vh] overflow-auto scrollbar-hover-only">
+                            {shouldShowGeneralSource && (
                                 <Button
                                 variant={activeSource === 'general' ? "default" : "ghost"}
-                                className="w-full justify-start gap-2"
-                                onClick={() => handleSourceChange('general')}
-                                disabled={isLoading}
-                            >
-                                <Globe className="h-4 w-4" />
-                                <span>{t('General')}</span>
-                                {activeSource === 'general' && (
-                                    <Edit3 className="h-3 w-3 ml-auto" />
-                                )}
-                            </Button>
+                                    className="w-full justify-start gap-2"
+                                    onClick={() => handleSourceChange('general')}
+                                    disabled={isLoading}
+                                >
+                                    <Globe className="h-4 w-4" />
+                                    <span>{t('General')}</span>
+                                    {activeSource === 'general' && (
+                                        <Edit3 className="h-3 w-3 ml-auto" />
+                                    )}
+                                </Button>
+                            )}
+
                             {enabledPackages
                                 .filter(pkg => 
                                     pkg.name.toLowerCase().includes(sourceSearchTerm.toLowerCase()) ||

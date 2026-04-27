@@ -103,7 +103,7 @@ Route::middleware(['auth', 'verified', 'PlanModuleCheck'])->group(function () {
     Route::post('plans/add-on/update-price', [PlanController::class, 'updateModulePrice'])->name('plans.add-on.update-price');
     Route::post('plans/apply-coupon', [PlanController::class, 'applyCoupon'])->name('plans.apply-coupon');
     Route::post('plans/{plan}/assign-free', [PlanController::class, 'assignFreePlan'])->name('plans.assign-free');
-    Route::post('subscriptions', [PlanController::class, 'store'])->name('subscriptions.store');
+    Route::post('subscriptions', [PlanController::class, 'subscribeStore'])->name('subscriptions.store');
 
     // Add-on management routes
     Route::get('add-ons', [ModuleController::class, 'index'])->name('add-ons.index');

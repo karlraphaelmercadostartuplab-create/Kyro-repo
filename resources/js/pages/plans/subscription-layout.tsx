@@ -140,8 +140,11 @@ function SubscriptionLayout({ plan, allModules, pricingPeriod, onSubscribe, bank
     const handleSubscribe = () => {
         if (isZeroAmountSubscription) {
             const subscriptionData = {
-                planId: plan.id,
-                totalPrice: dynamicTotal
+                plan_id: plan.id,
+                total_price: dynamicTotal,
+                time_period: pricingPeriod === 'monthly' ? 'Month' : 'Year',
+                user_module_input: (plan.modules || []).join(','),
+                coupon_code: couponCode || ''
             };
 
             onSubscribe(subscriptionData);
@@ -220,8 +223,11 @@ function SubscriptionLayout({ plan, allModules, pricingPeriod, onSubscribe, bank
             setIsSubmitting(false);
         } else {
             const subscriptionData = {
-                planId: plan.id,
-                totalPrice: dynamicTotal
+                plan_id: plan.id,
+                total_price: dynamicTotal,
+                time_period: pricingPeriod === 'monthly' ? 'Month' : 'Year',
+                user_module_input: (plan.modules || []).join(','),
+                coupon_code: couponCode || ''
             };
             
             onSubscribe(subscriptionData);

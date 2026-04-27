@@ -410,4 +410,96 @@ class PlanController extends Controller
             return back()->with('error', $result['error'] ?? 'Failed to assign free plan.');
         }
     }
+
+    public function subscribeStore(Request $request)
+    {
+        if (!Auth::user()->can('view-plans')) {
+            return back()->with('error', __('Permission denied'));
+        }
+
+        $validated = $request->validate([
+            'plan_id' => 'required|integer|exists:plans,id',
+            'time_period' => 'required|in:Month,Year',
+            'coupon_code' => 'nullable|string|max:50',
+            'user_module_input' => 'nullable|string',
+        ]);
+
+        $user = Auth::user();
+        $plan = Plan::find($validated['plan_id']);
+
+        if (!$plan || !$plan->status) {
+            return back()->with('error', __('Plan not found.'));
+        }
+
+        $duration = $validated['time_period'];
+        $userModule = !empty($validated['user_module_input'])
+            ? $validated['user_module_input']
+            : implode(',', $plan->modules ?? []);
+
+        $userModulePrice = 0;
+        if (!empty($userModule)) {
+            $moduleList = explode(',', $userModule);
+            foreach ($moduleList as $moduleName) {
+                $modulePrice = ($duration === 'Year')
+                    ? (ModulePriceByName($moduleName)['yearly_price'] ?? 0)
+                    : (ModulePriceByName($moduleName)['monthly_price'] ?? 0);
+                $userModulePrice += $modulePrice;
+            }
+        }
+
+        $planPrice = ($duration === 'Year')
+            ? ($plan->package_price_yearly ?? 0)
+            : ($plan->package_price_monthly ?? 0);
+
+        $finalPrice = $planPrice + $userModulePrice;
+        $coupon = null;
+
+        if (!empty($validated['coupon_code'])) {
+            $couponValidation = applyCouponDiscount($validated['coupon_code'], $finalPrice, $user->id);
+            if (!$couponValidation['valid']) {
+                return back()->with('error', $couponValidation['message']);
+            }
+            $coupon = $couponValidation['coupon'];
+            $finalPrice = $couponValidation['final_amount'];
+        }
+
+        if ((float) $finalPrice > 0) {
+            return back()->with('error', __('Selected plan still requires payment. Please use a payment method to complete your subscription.'));
+        }
+
+        $counter = [
+            'user_counter' => $plan->number_of_users ?? '0',
+            'storage_limit' => $plan->storage_limit ?? '0',
+        ];
+
+        $assignResult = assignPlan($plan->id, $duration, $userModule, $counter, $user->id);
+        if (!$assignResult['is_success']) {
+            return back()->with('error', $assignResult['error'] ?? __('Failed to assign plan.'));
+        }
+
+        $orderID = strtoupper(substr(uniqid(), -12));
+        $order = new Order();
+        $order->order_id = $orderID;
+        $order->name = $user->name;
+        $order->email = $user->email;
+        $order->card_number = null;
+        $order->card_exp_month = null;
+        $order->card_exp_year = null;
+        $order->plan_name = $plan->name;
+        $order->plan_id = $plan->id;
+        $order->price = $finalPrice;
+        $order->currency = admin_setting('defaultCurrency') ?? 'USD';
+        $order->txn_id = '';
+        $order->payment_type = $coupon ? __('Coupon') : __('Manual');
+        $order->payment_status = 'succeeded';
+        $order->receipt = null;
+        $order->created_by = $user->id;
+        $order->save();
+
+        if ($coupon) {
+            recordCouponUsage($coupon->id, $user->id, $orderID);
+        }
+
+        return redirect()->route('plans.index')->with('success', __('Plan subscribed successfully.'));
+    }
 }

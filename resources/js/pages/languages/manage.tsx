@@ -87,15 +87,19 @@ export default function LanguageManage({
     const [isToggling, setIsToggling] = useState(false);
     const itemsPerPage = 50;
 
+      useEffect(() => {
+        setTranslations(paginatedTranslations.data || {});
+    }, [paginatedTranslations.data]);
+
     // Get current translations based on active source
     const currentTranslations = useMemo(() => {
         if (activeSource === 'general') {
-            return Object.entries(paginatedTranslations.data || {});
+            return Object.entries(translations || {});
         } else {
-            const packageData = packagePaginationData[activeSource]?.data || {};
+             const packageData = packageTranslations[activeSource] || packagePaginationData[activeSource]?.data || {};
             return Object.entries(packageData);
         }
-    }, [paginatedTranslations.data, packageTranslations, packagePaginationData, activeSource]);
+     }, [translations, packageTranslations, packagePaginationData, activeSource]);
     
     // Handle search with debounce
     const handleSearch = () => {
@@ -316,6 +320,11 @@ export default function LanguageManage({
     };
 
     const currentLang = availableLanguages.find(lang => lang.code === selectedLanguage);
+    const normalizedSourceSearch = sourceSearchTerm.trim().toLowerCase();
+    const shouldShowGeneralSource =
+        normalizedSourceSearch === '' ||
+        t('General').toLowerCase().includes(normalizedSourceSearch) ||
+        'general'.includes(normalizedSourceSearch);
 
     return (
         <AuthenticatedLayout
@@ -395,18 +404,21 @@ export default function LanguageManage({
                                 />
                             </div>
                             <div className="max-h-[85vh] overflow-auto scrollbar-hover-only">
+                            {shouldShowGeneralSource && (
                                 <Button
                                 variant={activeSource === 'general' ? "default" : "ghost"}
-                                className="w-full justify-start gap-2"
-                                onClick={() => handleSourceChange('general')}
-                                disabled={isLoading}
-                            >
-                                <Globe className="h-4 w-4" />
-                                <span>{t('General')}</span>
-                                {activeSource === 'general' && (
-                                    <Edit3 className="h-3 w-3 ml-auto" />
-                                )}
-                            </Button>
+                                    className="w-full justify-start gap-2"
+                                    onClick={() => handleSourceChange('general')}
+                                    disabled={isLoading}
+                                >
+                                    <Globe className="h-4 w-4" />
+                                    <span>{t('General')}</span>
+                                    {activeSource === 'general' && (
+                                        <Edit3 className="h-3 w-3 ml-auto" />
+                                    )}
+                                </Button>
+                            )}
+
                             {enabledPackages
                                 .filter(pkg => 
                                     pkg.name.toLowerCase().includes(sourceSearchTerm.toLowerCase()) ||
@@ -508,11 +520,7 @@ export default function LanguageManage({
                                                         key={key}
                                                         translationKey={key}
                                                         value={value as string}
-                                                        onChange={(k, v) => {
-                                                            handleTranslationChange(k, v);
-                                                            // Update the paginated data as well
-                                                            paginatedTranslations.data[k] = v;
-                                                        }}
+                                                        onChange={(k, v) => handleTranslationChange(k, v)}
                                                     />
                                                 ))}
                                             </div>
@@ -560,7 +568,7 @@ export default function LanguageManage({
                                                     ))}
                                                 </div>
                                             </div>
-                                            {activeSource !== 'general' && paginatedTranslations.last_page > 1 && (
+                                            {activeSource !== 'general' && (packagePaginationData[activeSource]?.last_page || 0) > 1 && (
                                                 <div className="mt-4">
                                                     <Pagination
                                                         data={packagePaginationData[activeSource] || {}}

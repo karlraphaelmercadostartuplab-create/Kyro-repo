@@ -30,7 +30,7 @@ class PlanModuleCheck
         } elseif ($user->hasRole('company')) {
             if (($user->plan_expire_date && now()->gt($user->plan_expire_date)) || ($user->active_plan == 0)) {
                 // Plan expired - only allow essential plan routes
-                $allowedRoutes = ['users.leave-impersonation','plans.index', 'plans.subscribe', 'plans.start-trial', 'plans.apply-coupon', 'payment.*.store','payment.*.status', 'bank-transfer.index','plans.assign-free'];
+                $allowedRoutes = ['users.leave-impersonation','plans.index', 'plans.subscribe', 'plans.start-trial', 'plans.apply-coupon', 'subscriptions.store', 'payment.*.store','payment.*.status', 'bank-transfer.index','plans.assign-free'];
                 if (!$request->routeIs($allowedRoutes)) {
                     return redirect()->route('plans.index')
                         ->with('error', 'Your plan has expired. Please renew your subscription.');

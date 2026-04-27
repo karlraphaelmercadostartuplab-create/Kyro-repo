@@ -9,6 +9,7 @@ import { SearchInput } from '@/components/ui/search-input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { formatAdminCurrency, formatStorage, formatDate, getPackageFavicon, getPackageAlias, getSubscriptionDetails } from '@/utils/helpers';
+import { toast } from 'sonner';
 
 interface Plan {
     id: number;
@@ -178,7 +179,19 @@ function SubscriptionLayout({ plan, allModules, pricingPeriod, onSubscribe, bank
                     router.visit(route('plans.index'), { replace: true });
                 },
                 onError: (errors) => {
-                    console.error('Bank transfer submission failed:', errors);
+                    const paymentReceiptError = (errors as any)?.payment_receipt;
+                    const planError = (errors as any)?.plan_id;
+                    const periodError = (errors as any)?.time_period;
+                    const couponErrorMessage = (errors as any)?.coupon_code;
+
+                    if (paymentReceiptError) {
+                        setFileError(paymentReceiptError as string);
+                    }
+
+                    const firstError = paymentReceiptError || planError || periodError || couponErrorMessage;
+                    if (firstError) {
+                        toast.error(firstError as string);
+                    }
                 }
             });
         } else if (selectedPaymentMethod && paymentButtons.some(button => button.id.includes(selectedPaymentMethod))) {

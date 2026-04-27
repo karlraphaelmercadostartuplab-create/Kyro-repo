@@ -87,15 +87,19 @@ export default function LanguageManage({
     const [isToggling, setIsToggling] = useState(false);
     const itemsPerPage = 50;
 
+      useEffect(() => {
+        setTranslations(paginatedTranslations.data || {});
+    }, [paginatedTranslations.data]);
+
     // Get current translations based on active source
     const currentTranslations = useMemo(() => {
         if (activeSource === 'general') {
-            return Object.entries(paginatedTranslations.data || {});
+            return Object.entries(translations || {});
         } else {
-            const packageData = packagePaginationData[activeSource]?.data || {};
+             const packageData = packageTranslations[activeSource] || packagePaginationData[activeSource]?.data || {};
             return Object.entries(packageData);
         }
-    }, [paginatedTranslations.data, packageTranslations, packagePaginationData, activeSource]);
+     }, [translations, packageTranslations, packagePaginationData, activeSource]);
     
     // Handle search with debounce
     const handleSearch = () => {
@@ -316,13 +320,18 @@ export default function LanguageManage({
     };
 
     const currentLang = availableLanguages.find(lang => lang.code === selectedLanguage);
+    const normalizedSourceSearch = sourceSearchTerm.trim().toLowerCase();
+    const shouldShowGeneralSource =
+        normalizedSourceSearch === '' ||
+        t('General').toLowerCase().includes(normalizedSourceSearch) ||
+        'general'.includes(normalizedSourceSearch);
 
     return (
         <AuthenticatedLayout
             breadcrumbs={[{label: 'Languages'}]}
             pageTitle="Language Management"
             pageActions={
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center justify-end gap-2">
                         {hasChanges && (
                             <Badge variant="secondary" className="animate-pulse">
                                 {t('Unsaved changes')}
@@ -395,18 +404,21 @@ export default function LanguageManage({
                                 />
                             </div>
                             <div className="max-h-[85vh] overflow-auto scrollbar-hover-only">
+                            {shouldShowGeneralSource && (
                                 <Button
                                 variant={activeSource === 'general' ? "default" : "ghost"}
-                                className="w-full justify-start gap-2"
-                                onClick={() => handleSourceChange('general')}
-                                disabled={isLoading}
-                            >
-                                <Globe className="h-4 w-4" />
-                                <span>{t('General')}</span>
-                                {activeSource === 'general' && (
-                                    <Edit3 className="h-3 w-3 ml-auto" />
-                                )}
-                            </Button>
+                                    className="w-full justify-start gap-2"
+                                    onClick={() => handleSourceChange('general')}
+                                    disabled={isLoading}
+                                >
+                                    <Globe className="h-4 w-4" />
+                                    <span>{t('General')}</span>
+                                    {activeSource === 'general' && (
+                                        <Edit3 className="h-3 w-3 ml-auto" />
+                                    )}
+                                </Button>
+                            )}
+
                             {enabledPackages
                                 .filter(pkg => 
                                     pkg.name.toLowerCase().includes(sourceSearchTerm.toLowerCase()) ||
@@ -434,7 +446,7 @@ export default function LanguageManage({
                     {/* Translation Editor */}
                     <Card className="lg:col-span-3">
                         <CardHeader className="pb-3">
-                            <div className="flex items-center justify-between gap-4 mb-2">
+                            <div className="mb-2 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                                 <div>
                                     <CardTitle className="flex items-center gap-2 text-lg font-semibold">
                                         {currentLang?.flag} {currentLang?.name} {t('Translations')}
@@ -443,7 +455,7 @@ export default function LanguageManage({
                                         {t('Edit translation keys and values for')} {currentLang?.name}
                                     </CardDescription>
                                 </div>
-                                <div className="flex items-center gap-2">
+                                <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center lg:w-auto">
                                     <SearchInput
                                         value={searchTerm}
                                         onChange={setSearchTerm}
@@ -455,9 +467,10 @@ export default function LanguageManage({
                                             }
                                         }}
                                         placeholder={t('Search translations...')}
+                                        className="w-full"
                                     />
                                     <Select value={selectedLanguage} onValueChange={handleLanguageChange}>
-                                        <SelectTrigger className="w-48">
+                                        <SelectTrigger className="w-full sm:w-48">
                                             <SelectValue />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -498,7 +511,7 @@ export default function LanguageManage({
                                         </div>
                                     ) : (
                                         <div className="border rounded-lg">
-                                            <div className="grid grid-cols-5 gap-4 p-3 bg-muted/50 border-b font-medium text-sm">
+                                            <div className="hidden grid-cols-5 gap-4 border-b bg-muted/50 p-3 text-sm font-medium sm:grid">
                                                 <div className="col-span-2">{t('Translation Key')}</div>
                                                 <div className="col-span-3">{t('Translation Value')}</div>
                                             </div>
@@ -508,11 +521,7 @@ export default function LanguageManage({
                                                         key={key}
                                                         translationKey={key}
                                                         value={value as string}
-                                                        onChange={(k, v) => {
-                                                            handleTranslationChange(k, v);
-                                                            // Update the paginated data as well
-                                                            paginatedTranslations.data[k] = v;
-                                                        }}
+                                                        onChange={(k, v) => handleTranslationChange(k, v)}
                                                     />
                                                 ))}
                                             </div>
@@ -545,7 +554,7 @@ export default function LanguageManage({
                                     ) : (
                                         <>
                                             <div className="border rounded-lg">
-                                                <div className="grid grid-cols-5 gap-4 p-3 bg-muted/50 border-b font-medium text-sm">
+                                                <div className="hidden grid-cols-5 gap-4 border-b bg-muted/50 p-3 text-sm font-medium sm:grid">
                                                     <div className="col-span-2">{t('Translation Key')}</div>
                                                     <div className="col-span-3">{t('Translation Value')}</div>
                                                 </div>
@@ -560,7 +569,7 @@ export default function LanguageManage({
                                                     ))}
                                                 </div>
                                             </div>
-                                            {activeSource !== 'general' && paginatedTranslations.last_page > 1 && (
+                                            {activeSource !== 'general' && (packagePaginationData[activeSource]?.last_page || 0) > 1 && (
                                                 <div className="mt-4">
                                                     <Pagination
                                                         data={packagePaginationData[activeSource] || {}}

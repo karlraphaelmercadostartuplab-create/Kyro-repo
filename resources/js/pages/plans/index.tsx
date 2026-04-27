@@ -186,7 +186,11 @@ export default function PlansIndex({ plans, canCreate, activeModules, currentBil
                         {t('Subscribe to Plan')}
                     </Button>
                 ) : (
-                    <Button className="w-full" size="sm" onClick={() => router.visit(route('plans.subscribe', plan.id))}>
+                    <Button
+                        className="w-full"
+                        size="sm"
+                        onClick={() => router.visit(route('plans.subscribe', { plan: plan.id, period: pricingPeriod }))}
+                    >
                         {t('Subscribe to Plan')}
                     </Button>
                 )}

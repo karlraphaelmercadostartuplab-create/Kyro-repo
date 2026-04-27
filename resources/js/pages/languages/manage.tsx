@@ -331,7 +331,7 @@ export default function LanguageManage({
             breadcrumbs={[{label: 'Languages'}]}
             pageTitle="Language Management"
             pageActions={
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center justify-end gap-2">
                         {hasChanges && (
                             <Badge variant="secondary" className="animate-pulse">
                                 {t('Unsaved changes')}
@@ -446,7 +446,7 @@ export default function LanguageManage({
                     {/* Translation Editor */}
                     <Card className="lg:col-span-3">
                         <CardHeader className="pb-3">
-                            <div className="flex items-center justify-between gap-4 mb-2">
+                            <div className="mb-2 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                                 <div>
                                     <CardTitle className="flex items-center gap-2 text-lg font-semibold">
                                         {currentLang?.flag} {currentLang?.name} {t('Translations')}
@@ -455,7 +455,7 @@ export default function LanguageManage({
                                         {t('Edit translation keys and values for')} {currentLang?.name}
                                     </CardDescription>
                                 </div>
-                                <div className="flex items-center gap-2">
+                                <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center lg:w-auto">
                                     <SearchInput
                                         value={searchTerm}
                                         onChange={setSearchTerm}
@@ -467,9 +467,10 @@ export default function LanguageManage({
                                             }
                                         }}
                                         placeholder={t('Search translations...')}
+                                        className="w-full"
                                     />
                                     <Select value={selectedLanguage} onValueChange={handleLanguageChange}>
-                                        <SelectTrigger className="w-48">
+                                        <SelectTrigger className="w-full sm:w-48">
                                             <SelectValue />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -510,7 +511,7 @@ export default function LanguageManage({
                                         </div>
                                     ) : (
                                         <div className="border rounded-lg">
-                                            <div className="grid grid-cols-5 gap-4 p-3 bg-muted/50 border-b font-medium text-sm">
+                                            <div className="hidden grid-cols-5 gap-4 border-b bg-muted/50 p-3 text-sm font-medium sm:grid">
                                                 <div className="col-span-2">{t('Translation Key')}</div>
                                                 <div className="col-span-3">{t('Translation Value')}</div>
                                             </div>
@@ -553,7 +554,7 @@ export default function LanguageManage({
                                     ) : (
                                         <>
                                             <div className="border rounded-lg">
-                                                <div className="grid grid-cols-5 gap-4 p-3 bg-muted/50 border-b font-medium text-sm">
+                                                <div className="hidden grid-cols-5 gap-4 border-b bg-muted/50 p-3 text-sm font-medium sm:grid">
                                                     <div className="col-span-2">{t('Translation Key')}</div>
                                                     <div className="col-span-3">{t('Translation Value')}</div>
                                                 </div>

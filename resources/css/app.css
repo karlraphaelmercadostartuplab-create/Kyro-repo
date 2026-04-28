@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Live chat launcher behavior: auto-dock to side after inactivity */
+/* Live chat launcher behavior: auto-dock to side after inactiviity */
 .kyro-chat-launcher {
     transition: transform 0.35s ease, opacity 0.35s ease, filter 0.35s ease;
     will-change: transform;
@@ -14,6 +14,7 @@
     pointer-events: none;
     filter: none;
 }
+
 
 .kyro-chat-reveal-tab {
     position: fixed;

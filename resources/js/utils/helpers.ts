@@ -47,6 +47,19 @@ const getAdminSetting = (key: string, pageProps?: any) => {
   }
 };
 
+const normalizeCurrencySymbol = (symbol: unknown): string | null => {
+  if (typeof symbol !== 'string') {
+    return null;
+  }
+
+  const trimmedSymbol = symbol.trim();
+  if (!trimmedSymbol || trimmedSymbol === '???') {
+    return null;
+  }
+
+  return trimmedSymbol;
+};
+
 /**
  * Format date to readable format
  */
@@ -266,7 +279,7 @@ const formatAdminCurrency = (amount: number | string, pageProps?: any): string =
  */
 const getCurrencySymbol = (pageProps?: any): string => {
   try {
-    return getCompanySetting('currencySymbol', pageProps) || '$';
+    return normalizeCurrencySymbol(getCompanySetting('currencySymbol', pageProps)) || '$';
   } catch {
     return '$';
   }
@@ -274,7 +287,7 @@ const getCurrencySymbol = (pageProps?: any): string => {
 
 const getAdminCurrencySymbol = (pageProps?: any): string => {
   try {
-    return getAdminSetting('currencySymbol', pageProps) || '$';
+    return normalizeCurrencySymbol(getAdminSetting('currencySymbol', pageProps)) || '$';
   } catch {
     return '$';
   }

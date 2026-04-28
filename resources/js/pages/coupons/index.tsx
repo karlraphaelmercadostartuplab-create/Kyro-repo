@@ -116,7 +116,7 @@ export default function Index() {
             header: t('Discount'),
             render: (value: number, coupon: Coupon) => (
                 <span className="font-medium">
-                    {coupon.type === 'percentage' ? `${value}%` : formatCurrency(value, pageProps)}
+                    {coupon.type === 'percentage' ? `${Number(value)}%` : formatCurrency(value, pageProps)}
                 </span>
             )
         },

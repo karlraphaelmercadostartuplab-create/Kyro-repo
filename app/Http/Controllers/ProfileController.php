@@ -37,8 +37,12 @@ class ProfileController extends Controller
             $user = $request->user();
             $validated = $request->validated();
 
-            if (isset($validated['avatar']) && $validated['avatar']) {
-                $validated['avatar'] = basename($validated['avatar']);
+            if (array_key_exists('avatar', $validated)) {
+                if (!empty($validated['avatar'])) {
+                    $validated['avatar'] = basename($validated['avatar']);
+                } else {
+                    $validated['avatar'] = 'avatar.png';
+                }
             }
 
             $user->fill($validated);

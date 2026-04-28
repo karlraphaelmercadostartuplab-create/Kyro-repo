@@ -146,6 +146,7 @@ Route::middleware(['auth', 'verified', 'PlanModuleCheck'])->group(function () {
     Route::post('/languages/create', [TranslationController::class, 'createLanguage'])->name('languages.create');
     Route::delete('/languages/{languageCode}', [TranslationController::class, 'deleteLanguage'])->name('languages.delete');
     Route::patch('/languages/{languageCode}/toggle', [TranslationController::class, 'toggleLanguageStatus'])->name('languages.toggle');
+     Route::get('/languages/list', [TranslationController::class, 'listLanguages'])->name('languages.list');
 
     // Email templates routes
     Route::get('email-templates', [EmailTemplateController::class, 'index'])->name('email-templates.index');

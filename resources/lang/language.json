@@ -80,5 +80,10 @@
         "code": "zh",
         "name": "中文",
         "countryCode": "CN"
+    },
+    {
+        "code": "de-CH",
+        "name": "Swiss German",
+        "countryCode": "CH"
     }
 ]

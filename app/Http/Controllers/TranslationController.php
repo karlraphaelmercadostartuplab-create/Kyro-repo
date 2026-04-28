@@ -13,11 +13,42 @@ use Illuminate\Support\Facades\Artisan;
 
 class TranslationController extends Controller
 {
-    private const ALLOWED_LANGUAGES = ['en', 'es', 'ar', 'de', 'fr', 'da', 'he', 'it', 'ja', 'nl', 'pl', 'pt', 'pt-BR', 'ru', 'tr', 'zh'];
+    private function getAvailableLanguageCodes(): array
+    {
+        $languagesFile = resource_path('lang/language.json');
+
+        if (!File::exists($languagesFile)) {
+            return ['en'];
+        }
+
+        $languages = json_decode(File::get($languagesFile), true) ?? [];
+        $codes = collect($languages)
+            ->pluck('code')
+            ->filter()
+            ->map(fn ($code) => trim((string) $code))
+            ->unique()
+            ->values()
+            ->all();
+
+        return in_array('en', $codes, true) ? $codes : array_merge(['en'], $codes);
+    }
+
+    public function listLanguages()
+    {
+        $languagesFile = resource_path('lang/language.json');
+
+        if (!File::exists($languagesFile)) {
+            return response()->json(['languages' => []]);
+        }
+
+        $languages = json_decode(File::get($languagesFile), true) ?? [];
+
+        return response()->json(['languages' => $languages]);
+    }
 
     public function getTranslations($locale)
     {
-        if (!in_array($locale, self::ALLOWED_LANGUAGES)) {
+        if (!in_array($locale, $this->getAvailableLanguageCodes(), true)) {
             $locale = 'en';
         }
 
@@ -103,7 +134,7 @@ class TranslationController extends Controller
         $page = $request->get('page', 1);
         $perPage = 50;
         
-        if (!in_array($currentLanguage, self::ALLOWED_LANGUAGES)) {
+        if (!in_array($currentLanguage, $this->getAvailableLanguageCodes(), true)) {
             $currentLanguage = 'en';
         }
 
@@ -177,7 +208,7 @@ class TranslationController extends Controller
     public function updateTranslations(Request $request, $locale)
     {
 
-        if (!in_array($locale, self::ALLOWED_LANGUAGES)) {
+        if (!in_array($locale, $this->getAvailableLanguageCodes(), true)) {
             return response()->json(['error' => __('Invalid language')], 400);
         }
 
@@ -207,7 +238,7 @@ class TranslationController extends Controller
         $page = $request->get('page', 1);
         $perPage = 50;
 
-        if (!in_array($locale, self::ALLOWED_LANGUAGES)) {
+        if (!in_array($locale, $this->getAvailableLanguageCodes(), true)) {
             return response()->json(['error' => __('Invalid language')], 400);
         }
 
@@ -259,7 +290,7 @@ class TranslationController extends Controller
 
     public function updatePackageTranslations(Request $request, $locale, $packageName)
     {
-        if (!in_array($locale, self::ALLOWED_LANGUAGES)) {
+        if (!in_array($locale, $this->getAvailableLanguageCodes(), true)) {
             return response()->json(['error' => __('Invalid language')], 400);
         }
 

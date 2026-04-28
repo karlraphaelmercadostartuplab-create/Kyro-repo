@@ -11,6 +11,7 @@ import { Switch } from '@/components/ui/switch';
 
 import { DatePicker } from '@/components/ui/date-picker';
 import { CurrencyInput } from '@/components/ui/currency-input';
+import { getCurrencySymbol } from '@/utils/helpers';
 
 import { EditCouponProps, EditCouponFormData } from './types';
 
@@ -18,7 +19,7 @@ export default function EditCoupon({ coupon, onSuccess }: EditCouponProps) {
     const { t } = useTranslation();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { props } = usePage();
-    const currencySymbol = (props as any)?.companyAllSetting?.currencySymbol || '$';
+    const currencySymbol = getCurrencySymbol(props);
     const minExpiryDate = new Date();
     minExpiryDate.setHours(0, 0, 0, 0);
     minExpiryDate.setDate(minExpiryDate.getDate() + 1);
@@ -122,8 +123,8 @@ export default function EditCoupon({ coupon, onSuccess }: EditCouponProps) {
                             type="number"
                             step="0.01"
                             min="0"
-                            value={data.discount}
-                            onChange={(e) => setData('discount', parseFloat(e.target.value) || 0)}
+                            value={data.discount === 0 ? '' : data.discount}
+                            onChange={(e) => setData('discount', e.target.value === '' ? 0 : parseFloat(e.target.value) || 0)}
                             placeholder={t('Enter discount value')}
                             className={errors.discount ? 'border-red-500' : ''}
                         />
